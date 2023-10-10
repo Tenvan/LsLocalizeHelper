@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -172,10 +167,14 @@ namespace Bg3LocaHelper
 
     private void LoadSettings()
     {
-      this.ReferenceFile = Settings.Default.pathReference;
-      this.SourceFile    = Settings.Default.pathSource;
-      this.Size          = Settings.Default.windowSize;
-      this.Location      = Settings.Default.windowPos;
+      try
+      {
+        this.ReferenceFile = Settings.Default.pathReference;
+        this.SourceFile    = Settings.Default.pathSource;
+        this.Size          = Settings.Default.windowSize;
+        this.Location      = Settings.Default.windowPos;
+      }
+      finally { }
     }
 
     private void SaveSettings()
