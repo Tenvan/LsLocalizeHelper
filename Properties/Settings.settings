@@ -4,10 +4,13 @@
     <Profile Name="(Default)" />
   </Profiles>
   <Settings>
-    <Setting Name="pathReference" Type="System.String" Scope="User">
+    <Setting Name="pathOriginPrevious" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="pathSource" Type="System.String" Scope="User">
+    <Setting Name="pathOriginCurrent" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="pathTranslated" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="windowSize" Type="System.Drawing.Size" Scope="User">

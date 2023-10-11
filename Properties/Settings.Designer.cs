@@ -25,24 +25,36 @@ namespace Bg3LocaHelper.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string pathReference {
+        public string pathOriginPrevious {
             get {
-                return ((string)(this["pathReference"]));
+                return ((string)(this["pathOriginPrevious"]));
             }
             set {
-                this["pathReference"] = value;
+                this["pathOriginPrevious"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string pathSource {
+        public string pathOriginCurrent {
             get {
-                return ((string)(this["pathSource"]));
+                return ((string)(this["pathOriginCurrent"]));
             }
             set {
-                this["pathSource"] = value;
+                this["pathOriginCurrent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pathTranslated {
+            get {
+                return ((string)(this["pathTranslated"]));
+            }
+            set {
+                this["pathTranslated"] = value;
             }
         }
         
