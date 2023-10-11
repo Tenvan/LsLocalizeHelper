@@ -13,11 +13,11 @@
     <StartupObject />
     <Company>Bg3LocaHelper</Company>
     <Configuration>Release</Configuration>
-    <FileVersion>1.0.3.0</FileVersion>
-    <InformationalVersion>1.0.3</InformationalVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <InformationalVersion>2.0.0</InformationalVersion>
     <Product>Bg3LocaHelper</Product>
     <Title>Bg3LocaHelper</Title>
-    <Version>1.0.3.0</Version>
+    <Version>2.0.0.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
