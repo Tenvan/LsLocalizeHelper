@@ -58,7 +58,7 @@ public partial class FormMain : Form
 
   #region Properties
 
-  private XmlDocument OriginCurrentDoc { get; set; }
+  private XmlDocument? OriginCurrentDoc { get; set; }
 
   private string OriginCurrentFile
   {
@@ -66,7 +66,7 @@ public partial class FormMain : Form
     set => this.textBoxOriginCurrentFile.Text = value;
   }
 
-  private XmlDocument OriginPreviousDoc { get; set; }
+  private XmlDocument? OriginPreviousDoc { get; set; }
 
   private string OriginPreviousFile
   {
@@ -74,7 +74,7 @@ public partial class FormMain : Form
     set => this.textBoxOriginPreviousFile.Text = value;
   }
 
-  private XmlDocument TranslatedDoc { get; set; }
+  private XmlDocument? TranslatedDoc { get; set; }
 
   private string TranslatedFile
   {
@@ -153,9 +153,10 @@ public partial class FormMain : Form
     row!.Cells[(int)GridColumns.Text].Value = newText;
 
     var sourceNode = this.TranslatedDoc.SelectSingleNode($"//content[@contentuid='{keySource}']");
-
     if (sourceNode != null)
       sourceNode.InnerText = newText;
+
+    this.UpdateRowStatus();
   }
 
   private void buttonSave_Click(
@@ -179,7 +180,7 @@ public partial class FormMain : Form
     var versionSource = row.Cells[(int)GridColumns.Version].Value.ToString();
     var textSource    = row.Cells[(int)GridColumns.Text].Value.ToString();
 
-    var translatedNode = this.TranslatedDoc.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+    var translatedNode = this.TranslatedDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
 
     if (translatedNode != null)
     {
@@ -188,10 +189,10 @@ public partial class FormMain : Form
     }
     else { this.textBoxTranslatedText.Text = ""; }
 
-    var currentOriginNode = this.OriginCurrentDoc.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+    var currentOriginNode = this.OriginCurrentDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
     this.textBoxCurrentOriginText.Text = currentOriginNode != null ? currentOriginNode.InnerText : "";
 
-    var previousOriginNode = this.OriginPreviousDoc.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+    var previousOriginNode = this.OriginPreviousDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
     this.textBoxPreviousOriginText.Text = previousOriginNode != null ? previousOriginNode.InnerText : "";
   }
 
@@ -283,25 +284,28 @@ public partial class FormMain : Form
     var versionSource = FormMain.GetCellValue(row, GridColumns.Version);
 
     var translatedNode = FormMain.SelectNode(this.TranslatedDoc, keySource, versionSource);
-    var currentNode    = FormMain.SelectNode(this.OriginCurrentDoc, keySource, versionSource);
-    var previousNode   = FormMain.SelectNode(this.OriginPreviousDoc, keySource, versionSource);
+    // var currentNode    = FormMain.SelectNode(this.OriginCurrentDoc, keySource, versionSource);
+    // var previousNode   = FormMain.SelectNode(this.OriginPreviousDoc, keySource, versionSource);
 
-    var newStatus = FormMain.CalculateStatus(translatedNode, currentNode, previousNode);
+    // var newStatus = FormMain.CalculateStatus(translatedNode, currentNode, previousNode);
 
     var newText = this.textBoxTranslatedText.Text;
 
     FormMain.UpdateRowText(row, newText);
-    FormMain.UpdateRowStatus(row, newStatus);
+    // FormMain.UpdateRowStatus(row, newStatus);
 
     if (translatedNode != null)
       translatedNode.InnerText = newText;
     else
     {
       var newNode = FormMain.AddNode(this.TranslatedDoc, keySource, versionSource, newText);
-      var status  = FormMain.CalculateStatus(newNode, currentNode, previousNode);
-      FormMain.UpdateRowStatus(row, status);
+      // var status  = FormMain.CalculateStatus(newNode, currentNode, previousNode);
+      // FormMain.UpdateRowStatus(row, status);
     }
+
+    this.UpdateRowStatus();
   }
+
 
   #endregion
 }

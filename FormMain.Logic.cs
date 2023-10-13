@@ -14,10 +14,10 @@ partial class FormMain
   #region Static Methods
 
   private static XmlElement AddNode(
-    XmlDocument doc,
-    string      key,
-    string      version,
-    string?     text
+    XmlDocument? doc,
+    string       key,
+    string       version,
+    string?      text
   )
   {
     var newNode = doc.CreateElement("content");
@@ -51,8 +51,8 @@ partial class FormMain
 
   private static void DeleteNode(
     XmlDocument? doc,
-    string   key,
-    string   version
+    string       key,
+    string       version
   )
   {
     var deletedNode = FormMain.SelectNode(doc, key, version);
@@ -67,6 +67,12 @@ partial class FormMain
   {
     try
     {
+      this.dataGridViewSource.DataSource = null;
+
+      this.TranslatedDoc     = null;
+      this.OriginCurrentDoc  = null;
+      this.OriginPreviousDoc = null;
+
       var dataSet = new DataSet();
       var table   = new DataTable();
 
@@ -81,13 +87,13 @@ partial class FormMain
         this.TranslatedDoc.Load(this.TranslatedFile);
       }
 
-      if (File.Exists(this.OriginPreviousFile))
+      if (File.Exists(this.OriginCurrentFile))
       {
         this.OriginCurrentDoc = new XmlDocument();
         this.OriginCurrentDoc.Load(this.OriginCurrentFile);
       }
 
-      if (File.Exists(this.OriginCurrentFile))
+      if (File.Exists(this.OriginPreviousFile))
       {
         this.OriginPreviousDoc = new XmlDocument();
         this.OriginPreviousDoc.Load(this.OriginPreviousFile);
@@ -112,7 +118,6 @@ partial class FormMain
 
           object[] row = { status, uid, version, translatedNode.InnerText };
           table.Rows.Add(row);
-
         }
 
       // Check for new Nodes
@@ -141,6 +146,7 @@ partial class FormMain
       this.dataGridViewSource.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
     }
     catch (Exception e) { Debug.Write(e.Message); }
+    finally { }
   }
 
   private void LoadSettings()
@@ -166,6 +172,24 @@ partial class FormMain
     Settings.Default.windowPos          = this.Location;
     Settings.Default.windowSize         = this.Size;
     Settings.Default.Save();
+  }
+
+  private void UpdateRowStatus()
+  {
+    var row = this.dataGridViewSource.CurrentRow;
+
+    if (row == null) return;
+
+    var keySource     = FormMain.GetCellValue(row, GridColumns.Uuid);
+    var versionSource = FormMain.GetCellValue(row, GridColumns.Version);
+
+    var translatedNode = FormMain.SelectNode(this.TranslatedDoc, keySource, versionSource);
+    var currentNode    = FormMain.SelectNode(this.OriginCurrentDoc, keySource, versionSource);
+    var previousNode   = FormMain.SelectNode(this.OriginPreviousDoc, keySource, versionSource);
+
+    var newStatus = FormMain.CalculateStatus(translatedNode, currentNode, previousNode);
+
+    FormMain.UpdateRowStatus(row, newStatus);
   }
 
   #endregion
