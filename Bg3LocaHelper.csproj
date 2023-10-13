@@ -18,6 +18,9 @@
     <Product>Bg3LocaHelper</Product>
     <Title>Bg3LocaHelper</Title>
     <Version>2.1.0.0</Version>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Bg3LocaHelper.snk</AssemblyOriginatorKeyFile>
+    <PublicSign>true</PublicSign>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
