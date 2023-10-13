@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
@@ -49,6 +50,19 @@ partial class FormMain
     return "translated";
   }
 
+  private static DataTable CreateTable()
+  {
+    var table = new DataTable();
+
+    table.Columns.Add("Status", typeof(string));
+    table.Columns.Add("UUID", typeof(string));
+    table.Columns.Add("Version", typeof(int));
+    table.Columns.Add("Text", typeof(string));
+    table.Columns.Add("Origin", typeof(string));
+
+    return table;
+  }
+
   private static void DeleteNode(
     XmlDocument? doc,
     string       key,
@@ -63,6 +77,34 @@ partial class FormMain
 
   #region Methods
 
+  private void FilterData()
+  {
+    try
+    {
+      var searchText = this.textBoxFilter.Text.ToLower();
+
+      var filteredData = FormMain.CreateTable();
+
+      // Durchlaufen Sie jedes Objekt in Ihren Daten
+      foreach (DataRow obj in this.DataTable.Rows)
+      {
+        var rowText   = obj[(int)GridColumns.Text].ToString().ToLower();
+        var rowUid    = obj[(int)GridColumns.Uuid].ToString().ToLower();
+        var rowOrigin = obj[(int)GridColumns.Origin].ToString().ToLower();
+
+        if (string.IsNullOrEmpty(searchText)
+            || rowText.Contains(searchText)
+            || rowUid.Contains(searchText)
+            || rowOrigin.Contains(searchText)
+           ) { filteredData.Rows.Add(obj.ItemArray); }
+      }
+
+      this.dataGridViewSource.DataSource = filteredData;
+      this.RecalcRowsAndColumnSizesHeights();
+    }
+    catch (Exception e) { Debug.Write(e.Message); }
+  }
+
   private void LoadData()
   {
     try
@@ -73,13 +115,7 @@ partial class FormMain
       this.OriginCurrentDoc  = null;
       this.OriginPreviousDoc = null;
 
-      var dataSet = new DataSet();
-      var table   = new DataTable();
-
-      table.Columns.Add("Status", typeof(string));
-      table.Columns.Add("UUID", typeof(string));
-      table.Columns.Add("Version", typeof(int));
-      table.Columns.Add("Text", typeof(string));
+      var table = FormMain.CreateTable();
 
       if (File.Exists(this.TranslatedFile))
       {
@@ -116,7 +152,7 @@ partial class FormMain
 
           if (status == "deleted") { FormMain.DeleteNode(this.TranslatedDoc, uid, version); }
 
-          object[] row = { status, uid, version, translatedNode.InnerText };
+          object[] row = { status, uid, version, translatedNode.InnerText, currentNode?.InnerText ?? "" };
           table.Rows.Add(row);
         }
 
@@ -140,13 +176,12 @@ partial class FormMain
           }
         }
 
-      dataSet.Tables.Add(table);
+      this.DataTable                     = table;
+      this.dataGridViewSource.DataSource = table;
 
-      this.dataGridViewSource.DataSource          = table;
-      this.dataGridViewSource.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+      this.RecalcRowsAndColumnSizesHeights();
     }
     catch (Exception e) { Debug.Write(e.Message); }
-    finally { }
   }
 
   private void LoadSettings()
@@ -162,7 +197,46 @@ partial class FormMain
     finally { }
   }
 
-  private void SaveData() { this.TranslatedDoc.Save(this.TranslatedFile); }
+  private void RecalcRowsAndColumnSizesHeights()
+  {
+    // Zeilenhöhen berechnen
+    foreach (DataGridViewRow row in this.dataGridViewSource.Rows)
+    {
+      foreach (DataGridViewCell cell in row.Cells)
+      {
+        var formattedValue = cell.FormattedValue?.ToString();
+
+        if (string.IsNullOrEmpty(formattedValue)) continue;
+
+        var size  = TextRenderer.MeasureText(formattedValue, this.dataGridViewSource.DefaultCellStyle.Font);
+        var lines = formattedValue?.Split('\n').Length ?? 1;
+
+        row.Height = Math.Max(row.Height, lines * this.dataGridViewSource.DefaultCellStyle.Font.Height + 2);
+      }
+    }
+
+    // Spaltenbreiten berechnen
+    this.dataGridViewSource.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
+    foreach (DataGridViewColumn col in this.dataGridViewSource.Columns)
+    {
+      col.Width = TextRenderer.MeasureText(col.Name, this.dataGridViewSource.DefaultCellStyle.Font).Width + 5;
+
+      foreach (DataGridViewRow row in this.dataGridViewSource.Rows)
+      {
+        var formattedValue = row.Cells[col.Index].FormattedValue?.ToString();
+
+        if (string.IsNullOrEmpty(formattedValue)) continue;
+
+        var size = TextRenderer.MeasureText(formattedValue, this.dataGridViewSource.DefaultCellStyle.Font);
+        col.Width = Math.Max(col.Width, size.Width + 5);
+      }
+    }
+
+    this.dataGridViewSource.Refresh();
+  }
+
+  private void SaveData() { this.TranslatedDoc?.Save(this.TranslatedFile); }
 
   private void SaveSettings()
   {
@@ -203,5 +277,7 @@ internal enum GridColumns
 
   Version = 2,
 
-  Text = 3
+  Text = 3,
+
+  Origin = 4,
 }

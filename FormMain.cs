@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
@@ -50,13 +51,15 @@ public partial class FormMain : Form
   {
     this.InitializeComponent();
     this.LoadSettings();
-
-    if (!string.IsNullOrWhiteSpace(this.TranslatedFile)) { this.LoadData(); }
   }
 
   #endregion
 
   #region Properties
+
+  private bool AutoClipbaord => this.checkBoxAutoClipboard.Checked;
+
+  private DataTable DataTable { get; set; }
 
   private XmlDocument? OriginCurrentDoc { get; set; }
 
@@ -153,6 +156,7 @@ public partial class FormMain : Form
     row!.Cells[(int)GridColumns.Text].Value = newText;
 
     var sourceNode = this.TranslatedDoc.SelectSingleNode($"//content[@contentuid='{keySource}']");
+
     if (sourceNode != null)
       sourceNode.InnerText = newText;
 
@@ -166,6 +170,33 @@ public partial class FormMain : Form
   {
     this.SaveData();
     this.LoadData();
+  }
+
+  private void dataGridViewSource_CellPainting(
+    object                            sender,
+    DataGridViewCellPaintingEventArgs e
+  )
+  {
+    if (e is
+        not
+        {
+          RowIndex   : >= 0,
+          ColumnIndex: (int)GridColumns.Text or (int)GridColumns.Uuid or (int)GridColumns.Origin
+        }) return;
+
+    if(e.CellStyle?.Font == null || e.FormattedValue == null) return;
+
+    e.Handled = true;
+    e.PaintBackground(e.CellBounds, true);
+
+    var cellText = e.FormattedValue.ToString();
+
+    e.Graphics.DrawString(
+                          cellText,
+                          e.CellStyle.Font,
+                          Brushes.Black,
+                          new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2)
+                         );
   }
 
   private void dataGridViewSource_RowEnter(
@@ -185,7 +216,7 @@ public partial class FormMain : Form
     if (translatedNode != null)
     {
       this.textBoxTranslatedText.Text = textSource;
-      Clipboard.SetText(textSource);
+      if (this.AutoClipbaord) Clipboard.SetText(textSource);
     }
     else { this.textBoxTranslatedText.Text = ""; }
 
@@ -253,6 +284,22 @@ public partial class FormMain : Form
     this.SaveSettings();
   }
 
+  private void textBoxFile_Validated(
+    object    sender,
+    EventArgs e
+  )
+  {
+    this.SaveSettings();
+  }
+
+  private void textBoxFilter_TextChanged(
+    object    sender,
+    EventArgs e
+  )
+  {
+    this.FilterData();
+  }
+
   private void textBoxTranslatedText_Enter(
     object    sender,
     EventArgs e
@@ -261,12 +308,13 @@ public partial class FormMain : Form
     if (this.textBoxTranslatedText.Text == "")
     {
       var row = this.dataGridViewSource.CurrentRow;
+
       if (row == null) return;
 
       var keySource     = FormMain.GetCellValue(row, GridColumns.Uuid);
       var versionSource = FormMain.GetCellValue(row, GridColumns.Version);
 
-      var currentNode   = FormMain.SelectNode(this.OriginCurrentDoc, keySource, versionSource);
+      var currentNode = FormMain.SelectNode(this.OriginCurrentDoc, keySource, versionSource);
       this.textBoxTranslatedText.Text = currentNode?.InnerText;
     }
   }
@@ -284,28 +332,17 @@ public partial class FormMain : Form
     var versionSource = FormMain.GetCellValue(row, GridColumns.Version);
 
     var translatedNode = FormMain.SelectNode(this.TranslatedDoc, keySource, versionSource);
-    // var currentNode    = FormMain.SelectNode(this.OriginCurrentDoc, keySource, versionSource);
-    // var previousNode   = FormMain.SelectNode(this.OriginPreviousDoc, keySource, versionSource);
-
-    // var newStatus = FormMain.CalculateStatus(translatedNode, currentNode, previousNode);
-
-    var newText = this.textBoxTranslatedText.Text;
+    var newText        = this.textBoxTranslatedText.Text;
 
     FormMain.UpdateRowText(row, newText);
-    // FormMain.UpdateRowStatus(row, newStatus);
 
     if (translatedNode != null)
       translatedNode.InnerText = newText;
-    else
-    {
-      var newNode = FormMain.AddNode(this.TranslatedDoc, keySource, versionSource, newText);
-      // var status  = FormMain.CalculateStatus(newNode, currentNode, previousNode);
-      // FormMain.UpdateRowStatus(row, status);
-    }
+    else { FormMain.AddNode(this.TranslatedDoc, keySource, versionSource, newText); }
 
     this.UpdateRowStatus();
+    this.RecalcRowsAndColumnSizesHeights();
   }
-
 
   #endregion
 }
