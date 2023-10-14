@@ -21,7 +21,7 @@ partial class FormMain
     string?      text
   )
   {
-    var newNode = doc.CreateElement("content");
+    var newNode = doc?.CreateElement("content");
 
     newNode.SetAttribute("contentuid", key);
     newNode.SetAttribute("version", version);
@@ -83,9 +83,15 @@ partial class FormMain
     {
       var searchText = this.textBoxFilter.Text.ToLower();
 
+      if (string.IsNullOrWhiteSpace(searchText))
+      {
+        this.dataGridViewSource.DataSource = this.DataTable;
+        this.RecalcRowsAndColumnSizesHeights();
+        return;
+      }
+
       var filteredData = FormMain.CreateTable();
 
-      // Durchlaufen Sie jedes Objekt in Ihren Daten
       foreach (DataRow obj in this.DataTable.Rows)
       {
         var rowText   = obj[(int)GridColumns.Text].ToString().ToLower();
@@ -96,7 +102,19 @@ partial class FormMain
             || rowText.Contains(searchText)
             || rowUid.Contains(searchText)
             || rowOrigin.Contains(searchText)
-           ) { filteredData.Rows.Add(obj.ItemArray); }
+           )
+        {
+          object[] row =
+          {
+            obj[(int)GridColumns.Status].ToString(),
+            obj[(int)GridColumns.Uuid].ToString(),
+            obj[(int)GridColumns.Version].ToString(),
+            obj[(int)GridColumns.Text].ToString(),
+            obj[(int)GridColumns.Origin].ToString()
+          };
+
+          filteredData.Rows.Add(row);
+        }
       }
 
       this.dataGridViewSource.DataSource = filteredData;

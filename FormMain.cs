@@ -35,14 +35,6 @@ public partial class FormMain : Form
     row.Cells[(int)GridColumns.Status].Value = newStatus;
   }
 
-  private static void UpdateRowText(
-    DataGridViewRow row,
-    string          newText
-  )
-  {
-    row.Cells[(int)GridColumns.Text].Value = newText;
-  }
-
   #endregion
 
   #region Constructors
@@ -59,8 +51,15 @@ public partial class FormMain : Form
 
   private bool AutoClipbaord => this.checkBoxAutoClipboard.Checked;
 
+  /// <summary>
+  /// Full Data Store
+  /// Contains full loaded Data without Filtering, filled bei <see cref="LoadData"/>.
+  /// </summary>
   private DataTable DataTable { get; set; }
 
+  /// <summary>
+  /// Full Xml-Data of current origin localisation file, filled bei <see cref="LoadData"/>.
+  /// </summary>
   private XmlDocument? OriginCurrentDoc { get; set; }
 
   private string OriginCurrentFile
@@ -69,6 +68,9 @@ public partial class FormMain : Form
     set => this.textBoxOriginCurrentFile.Text = value;
   }
 
+  /// <summary>
+  /// Full Xml-Data of previous origin localisation file, filled bei <see cref="LoadData"/>.
+  /// </summary>
   private XmlDocument? OriginPreviousDoc { get; set; }
 
   private string OriginPreviousFile
@@ -77,6 +79,9 @@ public partial class FormMain : Form
     set => this.textBoxOriginPreviousFile.Text = value;
   }
 
+  /// <summary>
+  /// Full Xml-Data of current own translated localisation file, filled bei <see cref="LoadData"/>.
+  /// </summary>
   private XmlDocument? TranslatedDoc { get; set; }
 
   private string TranslatedFile
@@ -155,12 +160,14 @@ public partial class FormMain : Form
     var keySource = row!.Cells[(int)GridColumns.Uuid].Value;
     row!.Cells[(int)GridColumns.Text].Value = newText;
 
-    var sourceNode = this.TranslatedDoc.SelectSingleNode($"//content[@contentuid='{keySource}']");
+    var sourceNode = this.TranslatedDoc?.SelectSingleNode($"//content[@contentuid='{keySource}']");
 
     if (sourceNode != null)
       sourceNode.InnerText = newText;
 
+    this.UpdateDataText(row, newText);
     this.UpdateRowStatus();
+    this.RecalcRowsAndColumnSizesHeights();
   }
 
   private void buttonSave_Click(
@@ -184,19 +191,18 @@ public partial class FormMain : Form
           ColumnIndex: (int)GridColumns.Text or (int)GridColumns.Uuid or (int)GridColumns.Origin
         }) return;
 
-    if(e.CellStyle?.Font == null || e.FormattedValue == null) return;
+    if (e.CellStyle?.Font == null
+        || e.FormattedValue == null) return;
 
     e.Handled = true;
     e.PaintBackground(e.CellBounds, true);
 
-    var cellText = e.FormattedValue.ToString();
+    var cellText   = e.FormattedValue.ToString();
+    var isSelected = (e.State & DataGridViewElementStates.Selected) != 0;
+    var fontBrush  = isSelected ? new SolidBrush(e.CellStyle.SelectionForeColor) : new SolidBrush(e.CellStyle.ForeColor);
+    var pointF     = new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2);
 
-    e.Graphics.DrawString(
-                          cellText,
-                          e.CellStyle.Font,
-                          Brushes.Black,
-                          new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2)
-                         );
+    e.Graphics.DrawString(cellText, e.CellStyle.Font, fontBrush, pointF);
   }
 
   private void dataGridViewSource_RowEnter(
@@ -334,14 +340,38 @@ public partial class FormMain : Form
     var translatedNode = FormMain.SelectNode(this.TranslatedDoc, keySource, versionSource);
     var newText        = this.textBoxTranslatedText.Text;
 
-    FormMain.UpdateRowText(row, newText);
-
     if (translatedNode != null)
+    {
+      this.UpdateDataText(row, newText);
       translatedNode.InnerText = newText;
+    }
     else { FormMain.AddNode(this.TranslatedDoc, keySource, versionSource, newText); }
 
     this.UpdateRowStatus();
     this.RecalcRowsAndColumnSizesHeights();
+  }
+
+  private void UpdateDataText(
+    DataGridViewRow row,
+    string          newText
+  )
+  {
+    row.Cells[(int)GridColumns.Text].Value = newText;
+
+    foreach (DataRow dataRow in this.DataTable.Rows)
+    {
+      var dataUid     = dataRow[(int)GridColumns.Uuid].ToString();
+      var rowUid      = row.Cells[(int)GridColumns.Uuid].FormattedValue?.ToString();
+      var dataVersion = dataRow[(int)GridColumns.Version].ToString();
+      var rowVersion  = row.Cells[(int)GridColumns.Version].FormattedValue?.ToString();
+
+      if (dataUid != rowUid
+          || dataVersion != rowVersion) continue;
+
+      dataRow[(int)GridColumns.Text] = newText;
+
+      break;
+    }
   }
 
   #endregion
