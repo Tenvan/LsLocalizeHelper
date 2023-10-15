@@ -176,6 +176,7 @@ public partial class FormMain : Form
   )
   {
     this.SaveData();
+    this.SaveLoca();
     this.LoadData();
   }
 

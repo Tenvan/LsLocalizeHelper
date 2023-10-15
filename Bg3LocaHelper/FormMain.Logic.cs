@@ -8,6 +8,8 @@ using System.Xml;
 
 using Bg3LocaHelper.Properties;
 
+using LSLib.LS;
+
 namespace Bg3LocaHelper;
 
 partial class FormMain
@@ -87,6 +89,7 @@ partial class FormMain
       {
         this.dataGridViewSource.DataSource = this.DataTable;
         this.RecalcRowsAndColumnSizesHeights();
+
         return;
       }
 
@@ -285,6 +288,15 @@ partial class FormMain
   }
 
   #endregion
+
+  private void SaveLoca()
+  {
+    var resource       = LocaUtils.Load(this.TranslatedFile);
+    var locaOutputPath = Path.ChangeExtension(this.TranslatedFile, "loca");
+    var format         = LocaUtils.ExtensionToFileFormat(locaOutputPath);
+
+    LocaUtils.Save(resource, locaOutputPath, format);
+  }
 }
 
 internal enum GridColumns

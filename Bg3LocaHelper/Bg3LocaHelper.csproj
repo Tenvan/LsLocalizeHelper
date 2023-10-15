@@ -13,11 +13,11 @@
     <StartupObject />
     <Company>Bg3LocaHelper</Company>
     <Configuration>Release</Configuration>
-    <FileVersion>2.1.0.0</FileVersion>
-    <InformationalVersion>2.1.0</InformationalVersion>
+    <FileVersion>2.2.0.0</FileVersion>
+    <InformationalVersion>2.2.0</InformationalVersion>
     <Product>Bg3LocaHelper</Product>
     <Title>Bg3LocaHelper</Title>
-    <Version>2.1.0.0</Version>
+    <Version>2.2.0.0</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Bg3LocaHelper.snk</AssemblyOriginatorKeyFile>    
     <PublicSign>true</PublicSign>
@@ -62,6 +62,19 @@
 
   <ItemGroup>
     <None Include="Properties\Settings.settings" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="LSLib\Enums\Game.cs" />
+    <Compile Remove="LSLib\Enums\LogLevel.cs" />
+    <Compile Remove="LSLib\Enums\LSFVersion.cs" />
+    <Compile Remove="LSLib\Enums\PackageVersion.cs" />
+    <Compile Remove="LSLib\Enums\ResourceFormat.cs" />
+    <Compile Remove="LSLib\Matrix.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AlphaFS" Version="2.2.6" />
   </ItemGroup>
 
 </Project>
