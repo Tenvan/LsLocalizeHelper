@@ -118,6 +118,7 @@ public partial class FormMain : Form
     var result = this.openFileDialog.ShowDialog();
 
     if (result == DialogResult.OK) { this.textBoxOriginCurrentFile.Text = this.openFileDialog.FileName; }
+    this.SaveSettings();
   }
 
   private void buttonFileOriginPrevious_Click(
@@ -128,6 +129,7 @@ public partial class FormMain : Form
     var result = this.openFileDialog.ShowDialog();
 
     if (result == DialogResult.OK) { this.textBoxOriginPreviousFile.Text = this.openFileDialog.FileName; }
+    this.SaveSettings();
   }
 
   private void buttonFileTranslated_Click(
@@ -138,6 +140,7 @@ public partial class FormMain : Form
     var result = this.openFileDialog.ShowDialog();
 
     if (result == DialogResult.OK) { this.textBoxTranslatedFile.Text = this.openFileDialog.FileName; }
+    this.SaveSettings();
   }
 
   private void buttonLoad_Click(

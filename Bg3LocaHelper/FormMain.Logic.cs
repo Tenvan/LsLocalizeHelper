@@ -140,20 +140,32 @@ partial class FormMain
 
       if (File.Exists(this.TranslatedFile))
       {
-        this.TranslatedDoc = new XmlDocument();
-        this.TranslatedDoc.Load(this.TranslatedFile);
+        try
+        {
+          this.TranslatedDoc = new XmlDocument();
+          this.TranslatedDoc.Load(this.TranslatedFile);
+        }
+        catch (Exception e) { throw new Exception($"Error on Loading Translated-XML:\n\nFile: {this.TranslatedFile}\n\nError:{e.Message}"); }
       }
 
       if (File.Exists(this.OriginCurrentFile))
       {
-        this.OriginCurrentDoc = new XmlDocument();
-        this.OriginCurrentDoc.Load(this.OriginCurrentFile);
+        try
+        {
+          this.OriginCurrentDoc = new XmlDocument();
+          this.OriginCurrentDoc.Load(this.OriginCurrentFile);
+        }
+        catch (Exception e) { throw new Exception($"Error on Loading Current-XML:\n\nFile: {this.OriginCurrentFile}\n\nError:{e.Message}"); }
       }
 
       if (File.Exists(this.OriginPreviousFile))
       {
-        this.OriginPreviousDoc = new XmlDocument();
-        this.OriginPreviousDoc.Load(this.OriginPreviousFile);
+        try
+        {
+          this.OriginPreviousDoc = new XmlDocument();
+          this.OriginPreviousDoc.Load(this.OriginPreviousFile);
+        }
+        catch (Exception e) { throw new Exception($"Error on Loading Previous-XML:\n\nFile: {this.OriginPreviousFile}\n\nError:{e.Message}"); }
       }
 
       var translatedNodes = this.TranslatedDoc?.SelectNodes($"//content");
@@ -202,7 +214,7 @@ partial class FormMain
 
       this.RecalcRowsAndColumnSizesHeights();
     }
-    catch (Exception e) { Debug.Write(e.Message); }
+    catch (Exception e) { MessageBox.Show(e.Message); }
   }
 
   private void LoadSettings()
@@ -259,6 +271,15 @@ partial class FormMain
 
   private void SaveData() { this.TranslatedDoc?.Save(this.TranslatedFile); }
 
+  private void SaveLoca()
+  {
+    var resource       = LocaUtils.Load(this.TranslatedFile);
+    var locaOutputPath = Path.ChangeExtension(this.TranslatedFile, "loca");
+    var format         = LocaUtils.ExtensionToFileFormat(locaOutputPath);
+
+    LocaUtils.Save(resource, locaOutputPath, format);
+  }
+
   private void SaveSettings()
   {
     Settings.Default.pathOriginCurrent  = this.OriginCurrentFile;
@@ -288,15 +309,6 @@ partial class FormMain
   }
 
   #endregion
-
-  private void SaveLoca()
-  {
-    var resource       = LocaUtils.Load(this.TranslatedFile);
-    var locaOutputPath = Path.ChangeExtension(this.TranslatedFile, "loca");
-    var format         = LocaUtils.ExtensionToFileFormat(locaOutputPath);
-
-    LocaUtils.Save(resource, locaOutputPath, format);
-  }
 }
 
 internal enum GridColumns
