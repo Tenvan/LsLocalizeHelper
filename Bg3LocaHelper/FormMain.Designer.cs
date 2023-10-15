@@ -52,12 +52,15 @@
       this.buttonCopyFromPrevious    = new System.Windows.Forms.Button();
       this.label6                    = new System.Windows.Forms.Label();
       this.textBoxPreviousOriginText = new System.Windows.Forms.TextBox();
+      this.textBoxFilter             = new System.Windows.Forms.TextBox();
+      this.label7                    = new System.Windows.Forms.Label();
+      this.checkBoxAutoClipboard     = new System.Windows.Forms.CheckBox();
       ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSource)).BeginInit();
       this.SuspendLayout();
 
-      //
+      // 
       // buttonFileTranslated
-      //
+      // 
       this.buttonFileTranslated.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.buttonFileTranslated.Location                =  new System.Drawing.Point(691, 112);
       this.buttonFileTranslated.Name                    =  "buttonFileTranslated";
@@ -67,29 +70,29 @@
       this.buttonFileTranslated.UseVisualStyleBackColor =  true;
       this.buttonFileTranslated.Click                   += new System.EventHandler(this.buttonFileTranslated_Click);
 
-      //
+      // 
       // labelSource
-      //
-      this.labelSource.Location  = new System.Drawing.Point(4, 112);
+      // 
+      this.labelSource.Location  = new System.Drawing.Point(12, 112);
       this.labelSource.Name      = "labelSource";
       this.labelSource.Size      = new System.Drawing.Size(110, 21);
       this.labelSource.TabIndex  = 1;
       this.labelSource.Text      = "Tranlated XML:";
       this.labelSource.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 
-      //
+      // 
       // labelReference
-      //
-      this.labelReference.Location  = new System.Drawing.Point(4, 59);
+      // 
+      this.labelReference.Location  = new System.Drawing.Point(12, 55);
       this.labelReference.Name      = "labelReference";
       this.labelReference.Size      = new System.Drawing.Size(110, 21);
       this.labelReference.TabIndex  = 4;
       this.labelReference.Text      = "Current XML:";
       this.labelReference.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 
-      //
+      // 
       // buttonFileOriginCurrent
-      //
+      // 
       this.buttonFileOriginCurrent.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.buttonFileOriginCurrent.Location                =  new System.Drawing.Point(691, 54);
       this.buttonFileOriginCurrent.Name                    =  "buttonFileOriginCurrent";
@@ -99,14 +102,14 @@
       this.buttonFileOriginCurrent.UseVisualStyleBackColor =  true;
       this.buttonFileOriginCurrent.Click                   += new System.EventHandler(this.buttonFileOriginCurrent_Click);
 
-      //
+      // 
       // openFileDialog
-      //
+      // 
       this.openFileDialog.FileName = "openFileDialog1";
 
-      //
+      // 
       // buttonLoad
-      //
+      // 
       this.buttonLoad.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.buttonLoad.Location                =  new System.Drawing.Point(735, 28);
       this.buttonLoad.Name                    =  "buttonLoad";
@@ -116,9 +119,9 @@
       this.buttonLoad.UseVisualStyleBackColor =  true;
       this.buttonLoad.Click                   += new System.EventHandler(this.buttonLoad_Click);
 
-      //
+      // 
       // buttonSave
-      //
+      // 
       this.buttonSave.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.buttonSave.Location                =  new System.Drawing.Point(735, 102);
       this.buttonSave.Name                    =  "buttonSave";
@@ -128,82 +131,86 @@
       this.buttonSave.UseVisualStyleBackColor =  true;
       this.buttonSave.Click                   += new System.EventHandler(this.buttonSave_Click);
 
-      //
+      // 
       // textBoxOriginCurrentFile
-      //
+      // 
       this.textBoxOriginCurrentFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                                                                                    | System.Windows.Forms.AnchorStyles.Right)));
 
-      this.textBoxOriginCurrentFile.Location = new System.Drawing.Point(147, 55);
-      this.textBoxOriginCurrentFile.Name     = "textBoxOriginCurrentFile";
-      this.textBoxOriginCurrentFile.Size     = new System.Drawing.Size(538, 20);
-      this.textBoxOriginCurrentFile.TabIndex = 8;
+      this.textBoxOriginCurrentFile.Location  =  new System.Drawing.Point(147, 55);
+      this.textBoxOriginCurrentFile.Name      =  "textBoxOriginCurrentFile";
+      this.textBoxOriginCurrentFile.Size      =  new System.Drawing.Size(538, 20);
+      this.textBoxOriginCurrentFile.TabIndex  =  8;
+      this.textBoxOriginCurrentFile.Validated += new System.EventHandler(this.textBoxFile_Validated);
 
-      //
+      // 
       // textBoxTranslatedFile
-      //
+      // 
       this.textBoxTranslatedFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                                                                                 | System.Windows.Forms.AnchorStyles.Right)));
 
-      this.textBoxTranslatedFile.Location = new System.Drawing.Point(147, 113);
-      this.textBoxTranslatedFile.Name     = "textBoxTranslatedFile";
-      this.textBoxTranslatedFile.Size     = new System.Drawing.Size(538, 20);
-      this.textBoxTranslatedFile.TabIndex = 9;
+      this.textBoxTranslatedFile.Location  =  new System.Drawing.Point(147, 113);
+      this.textBoxTranslatedFile.Name      =  "textBoxTranslatedFile";
+      this.textBoxTranslatedFile.Size      =  new System.Drawing.Size(538, 20);
+      this.textBoxTranslatedFile.TabIndex  =  9;
+      this.textBoxTranslatedFile.Validated += new System.EventHandler(this.textBoxFile_Validated);
 
-      //
+      // 
       // textBoxTranslatedText
-      //
+      // 
       this.textBoxTranslatedText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                                                                                 | System.Windows.Forms.AnchorStyles.Right)));
 
-      this.textBoxTranslatedText.Font      =  new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.textBoxTranslatedText.Location  =  new System.Drawing.Point(147, 556);
-      this.textBoxTranslatedText.Multiline =  true;
-      this.textBoxTranslatedText.Name      =  "textBoxTranslatedText";
-      this.textBoxTranslatedText.Size      =  new System.Drawing.Size(725, 193);
-      this.textBoxTranslatedText.TabIndex  =  10;
-      this.textBoxTranslatedText.Enter     += new System.EventHandler(this.textBoxTranslatedText_Enter);
-      this.textBoxTranslatedText.Leave     += new System.EventHandler(this.textBoxTranslatedText_Leave);
+      this.textBoxTranslatedText.Font       =  new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.textBoxTranslatedText.Location   =  new System.Drawing.Point(147, 556);
+      this.textBoxTranslatedText.Multiline  =  true;
+      this.textBoxTranslatedText.Name       =  "textBoxTranslatedText";
+      this.textBoxTranslatedText.ScrollBars =  System.Windows.Forms.ScrollBars.Both;
+      this.textBoxTranslatedText.Size       =  new System.Drawing.Size(725, 193);
+      this.textBoxTranslatedText.TabIndex   =  10;
+      this.textBoxTranslatedText.Enter      += new System.EventHandler(this.textBoxTranslatedText_Enter);
+      this.textBoxTranslatedText.Leave      += new System.EventHandler(this.textBoxTranslatedText_Leave);
 
-      //
+      // 
       // textBoxCurrentOriginText
-      //
+      // 
       this.textBoxCurrentOriginText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                                                                                    | System.Windows.Forms.AnchorStyles.Right)));
 
-      this.textBoxCurrentOriginText.Font      = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.textBoxCurrentOriginText.Location  = new System.Drawing.Point(147, 466);
-      this.textBoxCurrentOriginText.Multiline = true;
-      this.textBoxCurrentOriginText.Name      = "textBoxCurrentOriginText";
-      this.textBoxCurrentOriginText.ReadOnly  = true;
-      this.textBoxCurrentOriginText.Size      = new System.Drawing.Size(725, 84);
-      this.textBoxCurrentOriginText.TabIndex  = 11;
+      this.textBoxCurrentOriginText.Font       = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.textBoxCurrentOriginText.Location   = new System.Drawing.Point(147, 466);
+      this.textBoxCurrentOriginText.Multiline  = true;
+      this.textBoxCurrentOriginText.Name       = "textBoxCurrentOriginText";
+      this.textBoxCurrentOriginText.ReadOnly   = true;
+      this.textBoxCurrentOriginText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+      this.textBoxCurrentOriginText.Size       = new System.Drawing.Size(725, 84);
+      this.textBoxCurrentOriginText.TabIndex   = 11;
 
-      //
+      // 
       // label1
-      //
+      // 
       this.label1.Anchor    = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.label1.Location  = new System.Drawing.Point(4, 470);
+      this.label1.Location  = new System.Drawing.Point(12, 467);
       this.label1.Name      = "label1";
-      this.label1.Size      = new System.Drawing.Size(137, 21);
+      this.label1.Size      = new System.Drawing.Size(129, 21);
       this.label1.TabIndex  = 14;
       this.label1.Text      = "Current Reference Text:";
       this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 
-      //
+      // 
       // label2
-      //
+      // 
       this.label2.Anchor    = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.label2.Location  = new System.Drawing.Point(4, 557);
+      this.label2.Location  = new System.Drawing.Point(12, 557);
       this.label2.Name      = "label2";
-      this.label2.Size      = new System.Drawing.Size(110, 21);
+      this.label2.Size      = new System.Drawing.Size(72, 21);
       this.label2.TabIndex  = 15;
       this.label2.Text      = "Source Text:";
       this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 
-      //
+      // 
       // dataGridViewSource
-      //
+      // 
       this.dataGridViewSource.AllowUserToAddRows      = false;
       this.dataGridViewSource.AllowUserToDeleteRows   = false;
       this.dataGridViewSource.AllowUserToOrderColumns = true;
@@ -213,16 +220,19 @@
                                                                              | System.Windows.Forms.AnchorStyles.Right)));
 
       this.dataGridViewSource.ColumnHeadersHeightSizeMode =  System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      this.dataGridViewSource.Location                    =  new System.Drawing.Point(147, 139);
+      this.dataGridViewSource.EditMode                    =  System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+      this.dataGridViewSource.Location                    =  new System.Drawing.Point(147, 165);
       this.dataGridViewSource.Name                        =  "dataGridViewSource";
-      this.dataGridViewSource.Size                        =  new System.Drawing.Size(725, 231);
+      this.dataGridViewSource.ReadOnly                    =  true;
+      this.dataGridViewSource.Size                        =  new System.Drawing.Size(725, 205);
       this.dataGridViewSource.TabIndex                    =  16;
+      this.dataGridViewSource.CellPainting                += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridViewSource_CellPainting);
       this.dataGridViewSource.RowEnter                    += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSource_RowEnter);
       this.dataGridViewSource.RowPrePaint                 += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridViewSource_RowPrePaint);
 
-      //
+      // 
       // buttonPasteToTranslated
-      //
+      // 
       this.buttonPasteToTranslated.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
       this.buttonPasteToTranslated.Location                =  new System.Drawing.Point(4, 711);
       this.buttonPasteToTranslated.Name                    =  "buttonPasteToTranslated";
@@ -232,42 +242,43 @@
       this.buttonPasteToTranslated.UseVisualStyleBackColor =  true;
       this.buttonPasteToTranslated.Click                   += new System.EventHandler(this.buttonPasteToTranslated_Click);
 
-      //
+      // 
       // buttonCopyFromOrigin
-      //
+      // 
       this.buttonCopyFromOrigin.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.buttonCopyFromOrigin.Location                =  new System.Drawing.Point(4, 516);
+      this.buttonCopyFromOrigin.Location                =  new System.Drawing.Point(12, 512);
       this.buttonCopyFromOrigin.Name                    =  "buttonCopyFromOrigin";
-      this.buttonCopyFromOrigin.Size                    =  new System.Drawing.Size(137, 38);
+      this.buttonCopyFromOrigin.Size                    =  new System.Drawing.Size(129, 38);
       this.buttonCopyFromOrigin.TabIndex                =  18;
       this.buttonCopyFromOrigin.Text                    =  "Copy to Clipboard";
       this.buttonCopyFromOrigin.UseVisualStyleBackColor =  true;
       this.buttonCopyFromOrigin.Click                   += new System.EventHandler(this.buttonCopyFromOrigin_Click);
 
-      //
+      // 
       // textBoxOriginPreviousFile
-      //
+      // 
       this.textBoxOriginPreviousFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                                                                                     | System.Windows.Forms.AnchorStyles.Right)));
 
-      this.textBoxOriginPreviousFile.Location =  new System.Drawing.Point(147, 29);
-      this.textBoxOriginPreviousFile.Name     =  "textBoxOriginPreviousFile";
-      this.textBoxOriginPreviousFile.Size     =  new System.Drawing.Size(538, 20);
-      this.textBoxOriginPreviousFile.TabIndex =  21;
+      this.textBoxOriginPreviousFile.Location  =  new System.Drawing.Point(147, 29);
+      this.textBoxOriginPreviousFile.Name      =  "textBoxOriginPreviousFile";
+      this.textBoxOriginPreviousFile.Size      =  new System.Drawing.Size(538, 20);
+      this.textBoxOriginPreviousFile.TabIndex  =  21;
+      this.textBoxOriginPreviousFile.Validated += new System.EventHandler(this.textBoxFile_Validated);
 
-      //
+      // 
       // label3
-      //
-      this.label3.Location  = new System.Drawing.Point(4, 33);
+      // 
+      this.label3.Location  = new System.Drawing.Point(12, 34);
       this.label3.Name      = "label3";
       this.label3.Size      = new System.Drawing.Size(110, 21);
       this.label3.TabIndex  = 20;
       this.label3.Text      = "Previous XML:";
       this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 
-      //
+      // 
       // buttonFileOriginPrevious
-      //
+      // 
       this.buttonFileOriginPrevious.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.buttonFileOriginPrevious.Location                =  new System.Drawing.Point(691, 28);
       this.buttonFileOriginPrevious.Name                    =  "buttonFileOriginPrevious";
@@ -277,9 +288,9 @@
       this.buttonFileOriginPrevious.UseVisualStyleBackColor =  true;
       this.buttonFileOriginPrevious.Click                   += new System.EventHandler(this.buttonFileOriginPrevious_Click);
 
-      //
+      // 
       // label4
-      //
+      // 
       this.label4.Font      = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label4.Location  = new System.Drawing.Point(147, 3);
       this.label4.Name      = "label4";
@@ -288,9 +299,9 @@
       this.label4.Text      = "Origin Mod Files";
       this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 
-      //
+      // 
       // label5
-      //
+      // 
       this.label5.Font      = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
       this.label5.Location  = new System.Drawing.Point(147, 89);
       this.label5.Name      = "label5";
@@ -299,49 +310,87 @@
       this.label5.Text      = "Translated Mod File";
       this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 
-      //
+      // 
       // buttonCopyFromPrevious
-      //
+      // 
       this.buttonCopyFromPrevious.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.buttonCopyFromPrevious.Location                =  new System.Drawing.Point(4, 422);
+      this.buttonCopyFromPrevious.Location                =  new System.Drawing.Point(12, 422);
       this.buttonCopyFromPrevious.Name                    =  "buttonCopyFromPrevious";
-      this.buttonCopyFromPrevious.Size                    =  new System.Drawing.Size(137, 38);
+      this.buttonCopyFromPrevious.Size                    =  new System.Drawing.Size(129, 38);
       this.buttonCopyFromPrevious.TabIndex                =  27;
       this.buttonCopyFromPrevious.Text                    =  "Copy to Clipboard";
       this.buttonCopyFromPrevious.UseVisualStyleBackColor =  true;
       this.buttonCopyFromPrevious.Click                   += new System.EventHandler(this.buttonCopyFromPrevious_Click);
 
-      //
+      // 
       // label6
-      //
+      // 
       this.label6.Anchor    = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.label6.Location  = new System.Drawing.Point(4, 376);
+      this.label6.Location  = new System.Drawing.Point(12, 376);
       this.label6.Name      = "label6";
-      this.label6.Size      = new System.Drawing.Size(137, 21);
+      this.label6.Size      = new System.Drawing.Size(129, 21);
       this.label6.TabIndex  = 26;
       this.label6.Text      = "Previous Reference Text:";
       this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 
-      //
+      // 
       // textBoxPreviousOriginText
-      //
+      // 
       this.textBoxPreviousOriginText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                                                                                     | System.Windows.Forms.AnchorStyles.Right)));
 
-      this.textBoxPreviousOriginText.Font      = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.textBoxPreviousOriginText.Location  = new System.Drawing.Point(147, 376);
-      this.textBoxPreviousOriginText.Multiline = true;
-      this.textBoxPreviousOriginText.Name      = "textBoxPreviousOriginText";
-      this.textBoxPreviousOriginText.ReadOnly  = true;
-      this.textBoxPreviousOriginText.Size      = new System.Drawing.Size(725, 80);
-      this.textBoxPreviousOriginText.TabIndex  = 25;
+      this.textBoxPreviousOriginText.Font       = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+      this.textBoxPreviousOriginText.Location   = new System.Drawing.Point(147, 376);
+      this.textBoxPreviousOriginText.Multiline  = true;
+      this.textBoxPreviousOriginText.Name       = "textBoxPreviousOriginText";
+      this.textBoxPreviousOriginText.ReadOnly   = true;
+      this.textBoxPreviousOriginText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+      this.textBoxPreviousOriginText.Size       = new System.Drawing.Size(725, 80);
+      this.textBoxPreviousOriginText.TabIndex   = 25;
 
-      //
+      // 
+      // textBoxFilter
+      // 
+      this.textBoxFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                                                                        | System.Windows.Forms.AnchorStyles.Right)));
+
+      this.textBoxFilter.Location    =  new System.Drawing.Point(215, 139);
+      this.textBoxFilter.Name        =  "textBoxFilter";
+      this.textBoxFilter.Size        =  new System.Drawing.Size(657, 20);
+      this.textBoxFilter.TabIndex    =  28;
+      this.textBoxFilter.TextChanged += new System.EventHandler(this.textBoxFilter_TextChanged);
+
+      // 
+      // label7
+      // 
+      this.label7.Location  = new System.Drawing.Point(150, 136);
+      this.label7.Name      = "label7";
+      this.label7.Size      = new System.Drawing.Size(68, 23);
+      this.label7.TabIndex  = 29;
+      this.label7.Text      = "Quick Filter:";
+      this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+
+      // 
+      // checkBoxAutoClipboard
+      // 
+      this.checkBoxAutoClipboard.Checked                 = true;
+      this.checkBoxAutoClipboard.CheckState              = System.Windows.Forms.CheckState.Checked;
+      this.checkBoxAutoClipboard.Location                = new System.Drawing.Point(12, 165);
+      this.checkBoxAutoClipboard.Name                    = "checkBoxAutoClipboard";
+      this.checkBoxAutoClipboard.Size                    = new System.Drawing.Size(129, 19);
+      this.checkBoxAutoClipboard.TabIndex                = 30;
+      this.checkBoxAutoClipboard.Text                    = "Auto Clipboard";
+      this.checkBoxAutoClipboard.UseVisualStyleBackColor = true;
+
+      // 
       // FormMain
-      //
+      // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode       = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize          = new System.Drawing.Size(884, 761);
+      this.Controls.Add(this.checkBoxAutoClipboard);
+      this.Controls.Add(this.label7);
+      this.Controls.Add(this.textBoxFilter);
       this.Controls.Add(this.buttonCopyFromPrevious);
       this.Controls.Add(this.label6);
       this.Controls.Add(this.textBoxPreviousOriginText);
@@ -374,6 +423,12 @@
       this.ResumeLayout(false);
       this.PerformLayout();
     }
+
+    private System.Windows.Forms.CheckBox checkBoxAutoClipboard;
+
+    private System.Windows.Forms.TextBox textBoxFilter;
+
+    private System.Windows.Forms.Label label7;
 
     private System.Windows.Forms.Button buttonCopyFromPrevious;
 
