@@ -97,9 +97,11 @@ partial class FormMain
 
       foreach (DataRow obj in this.DataTable.Rows)
       {
-        var rowText   = obj[(int)GridColumns.Text].ToString().ToLower();
-        var rowUid    = obj[(int)GridColumns.Uuid].ToString().ToLower();
-        var rowOrigin = obj[(int)GridColumns.Origin].ToString().ToLower();
+        var rowText    = obj[(int)GridColumns.Text].ToString().ToLower();
+        var rowKey     = obj[(int)GridColumns.Uuid].ToString();
+        var rowVersion = obj[(int)GridColumns.Version].ToString();
+        var rowUid     = rowKey.ToLower();
+        var rowOrigin  = obj[(int)GridColumns.Origin].ToString().ToLower();
 
         if (string.IsNullOrEmpty(searchText)
             || rowText.Contains(searchText)
@@ -107,11 +109,16 @@ partial class FormMain
             || rowOrigin.Contains(searchText)
            )
         {
+          var translatedNode = this.TranslatedDoc?.SelectSingleNode($"//content[@contentuid='{rowKey}' and @version='{rowVersion}']");
+          var currentNode    = this.OriginCurrentDoc?.SelectSingleNode($"//content[@contentuid='{rowKey}' and @version='{rowVersion}']");
+          var previousNode   = this.OriginPreviousDoc?.SelectSingleNode($"//content[@contentuid='{rowKey}' and @version='{rowVersion}']");
+
+          var status = CalculateStatus(translatedNode, currentNode, previousNode);
           object[] row =
           {
-            obj[(int)GridColumns.Status].ToString(),
-            obj[(int)GridColumns.Uuid].ToString(),
-            obj[(int)GridColumns.Version].ToString(),
+            status,
+            rowKey,
+            rowVersion,
             obj[(int)GridColumns.Text].ToString(),
             obj[(int)GridColumns.Origin].ToString()
           };
