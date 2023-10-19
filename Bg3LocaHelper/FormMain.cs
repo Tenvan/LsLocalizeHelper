@@ -156,6 +156,23 @@ public partial class FormMain : Form
     this.LoadData();
   }
 
+  private void buttonPakMod_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    var parent = Directory.GetParent(
+                                     Directory.GetParent(Directory.GetParent(this.textBoxTranslatedFile.Text).FullName)
+                                              .FullName
+                                    );
+
+    var pakSource = parent.FullName;
+    var packer    = new PackageEngine(Directory.GetParent(parent.FullName).FullName, parent.Name);
+    packer.BuildPackage();
+
+    MessageBox.Show("mod package-zip successful create.");
+  }
+
   private void buttonPasteToTranslated_Click(
     object    sender,
     EventArgs e
@@ -203,10 +220,10 @@ public partial class FormMain : Form
 
     e.Handled = true;
     e.PaintBackground(e.CellBounds, true);
-    var cellText = e.FormattedValue.ToString();
+    var cellText   = e.FormattedValue.ToString();
     var isSelected = (e.State & DataGridViewElementStates.Selected) != 0;
-    var fontBrush = isSelected ? new SolidBrush(e.CellStyle.SelectionForeColor) : new SolidBrush(e.CellStyle.ForeColor);
-    var pointF = new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2);
+    var fontBrush  = isSelected ? new SolidBrush(e.CellStyle.SelectionForeColor) : new SolidBrush(e.CellStyle.ForeColor);
+    var pointF     = new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2);
     e.Graphics.DrawString(cellText, e.CellStyle.Font, fontBrush, pointF);
   }
 
@@ -381,20 +398,4 @@ public partial class FormMain : Form
   }
 
   #endregion
-
-  private void buttonPakMod_Click(
-    object    sender,
-    EventArgs e
-  )
-  {
-    var parent = Directory.GetParent(
-                                     Directory.GetParent(Directory.GetParent(this.textBoxTranslatedFile.Text).FullName)
-                                              .FullName
-                                    );
-
-    var pakSource = parent.FullName;
-
-    var packer = new PackageEngine( Directory.GetParent(parent.FullName).FullName, parent.Name);
-    packer.BuildPackage();
-  }
 }
