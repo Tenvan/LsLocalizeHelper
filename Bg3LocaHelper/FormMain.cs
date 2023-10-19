@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Xml;
 
+using Alphaleonis.Win32.Filesystem;
+
 namespace Bg3LocaHelper;
 
 public partial class FormMain : Form
@@ -118,6 +120,7 @@ public partial class FormMain : Form
     var result = this.openFileDialog.ShowDialog();
 
     if (result == DialogResult.OK) { this.textBoxOriginCurrentFile.Text = this.openFileDialog.FileName; }
+
     this.SaveSettings();
   }
 
@@ -129,6 +132,7 @@ public partial class FormMain : Form
     var result = this.openFileDialog.ShowDialog();
 
     if (result == DialogResult.OK) { this.textBoxOriginPreviousFile.Text = this.openFileDialog.FileName; }
+
     this.SaveSettings();
   }
 
@@ -140,6 +144,7 @@ public partial class FormMain : Form
     var result = this.openFileDialog.ShowDialog();
 
     if (result == DialogResult.OK) { this.textBoxTranslatedFile.Text = this.openFileDialog.FileName; }
+
     this.SaveSettings();
   }
 
@@ -158,11 +163,9 @@ public partial class FormMain : Form
   {
     var newText = Clipboard.GetText();
     this.textBoxTranslatedText.Text = newText;
-
     var row       = this.dataGridViewSource.CurrentRow;
     var keySource = row!.Cells[(int)GridColumns.Uuid].Value;
     row!.Cells[(int)GridColumns.Text].Value = newText;
-
     var sourceNode = this.TranslatedDoc?.SelectSingleNode($"//content[@contentuid='{keySource}']");
 
     if (sourceNode != null)
@@ -200,12 +203,10 @@ public partial class FormMain : Form
 
     e.Handled = true;
     e.PaintBackground(e.CellBounds, true);
-
-    var cellText   = e.FormattedValue.ToString();
+    var cellText = e.FormattedValue.ToString();
     var isSelected = (e.State & DataGridViewElementStates.Selected) != 0;
-    var fontBrush  = isSelected ? new SolidBrush(e.CellStyle.SelectionForeColor) : new SolidBrush(e.CellStyle.ForeColor);
-    var pointF     = new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2);
-
+    var fontBrush = isSelected ? new SolidBrush(e.CellStyle.SelectionForeColor) : new SolidBrush(e.CellStyle.ForeColor);
+    var pointF = new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2);
     e.Graphics.DrawString(cellText, e.CellStyle.Font, fontBrush, pointF);
   }
 
@@ -214,14 +215,14 @@ public partial class FormMain : Form
     DataGridViewCellEventArgs e
   )
   {
-    var dataIndex = e.RowIndex;
-    var row       = (sender as DataGridView)!.Rows[dataIndex];
-
+    var dataIndex     = e.RowIndex;
+    var row           = (sender as DataGridView)!.Rows[dataIndex];
     var keySource     = row.Cells[(int)GridColumns.Uuid].Value.ToString();
     var versionSource = row.Cells[(int)GridColumns.Version].Value.ToString();
     var textSource    = row.Cells[(int)GridColumns.Text].Value.ToString();
 
-    var translatedNode = this.TranslatedDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+    var translatedNode =
+      this.TranslatedDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
 
     if (translatedNode != null)
     {
@@ -230,10 +231,14 @@ public partial class FormMain : Form
     }
     else { this.textBoxTranslatedText.Text = ""; }
 
-    var currentOriginNode = this.OriginCurrentDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+    var currentOriginNode =
+      this.OriginCurrentDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+
     this.textBoxCurrentOriginText.Text = currentOriginNode != null ? currentOriginNode.InnerText : "";
 
-    var previousOriginNode = this.OriginPreviousDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+    var previousOriginNode =
+      this.OriginPreviousDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+
     this.textBoxPreviousOriginText.Text = previousOriginNode != null ? previousOriginNode.InnerText : "";
   }
 
@@ -244,8 +249,7 @@ public partial class FormMain : Form
   {
     var row                   = ((sender as DataGridView)!).Rows[e.RowIndex];
     var dataGridViewCellStyle = row.DefaultCellStyle;
-
-    var status = row!.Cells[(int)GridColumns.Status].Value;
+    var status                = row!.Cells[(int)GridColumns.Status].Value;
 
     switch (status)
     {
@@ -323,8 +327,7 @@ public partial class FormMain : Form
 
       var keySource     = FormMain.GetCellValue(row, GridColumns.Uuid);
       var versionSource = FormMain.GetCellValue(row, GridColumns.Version);
-
-      var currentNode = FormMain.SelectNode(this.OriginCurrentDoc, keySource, versionSource);
+      var currentNode   = FormMain.SelectNode(this.OriginCurrentDoc, keySource, versionSource);
       this.textBoxTranslatedText.Text = currentNode?.InnerText;
     }
   }
@@ -338,9 +341,8 @@ public partial class FormMain : Form
 
     if (row == null) return;
 
-    var keySource     = FormMain.GetCellValue(row, GridColumns.Uuid);
-    var versionSource = FormMain.GetCellValue(row, GridColumns.Version);
-
+    var keySource      = FormMain.GetCellValue(row, GridColumns.Uuid);
+    var versionSource  = FormMain.GetCellValue(row, GridColumns.Version);
     var translatedNode = FormMain.SelectNode(this.TranslatedDoc, keySource, versionSource);
     var newText        = this.textBoxTranslatedText.Text;
 
@@ -379,4 +381,20 @@ public partial class FormMain : Form
   }
 
   #endregion
+
+  private void buttonPakMod_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    var parent = Directory.GetParent(
+                                     Directory.GetParent(Directory.GetParent(this.textBoxTranslatedFile.Text).FullName)
+                                              .FullName
+                                    );
+
+    var pakSource = parent.FullName;
+
+    var packer = new PackageEngine( Directory.GetParent(parent.FullName).FullName, parent.Name);
+    packer.BuildPackage();
+  }
 }

@@ -18,13 +18,12 @@
     <Product>Bg3LocaHelper</Product>
     <Title>Bg3LocaHelper</Title>
     <Version>2.2.1.0</Version>
-    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Bg3LocaHelper.snk</AssemblyOriginatorKeyFile>    
-    <PublicSign>true</PublicSign>
+    <PublicSign>false</PublicSign>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -36,7 +35,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -47,6 +46,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="LSLib">
+      <HintPath>..\External\LSLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -62,6 +64,7 @@
 
   <ItemGroup>
     <None Include="Properties\Settings.settings" />
+    <None Remove="LSLib\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,10 +74,17 @@
     <Compile Remove="LSLib\Enums\PackageVersion.cs" />
     <Compile Remove="LSLib\Enums\ResourceFormat.cs" />
     <Compile Remove="LSLib\Matrix.cs" />
+    <Compile Remove="LSLib\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AlphaFS" Version="2.2.6" />
+    <PackageReference Include="FileAssociation" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="LSLib\**" />
   </ItemGroup>
 
 </Project>
