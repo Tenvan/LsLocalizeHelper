@@ -48,9 +48,10 @@
       this.checkBoxAutoClipboard          = new System.Windows.Forms.CheckBox();
       this.menuStrip1                     = new System.Windows.Forms.MenuStrip();
       this.dateiToolStripMenuItem         = new System.Windows.Forms.ToolStripMenuItem();
+      this.settingsToolStripMenuItem      = new System.Windows.Forms.ToolStripMenuItem();
+      this.importModToolStripMenuItem     = new System.Windows.Forms.ToolStripMenuItem();
       this.loadSourceXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.saveSourceXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.settingsToolStripMenuItem      = new System.Windows.Forms.ToolStripMenuItem();
       this.packingModToolStripMenuItem    = new System.Windows.Forms.ToolStripMenuItem();
       this.exitToolStripMenuItem          = new System.Windows.Forms.ToolStripMenuItem();
       this.label8                         = new System.Windows.Forms.Label();
@@ -59,6 +60,9 @@
       this.comboBoxOriginPreviousFile     = new System.Windows.Forms.ComboBox();
       this.comboBoxOriginCurrentFile      = new System.Windows.Forms.ComboBox();
       this.comboBoxTranslatedFile         = new System.Windows.Forms.ComboBox();
+      this.toolStripButton1               = new System.Windows.Forms.ToolStripButton();
+      this.toolStripButton2               = new System.Windows.Forms.ToolStripButton();
+      this.toolStripComboBox1             = new System.Windows.Forms.ToolStripComboBox();
       ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSource)).BeginInit();
       this.menuStrip1.SuspendLayout();
       this.SuspendLayout();
@@ -66,7 +70,7 @@
       // 
       // labelSource
       // 
-      this.labelSource.Location  = new System.Drawing.Point(12, 172);
+      this.labelSource.Location  = new System.Drawing.Point(12, 177);
       this.labelSource.Name      = "labelSource";
       this.labelSource.Size      = new System.Drawing.Size(110, 21);
       this.labelSource.TabIndex  = 1;
@@ -76,7 +80,7 @@
       // 
       // labelReference
       // 
-      this.labelReference.Location  = new System.Drawing.Point(12, 115);
+      this.labelReference.Location  = new System.Drawing.Point(12, 120);
       this.labelReference.Name      = "labelReference";
       this.labelReference.Size      = new System.Drawing.Size(110, 21);
       this.labelReference.TabIndex  = 4;
@@ -90,7 +94,7 @@
                                                                                 | System.Windows.Forms.AnchorStyles.Right)));
 
       this.textBoxTranslatedText.Font       =  new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.textBoxTranslatedText.Location   =  new System.Drawing.Point(147, 556);
+      this.textBoxTranslatedText.Location   =  new System.Drawing.Point(147, 635);
       this.textBoxTranslatedText.Multiline  =  true;
       this.textBoxTranslatedText.Name       =  "textBoxTranslatedText";
       this.textBoxTranslatedText.ScrollBars =  System.Windows.Forms.ScrollBars.Both;
@@ -106,7 +110,7 @@
                                                                                    | System.Windows.Forms.AnchorStyles.Right)));
 
       this.textBoxCurrentOriginText.Font       = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.textBoxCurrentOriginText.Location   = new System.Drawing.Point(147, 466);
+      this.textBoxCurrentOriginText.Location   = new System.Drawing.Point(147, 545);
       this.textBoxCurrentOriginText.Multiline  = true;
       this.textBoxCurrentOriginText.Name       = "textBoxCurrentOriginText";
       this.textBoxCurrentOriginText.ReadOnly   = true;
@@ -118,7 +122,7 @@
       // label1
       // 
       this.label1.Anchor    = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.label1.Location  = new System.Drawing.Point(12, 467);
+      this.label1.Location  = new System.Drawing.Point(12, 546);
       this.label1.Name      = "label1";
       this.label1.Size      = new System.Drawing.Size(129, 21);
       this.label1.TabIndex  = 14;
@@ -129,7 +133,7 @@
       // label2
       // 
       this.label2.Anchor    = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.label2.Location  = new System.Drawing.Point(12, 557);
+      this.label2.Location  = new System.Drawing.Point(12, 636);
       this.label2.Name      = "label2";
       this.label2.Size      = new System.Drawing.Size(72, 21);
       this.label2.TabIndex  = 15;
@@ -149,10 +153,10 @@
 
       this.dataGridViewSource.ColumnHeadersHeightSizeMode =  System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
       this.dataGridViewSource.EditMode                    =  System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-      this.dataGridViewSource.Location                    =  new System.Drawing.Point(147, 235);
+      this.dataGridViewSource.Location                    =  new System.Drawing.Point(147, 247);
       this.dataGridViewSource.Name                        =  "dataGridViewSource";
       this.dataGridViewSource.ReadOnly                    =  true;
-      this.dataGridViewSource.Size                        =  new System.Drawing.Size(725, 135);
+      this.dataGridViewSource.Size                        =  new System.Drawing.Size(725, 202);
       this.dataGridViewSource.TabIndex                    =  16;
       this.dataGridViewSource.CellPainting                += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridViewSource_CellPainting);
       this.dataGridViewSource.RowEnter                    += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSource_RowEnter);
@@ -162,7 +166,7 @@
       // buttonPasteToTranslated
       // 
       this.buttonPasteToTranslated.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.buttonPasteToTranslated.Location                =  new System.Drawing.Point(4, 711);
+      this.buttonPasteToTranslated.Location                =  new System.Drawing.Point(4, 790);
       this.buttonPasteToTranslated.Name                    =  "buttonPasteToTranslated";
       this.buttonPasteToTranslated.Size                    =  new System.Drawing.Size(137, 38);
       this.buttonPasteToTranslated.TabIndex                =  17;
@@ -174,7 +178,7 @@
       // buttonCopyFromOrigin
       // 
       this.buttonCopyFromOrigin.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.buttonCopyFromOrigin.Location                =  new System.Drawing.Point(12, 512);
+      this.buttonCopyFromOrigin.Location                =  new System.Drawing.Point(12, 591);
       this.buttonCopyFromOrigin.Name                    =  "buttonCopyFromOrigin";
       this.buttonCopyFromOrigin.Size                    =  new System.Drawing.Size(129, 38);
       this.buttonCopyFromOrigin.TabIndex                =  18;
@@ -185,7 +189,7 @@
       // 
       // label3
       // 
-      this.label3.Location  = new System.Drawing.Point(12, 89);
+      this.label3.Location  = new System.Drawing.Point(12, 94);
       this.label3.Name      = "label3";
       this.label3.Size      = new System.Drawing.Size(110, 21);
       this.label3.TabIndex  = 20;
@@ -196,7 +200,7 @@
       // label4
       // 
       this.label4.Font      = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label4.Location  = new System.Drawing.Point(147, 63);
+      this.label4.Location  = new System.Drawing.Point(147, 68);
       this.label4.Name      = "label4";
       this.label4.Size      = new System.Drawing.Size(185, 21);
       this.label4.TabIndex  = 22;
@@ -207,7 +211,7 @@
       // label5
       // 
       this.label5.Font      = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.label5.Location  = new System.Drawing.Point(147, 149);
+      this.label5.Location  = new System.Drawing.Point(147, 154);
       this.label5.Name      = "label5";
       this.label5.Size      = new System.Drawing.Size(185, 21);
       this.label5.TabIndex  = 23;
@@ -218,7 +222,7 @@
       // buttonCopyFromPrevious
       // 
       this.buttonCopyFromPrevious.Anchor                  =  ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.buttonCopyFromPrevious.Location                =  new System.Drawing.Point(12, 422);
+      this.buttonCopyFromPrevious.Location                =  new System.Drawing.Point(12, 501);
       this.buttonCopyFromPrevious.Name                    =  "buttonCopyFromPrevious";
       this.buttonCopyFromPrevious.Size                    =  new System.Drawing.Size(129, 38);
       this.buttonCopyFromPrevious.TabIndex                =  27;
@@ -230,7 +234,7 @@
       // label6
       // 
       this.label6.Anchor    = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.label6.Location  = new System.Drawing.Point(12, 376);
+      this.label6.Location  = new System.Drawing.Point(12, 455);
       this.label6.Name      = "label6";
       this.label6.Size      = new System.Drawing.Size(129, 21);
       this.label6.TabIndex  = 26;
@@ -244,7 +248,7 @@
                                                                                     | System.Windows.Forms.AnchorStyles.Right)));
 
       this.textBoxPreviousOriginText.Font       = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-      this.textBoxPreviousOriginText.Location   = new System.Drawing.Point(147, 376);
+      this.textBoxPreviousOriginText.Location   = new System.Drawing.Point(147, 455);
       this.textBoxPreviousOriginText.Multiline  = true;
       this.textBoxPreviousOriginText.Name       = "textBoxPreviousOriginText";
       this.textBoxPreviousOriginText.ReadOnly   = true;
@@ -258,7 +262,7 @@
       this.textBoxFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                                                                         | System.Windows.Forms.AnchorStyles.Right)));
 
-      this.textBoxFilter.Location    =  new System.Drawing.Point(215, 199);
+      this.textBoxFilter.Location    =  new System.Drawing.Point(215, 221);
       this.textBoxFilter.Name        =  "textBoxFilter";
       this.textBoxFilter.Size        =  new System.Drawing.Size(657, 20);
       this.textBoxFilter.TabIndex    =  28;
@@ -267,7 +271,7 @@
       // 
       // label7
       // 
-      this.label7.Location  = new System.Drawing.Point(150, 196);
+      this.label7.Location  = new System.Drawing.Point(147, 219);
       this.label7.Name      = "label7";
       this.label7.Size      = new System.Drawing.Size(68, 23);
       this.label7.TabIndex  = 29;
@@ -277,14 +281,15 @@
       // 
       // checkBoxAutoClipboard
       // 
-      this.checkBoxAutoClipboard.Checked                 = true;
-      this.checkBoxAutoClipboard.CheckState              = System.Windows.Forms.CheckState.Checked;
-      this.checkBoxAutoClipboard.Location                = new System.Drawing.Point(12, 235);
-      this.checkBoxAutoClipboard.Name                    = "checkBoxAutoClipboard";
-      this.checkBoxAutoClipboard.Size                    = new System.Drawing.Size(129, 19);
-      this.checkBoxAutoClipboard.TabIndex                = 30;
-      this.checkBoxAutoClipboard.Text                    = "Auto Clipboard";
-      this.checkBoxAutoClipboard.UseVisualStyleBackColor = true;
+      this.checkBoxAutoClipboard.Checked                 =  true;
+      this.checkBoxAutoClipboard.CheckState              =  System.Windows.Forms.CheckState.Checked;
+      this.checkBoxAutoClipboard.Location                =  new System.Drawing.Point(12, 247);
+      this.checkBoxAutoClipboard.Name                    =  "checkBoxAutoClipboard";
+      this.checkBoxAutoClipboard.Size                    =  new System.Drawing.Size(129, 19);
+      this.checkBoxAutoClipboard.TabIndex                =  30;
+      this.checkBoxAutoClipboard.Text                    =  "Auto Clipboard";
+      this.checkBoxAutoClipboard.UseVisualStyleBackColor =  true;
+      this.checkBoxAutoClipboard.CheckedChanged          += new System.EventHandler(this.checkBoxAutoClipboard_CheckedChanged);
 
       // 
       // menuStrip1
@@ -299,10 +304,28 @@
       // 
       // dateiToolStripMenuItem
       // 
-      this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.loadSourceXMLToolStripMenuItem, this.saveSourceXMLToolStripMenuItem, this.settingsToolStripMenuItem, this.packingModToolStripMenuItem, this.exitToolStripMenuItem });
+      this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { this.settingsToolStripMenuItem, this.importModToolStripMenuItem, this.loadSourceXMLToolStripMenuItem, this.saveSourceXMLToolStripMenuItem, this.packingModToolStripMenuItem, this.exitToolStripMenuItem });
       this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
       this.dateiToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
       this.dateiToolStripMenuItem.Text = "Datei";
+
+      // 
+      // settingsToolStripMenuItem
+      // 
+      this.settingsToolStripMenuItem.Name         =  "settingsToolStripMenuItem";
+      this.settingsToolStripMenuItem.ShortcutKeys =  ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+      this.settingsToolStripMenuItem.Size         =  new System.Drawing.Size(208, 22);
+      this.settingsToolStripMenuItem.Text         =  "Settings...";
+      this.settingsToolStripMenuItem.Click        += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+
+      // 
+      // importModToolStripMenuItem
+      // 
+      this.importModToolStripMenuItem.Name         =  "importModToolStripMenuItem";
+      this.importModToolStripMenuItem.ShortcutKeys =  ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
+      this.importModToolStripMenuItem.Size         =  new System.Drawing.Size(208, 22);
+      this.importModToolStripMenuItem.Text         =  "Import Mod...";
+      this.importModToolStripMenuItem.Click        += new System.EventHandler(this.importModToolStripMenuItem_Click);
 
       // 
       // loadSourceXMLToolStripMenuItem
@@ -321,15 +344,6 @@
       this.saveSourceXMLToolStripMenuItem.Size         =  new System.Drawing.Size(208, 22);
       this.saveSourceXMLToolStripMenuItem.Text         =  "Save Source XML";
       this.saveSourceXMLToolStripMenuItem.Click        += new System.EventHandler(this.saveSourceXMLToolStripMenuItem_Click);
-
-      // 
-      // settingsToolStripMenuItem
-      // 
-      this.settingsToolStripMenuItem.Name         =  "settingsToolStripMenuItem";
-      this.settingsToolStripMenuItem.ShortcutKeys =  ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-      this.settingsToolStripMenuItem.Size         =  new System.Drawing.Size(208, 22);
-      this.settingsToolStripMenuItem.Text         =  "Settings...";
-      this.settingsToolStripMenuItem.Click        += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 
       // 
       // packingModToolStripMenuItem
@@ -352,7 +366,7 @@
       // 
       // label8
       // 
-      this.label8.Location  = new System.Drawing.Point(12, 24);
+      this.label8.Location  = new System.Drawing.Point(12, 29);
       this.label8.Name      = "label8";
       this.label8.Size      = new System.Drawing.Size(129, 35);
       this.label8.TabIndex  = 33;
@@ -364,7 +378,7 @@
       // 
       this.comboBoxMods.DropDownStyle        =  System.Windows.Forms.ComboBoxStyle.DropDownList;
       this.comboBoxMods.FormattingEnabled    =  true;
-      this.comboBoxMods.Location             =  new System.Drawing.Point(150, 32);
+      this.comboBoxMods.Location             =  new System.Drawing.Point(147, 37);
       this.comboBoxMods.Name                 =  "comboBoxMods";
       this.comboBoxMods.Size                 =  new System.Drawing.Size(261, 21);
       this.comboBoxMods.TabIndex             =  34;
@@ -373,7 +387,7 @@
       // 
       // buttonRefreshMods
       // 
-      this.buttonRefreshMods.Location                =  new System.Drawing.Point(417, 30);
+      this.buttonRefreshMods.Location                =  new System.Drawing.Point(417, 35);
       this.buttonRefreshMods.Name                    =  "buttonRefreshMods";
       this.buttonRefreshMods.Size                    =  new System.Drawing.Size(60, 23);
       this.buttonRefreshMods.TabIndex                =  35;
@@ -384,9 +398,12 @@
       // 
       // comboBoxOriginPreviousFile
       // 
+      this.comboBoxOriginPreviousFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                                                                                     | System.Windows.Forms.AnchorStyles.Right)));
+
       this.comboBoxOriginPreviousFile.DropDownStyle     = System.Windows.Forms.ComboBoxStyle.DropDownList;
       this.comboBoxOriginPreviousFile.FormattingEnabled = true;
-      this.comboBoxOriginPreviousFile.Location          = new System.Drawing.Point(150, 89);
+      this.comboBoxOriginPreviousFile.Location          = new System.Drawing.Point(147, 94);
       this.comboBoxOriginPreviousFile.Name              = "comboBoxOriginPreviousFile";
       this.comboBoxOriginPreviousFile.Size              = new System.Drawing.Size(722, 21);
       this.comboBoxOriginPreviousFile.TabIndex          = 36;
@@ -394,9 +411,12 @@
       // 
       // comboBoxOriginCurrentFile
       // 
+      this.comboBoxOriginCurrentFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                                                                                    | System.Windows.Forms.AnchorStyles.Right)));
+
       this.comboBoxOriginCurrentFile.DropDownStyle     = System.Windows.Forms.ComboBoxStyle.DropDownList;
       this.comboBoxOriginCurrentFile.FormattingEnabled = true;
-      this.comboBoxOriginCurrentFile.Location          = new System.Drawing.Point(150, 116);
+      this.comboBoxOriginCurrentFile.Location          = new System.Drawing.Point(147, 121);
       this.comboBoxOriginCurrentFile.Name              = "comboBoxOriginCurrentFile";
       this.comboBoxOriginCurrentFile.Size              = new System.Drawing.Size(722, 21);
       this.comboBoxOriginCurrentFile.TabIndex          = 37;
@@ -404,19 +424,42 @@
       // 
       // comboBoxTranslatedFile
       // 
+      this.comboBoxTranslatedFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                                                                                 | System.Windows.Forms.AnchorStyles.Right)));
+
       this.comboBoxTranslatedFile.DropDownStyle     = System.Windows.Forms.ComboBoxStyle.DropDownList;
       this.comboBoxTranslatedFile.FormattingEnabled = true;
-      this.comboBoxTranslatedFile.Location          = new System.Drawing.Point(150, 173);
+      this.comboBoxTranslatedFile.Location          = new System.Drawing.Point(147, 178);
       this.comboBoxTranslatedFile.Name              = "comboBoxTranslatedFile";
       this.comboBoxTranslatedFile.Size              = new System.Drawing.Size(722, 21);
       this.comboBoxTranslatedFile.TabIndex          = 38;
+
+      // 
+      // toolStripButton1
+      // 
+      this.toolStripButton1.Name = "toolStripButton1";
+      this.toolStripButton1.Size = new System.Drawing.Size(23, 23);
+      this.toolStripButton1.Text = "toolStripButton1";
+
+      // 
+      // toolStripButton2
+      // 
+      this.toolStripButton2.Name = "toolStripButton2";
+      this.toolStripButton2.Size = new System.Drawing.Size(23, 23);
+      this.toolStripButton2.Text = "toolStripButton2";
+
+      // 
+      // toolStripComboBox1
+      // 
+      this.toolStripComboBox1.Name = "toolStripComboBox1";
+      this.toolStripComboBox1.Size = new System.Drawing.Size(121, 21);
 
       // 
       // FormMain
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode       = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize          = new System.Drawing.Size(884, 761);
+      this.ClientSize          = new System.Drawing.Size(884, 840);
       this.Controls.Add(this.comboBoxTranslatedFile);
       this.Controls.Add(this.comboBoxOriginCurrentFile);
       this.Controls.Add(this.comboBoxOriginPreviousFile);
@@ -454,6 +497,14 @@
       this.ResumeLayout(false);
       this.PerformLayout();
     }
+
+    private System.Windows.Forms.ToolStripButton toolStripButton2;
+
+    private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+
+    private System.Windows.Forms.ToolStripMenuItem importModToolStripMenuItem;
+
+    private System.Windows.Forms.ToolStripButton toolStripButton1;
 
     private System.Windows.Forms.ComboBox comboBoxOriginPreviousFile;
 

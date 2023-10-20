@@ -78,16 +78,22 @@
     <Compile Update="FormSettings.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FormImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AlphaFS" Version="2.2.6" />
     <PackageReference Include="FileAssociation" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="zlib.net" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="LSLib\**" />
+    <None Remove="FileTemplates\meta.lsx" />
+    <EmbeddedResource Include="FileTemplates\meta.lsx" />
   </ItemGroup>
 
 </Project>

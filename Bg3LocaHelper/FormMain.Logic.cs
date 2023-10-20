@@ -10,7 +10,6 @@ using Bg3LocaHelper.Properties;
 
 using LSLib.LS;
 
-using Directory = Alphaleonis.Win32.Filesystem.Directory;
 using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
 using File = Alphaleonis.Win32.Filesystem.File;
 using Path = Alphaleonis.Win32.Filesystem.Path;
@@ -50,10 +49,7 @@ partial class FormMain
     if (translatedNode != null
         && currentNode == null) { return "deleted"; }
 
-    if (translatedNode?.InnerText == currentNode?.InnerText)
-    {
-      return currentNode?.InnerText != previousNode?.InnerText && previousNode != null ? "changed" : "origin";
-    }
+    if (translatedNode?.InnerText == currentNode?.InnerText) { return currentNode?.InnerText != previousNode?.InnerText && previousNode != null ? "changed" : "origin"; }
 
     return "translated";
   }
@@ -122,14 +118,16 @@ partial class FormMain
             || rowOrigin.Contains(searchText)
            )
         {
+          var xpath = rowVersion == null ? $"//content[@contentuid='{rowKey}']" : $"//content[@contentuid='{rowKey}' and @version='{rowVersion}']";
+
           var translatedNode =
-            this.TranslatedDoc?.SelectSingleNode($"//content[@contentuid='{rowKey}' and @version='{rowVersion}']");
+            this.TranslatedDoc?.SelectSingleNode(xpath);
 
           var currentNode =
-            this.OriginCurrentDoc?.SelectSingleNode($"//content[@contentuid='{rowKey}' and @version='{rowVersion}']");
+            this.OriginCurrentDoc?.SelectSingleNode(xpath);
 
           var previousNode =
-            this.OriginPreviousDoc?.SelectSingleNode($"//content[@contentuid='{rowKey}' and @version='{rowVersion}']");
+            this.OriginPreviousDoc?.SelectSingleNode(xpath);
 
           var status = CalculateStatus(translatedNode, currentNode, previousNode);
 
@@ -215,13 +213,14 @@ partial class FormMain
         foreach (XmlElement translatedNode in translatedNodes)
         {
           var uid     = translatedNode.Attributes["contentuid"].InnerText;
-          var version = translatedNode.Attributes["version"].InnerText;
+          var version = translatedNode.Attributes["version"]?.InnerText;
+          var xpath   = version == null ? $"//content[@contentuid='{uid}']" : $"//content[@contentuid='{uid}' and @version='{version}']";
 
           var currentNode =
-            this.OriginCurrentDoc?.SelectSingleNode($"//content[@contentuid='{uid}' and @version='{version}']");
+            this.OriginCurrentDoc?.SelectSingleNode(xpath);
 
           var previousNode =
-            this.OriginPreviousDoc?.SelectSingleNode($"//content[@contentuid='{uid}' and @version='{version}']");
+            this.OriginPreviousDoc?.SelectSingleNode(xpath);
 
           var status = FormMain.CalculateStatus(translatedNode, currentNode, previousNode);
 
@@ -236,14 +235,15 @@ partial class FormMain
         foreach (XmlElement currentNode in currentNodes)
         {
           var uid     = currentNode.Attributes["contentuid"].InnerText;
-          var version = currentNode.Attributes["version"].InnerText;
+          var version = currentNode.Attributes["version"]?.InnerText;
           var text    = currentNode.InnerText;
+          var xpath   = version == null ? $"//content[@contentuid='{uid}']" : $"//content[@contentuid='{uid}' and @version='{version}']";
 
           var translatedNode =
-            this.TranslatedDoc?.SelectSingleNode($"//content[@contentuid='{uid}' and @version='{version}']");
+            this.TranslatedDoc?.SelectSingleNode(xpath);
 
           var previousNode =
-            this.OriginPreviousDoc?.SelectSingleNode($"//content[@contentuid='{uid}' and @version='{version}']");
+            this.OriginPreviousDoc?.SelectSingleNode(xpath);
 
           var status = FormMain.CalculateStatus(translatedNode, currentNode, previousNode);
 
@@ -264,6 +264,9 @@ partial class FormMain
   private void LoadMods()
   {
     this.comboBoxMods.Items.Clear();
+
+    if (string.IsNullOrWhiteSpace(Settings.Default.pathMods)) return;
+
     var dirInfo = new DirectoryInfo(Settings.Default.pathMods);
 
     if (!dirInfo.Exists) return;
@@ -273,9 +276,7 @@ partial class FormMain
 
     foreach (var metaFile in metaFiles)
     {
-      this.modWorkFolder = metaFile.Directory?.Parent?.Parent;
-      this.modFolder     = modWorkFolder?.Parent;
-      var modName = modFolder?.Name;
+      var modName = metaFile.Directory?.Parent?.Parent?.Parent.Name;
       if (modName != null) this.comboBoxMods.Items.Add(modName);
     }
   }
@@ -318,6 +319,7 @@ partial class FormMain
 
   private void PackingMod()
   {
+    this.SaveLoca();
     var packer = new PackageEngine(this.modWorkFolder.FullName, this.CurrentModName);
     packer.BuildPackage();
     MessageBox.Show("Mod package zip created successfully.");

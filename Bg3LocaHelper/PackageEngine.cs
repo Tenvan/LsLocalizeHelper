@@ -2,21 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO.Compression;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Linq;
 
 using Alphaleonis.Win32.Filesystem;
 
 using bg3_modders_multitool.Models;
-using bg3_modders_multitool.Services;
 
 using LSLib.LS;
 using LSLib.LS.Enums;
 
 using Newtonsoft.Json;
+
+using SearchOption = System.IO.SearchOption;
 
 namespace Bg3LocaHelper;
 
@@ -170,6 +169,12 @@ public class PackageEngine
     this.CreatePackage();
     this.GenerateInfoJson();
     this.GenerateZip();
+    this.CleanUp();
+  }
+
+  private void CleanUp()
+  {
+    Directory.Delete(this.TempFolder, true);
   }
 
   private void CreatePackage()
@@ -226,7 +231,7 @@ public class PackageEngine
     var dirInfo  = new DirectoryInfo(this.modPathEngine);
 
     //GeneralHelper.WriteToConsole(Properties.Resources.DirectoryName, dirName);
-    var metaFiles   = dirInfo.GetFiles("meta.lsx", System.IO.SearchOption.AllDirectories);
+    var metaFiles   = dirInfo.GetFiles("meta.lsx", SearchOption.AllDirectories);
 
     if (metaFiles.Length != 1) throw new Exception("excaptly one meta.lsx must exists");
 

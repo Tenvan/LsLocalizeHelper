@@ -28,7 +28,11 @@ public partial class FormMain : Form
     object   versionSource
   )
   {
-    return doc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+    var xpath = versionSource == null
+                  ? $"//content[@contentuid='{keySource}']"
+                  : $"//content[@contentuid='{keySource}' and @version='{versionSource}']";
+
+    return doc?.SelectSingleNode(xpath);
   }
 
   private static void UpdateRowStatus(
@@ -46,6 +50,17 @@ public partial class FormMain : Form
   public FormMain()
   {
     this.InitializeComponent();
+
+    if (string.IsNullOrWhiteSpace(Settings.Default.pathMods)) { new FormSettings().ShowDialog(); }
+
+    ;
+
+    if (string.IsNullOrWhiteSpace(Settings.Default.pathMods))
+    {
+      MessageBox.Show("please define first the mods working root folder!");
+      Application.Exit();
+    }
+
     this.LoadMods();
     this.LoadSettings();
   }
@@ -180,10 +195,10 @@ public partial class FormMain : Form
 
     e.Handled = true;
     e.PaintBackground(e.CellBounds, true);
-    var cellText = e.FormattedValue.ToString();
+    var cellText   = e.FormattedValue.ToString();
     var isSelected = (e.State & DataGridViewElementStates.Selected) != 0;
-    var fontBrush = isSelected ? new SolidBrush(e.CellStyle.SelectionForeColor) : new SolidBrush(e.CellStyle.ForeColor);
-    var pointF = new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2);
+    var fontBrush  = isSelected ? new SolidBrush(e.CellStyle.SelectionForeColor) : new SolidBrush(e.CellStyle.ForeColor);
+    var pointF     = new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2);
     e.Graphics.DrawString(cellText, e.CellStyle.Font, fontBrush, pointF);
   }
 
@@ -197,9 +212,10 @@ public partial class FormMain : Form
     var keySource     = row.Cells[(int)GridColumns.Uuid].Value.ToString();
     var versionSource = row.Cells[(int)GridColumns.Version].Value.ToString();
     var textSource    = row.Cells[(int)GridColumns.Text].Value.ToString();
+    var xpath         = versionSource == null ? $"//content[@contentuid='{keySource}']" : $"//content[@contentuid='{keySource}' and @version='{versionSource}']";
 
     var translatedNode =
-      this.TranslatedDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+      this.TranslatedDoc?.SelectSingleNode(xpath);
 
     if (translatedNode != null)
     {
@@ -209,12 +225,12 @@ public partial class FormMain : Form
     else { this.textBoxTranslatedText.Text = ""; }
 
     var currentOriginNode =
-      this.OriginCurrentDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+      this.OriginCurrentDoc?.SelectSingleNode(xpath);
 
     this.textBoxCurrentOriginText.Text = currentOriginNode != null ? currentOriginNode.InnerText : "";
 
     var previousOriginNode =
-      this.OriginPreviousDoc?.SelectSingleNode($"//content[@contentuid='{keySource}' and @version='{versionSource}']");
+      this.OriginPreviousDoc?.SelectSingleNode(xpath);
 
     this.textBoxPreviousOriginText.Text = previousOriginNode != null ? previousOriginNode.InnerText : "";
   }
@@ -315,14 +331,6 @@ public partial class FormMain : Form
     new FormSettings().ShowDialog();
   }
 
-  private void textBoxFile_Validated(
-    object    sender,
-    EventArgs e
-  )
-  {
-    this.SaveSettings();
-  }
-
   private void textBoxFilter_TextChanged(
     object    sender,
     EventArgs e
@@ -398,4 +406,30 @@ public partial class FormMain : Form
   }
 
   #endregion
+
+  private void checkBoxAutoClipboard_CheckedChanged(
+    object    sender,
+    EventArgs e
+  ) { }
+
+  private void importModToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    var formImport   = new FormImport();
+    var dialogResult = formImport.ShowDialog();
+
+    if (dialogResult != DialogResult.OK
+        || !File.Exists(formImport.PakToImport)
+        || string.IsNullOrWhiteSpace(formImport.ModName)) return;
+
+    var packer = new UnpackageEngine(
+                                     Settings.Default.pathMods,
+                                     formImport.PakToImport,
+                                     formImport.ModName
+                                    );
+
+    packer.ImportPackage();
+  }
 }

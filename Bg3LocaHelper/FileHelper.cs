@@ -1,22 +1,23 @@
-﻿/// <summary>
-/// Service helper for dealing with files.
-/// </summary>
-namespace bg3_modders_multitool.Services
-{
-    using Alphaleonis.Win32.Filesystem;
-    using BrendanGrant.Helpers.FileAssociation;
-    using LSLib.LS;
-    using LSLib.LS.Enums;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.InteropServices;
-    using System.Text;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
 
+using Alphaleonis.Win32.Filesystem;
+
+using BrendanGrant.Helpers.FileAssociation;
+
+using LSLib.LS;
+using LSLib.LS.Enums;
+
+using Newtonsoft.Json;
+
+namespace Bg3LocaHelper
+{
     public static class FileHelper
     {
         public static readonly string[] ConvertableLsxResources = { ".lsf", ".lsb", ".lsbs", ".lsbc", ".lsfx" };
@@ -50,14 +51,14 @@ namespace bg3_modders_multitool.Services
             var originalExtension = Path.GetExtension(file);
             var newFile = string.IsNullOrEmpty(originalExtension) ? $"{file}.{extension}" : file.Replace(originalExtension, $"{originalExtension}.{extension}");
 
-            if(File.Exists(GetPath(newFile))) {
+            if(File.Exists(FileHelper.GetPath(newFile))) {
                 return newFile;
             }
 
-            var isConvertableToLsx = CanConvertToLsx(file) || CanConvertToLsx(newPath);
-            var isConvertableToXml = originalExtension.Contains("loca") && extension == "xml";
+            var isConvertableToLsx  = FileHelper.CanConvertToLsx(file) || FileHelper.CanConvertToLsx(newPath);
+            var isConvertableToXml  = originalExtension.Contains("loca") && extension == "xml";
             var isConvertableToLoca = originalExtension.Contains("xml") && extension == "loca";
-            var isConvertableToLsj = originalExtension.Contains("lsx") && extension == "lsj";
+            var isConvertableToLsj  = originalExtension.Contains("lsx") && extension == "lsj";
 
             string path;
 
@@ -65,8 +66,8 @@ namespace bg3_modders_multitool.Services
 
             if (string.IsNullOrEmpty(newPath))
             {
-                path = GetPath(file);
-                newPath = GetPath(newFile);
+                path    = FileHelper.GetPath(file);
+                newPath = FileHelper.GetPath(newFile);
             }
             else
             {
@@ -77,7 +78,7 @@ namespace bg3_modders_multitool.Services
             {
                 if (isConvertableToLsx || isConvertableToLsj)
                 {
-                    if (MustRenameLsxResources.Contains(originalExtension))
+                    if (FileHelper.MustRenameLsxResources.Contains(originalExtension))
                     {
                         var renamedPath = Path.ChangeExtension(path, originalExtension + ".lsf");
                         File.Move(path, renamedPath);
@@ -100,14 +101,14 @@ namespace bg3_modders_multitool.Services
                     {
                         // Larian decided to rename the .lsx to .lsbs instead of properly LSF encoding them
                         // These are invalid .lsbs/.lsbc files if this error pops up
-                        if (!IsSpecialLSFSignature(ex.Message))
+                        if (!FileHelper.IsSpecialLSFSignature(ex.Message))
                         {
                             // GeneralHelper.WriteToConsole(Properties.Resources.FailedToConvertResource, extension, file.Replace(Directory.GetCurrentDirectory(), string.Empty), ex.Message.Replace(Directory.GetCurrentDirectory(), string.Empty));
                         }
                         newFile = file;
                     }
 
-                    if (MustRenameLsxResources.Contains(originalExtension))
+                    if (FileHelper.MustRenameLsxResources.Contains(originalExtension))
                     {
                         File.Move(path, Path.ChangeExtension(path, ""));
                     }
@@ -162,7 +163,7 @@ namespace bg3_modders_multitool.Services
                 return false;
             }
             var extension = Path.GetExtension(file);
-            return ConvertableLsxResources.Contains(extension);
+            return FileHelper.ConvertableLsxResources.Contains(extension);
         }
 
         /// <summary>
@@ -182,8 +183,8 @@ namespace bg3_modders_multitool.Services
         /// <returns>Whether or not the file is convertable</returns>
         public static bool IsConvertable(string file)
         {
-            var originalExtension = Path.GetExtension(file);
-            var isConvertableToLsx = CanConvertToLsx(file);
+            var originalExtension  = Path.GetExtension(file);
+            var isConvertableToLsx = FileHelper.CanConvertToLsx(file);
             var isConvertableToXml = originalExtension.Contains("loca");
             return isConvertableToLsx || isConvertableToXml;
         }
@@ -199,7 +200,7 @@ namespace bg3_modders_multitool.Services
             {
                 Directory.CreateDirectory(directory);
             }
-            var fileList = RecursiveFileSearch(directory);
+            var fileList = FileHelper.RecursiveFileSearch(directory);
             if (fileList.Count == 0)
             {
                 // GeneralHelper.WriteToConsole(Properties.Resources.NoFilesFound);
@@ -223,7 +224,7 @@ namespace bg3_modders_multitool.Services
                     {
                         fileList.Add(file);
                     }
-                    fileList.AddRange(RecursiveFileSearch(dir));
+                    fileList.AddRange(FileHelper.RecursiveFileSearch(dir));
                 }
                 catch (Exception ex)
                 {
@@ -280,9 +281,9 @@ namespace bg3_modders_multitool.Services
         /// <returns>The full file path.</returns>
         public static string GetPath(string file)
         {
-            if(!string.IsNullOrEmpty(file) && (file.Contains(UnpackedDataPath) || file.Contains(Path.GetTempPath())))
+            if(!string.IsNullOrEmpty(file) && (file.Contains(FileHelper.UnpackedDataPath) || file.Contains(Path.GetTempPath())))
                     return file;
-            return $"{UnpackedDataPath}\\{file}";
+            return $"{FileHelper.UnpackedDataPath}\\{file}";
         }
 
         /// <summary>
@@ -292,12 +293,12 @@ namespace bg3_modders_multitool.Services
         /// <param name="line">The matching file line</param>
         public static void OpenFile(string file, int? line = null)
         {
-            var path = GetPath(file);
+            var path = FileHelper.GetPath(file);
             if (File.Exists(@"\\?\" + path))
             {
                 try
                 {
-                    if (IsGR2(path))
+                    if (FileHelper.IsGR2(path))
                     {
                         var dae = Path.ChangeExtension(path, ".dae");
                         // determine if you can determine if there is a default program
@@ -309,7 +310,7 @@ namespace bg3_modders_multitool.Services
                     }
                     else
                     {
-                        var exe = FindExecutable(path);
+                        var exe = FileHelper.FindExecutable(path);
                         if(exe.Contains("notepad++") && line.HasValue)
                         {
                             var npp = new Process
@@ -433,7 +434,7 @@ namespace bg3_modders_multitool.Services
         /// <returns>The file template file content string</returns>
         public static string LoadFileTemplate(string templateName)
         {
-            using (System.IO.Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"bg3_modders_multitool.FileTemplates.{templateName}"))
+            using (System.IO.Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"Bg3LocaHelper.FileTemplates.{templateName}"))
             using (System.IO.StreamReader reader = new System.IO.StreamReader(stream))
             {
                 return reader.ReadToEnd();
@@ -469,7 +470,7 @@ namespace bg3_modders_multitool.Services
         /// <returns>Whether or not the file has a default program association</returns>
         public static bool HasExecutable(string path)
         {
-            var executable = FindExecutable(path);
+            var executable = FileHelper.FindExecutable(path);
             return !string.IsNullOrEmpty(executable);
         }
 
@@ -481,7 +482,7 @@ namespace bg3_modders_multitool.Services
         public static string FindExecutable(string path)
         {
             var executable = new StringBuilder(1024);
-            FindExecutable(path, string.Empty, executable);
+            FileHelper.FindExecutable(path, string.Empty, executable);
             return executable.ToString();
         }
         #endregion
