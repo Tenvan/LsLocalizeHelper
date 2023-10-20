@@ -1,15 +1,19 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 
 using Bg3LocaHelper.Properties;
 
 using LSLib.LS;
-using LSLib.LS.Enums;
+
+using Directory = Alphaleonis.Win32.Filesystem.Directory;
+using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
+using File = Alphaleonis.Win32.Filesystem.File;
+using Path = Alphaleonis.Win32.Filesystem.Path;
 
 namespace Bg3LocaHelper;
 
@@ -75,6 +79,14 @@ partial class FormMain
     var deletedNode = FormMain.SelectNode(doc, key, version);
     if (deletedNode != null) doc?.DocumentElement?.RemoveChild(deletedNode);
   }
+
+  #endregion
+
+  #region Fields
+
+  private DirectoryInfo? modFolder;
+
+  private DirectoryInfo? modWorkFolder;
 
   #endregion
 
@@ -150,43 +162,47 @@ partial class FormMain
       this.OriginPreviousDoc             = null;
       var table = FormMain.CreateTable();
 
-      if (File.Exists(this.TranslatedFile))
+      if (File.Exists(this.TranslatedFileFullName))
       {
         try
         {
           this.TranslatedDoc = new XmlDocument();
-          this.TranslatedDoc.Load(this.TranslatedFile);
-        }
-        catch (Exception e)
-        {
-          throw new Exception($"Error on Loading Translated-XML:\n\nFile: {this.TranslatedFile}\n\nError:{e.Message}");
-        }
-      }
-
-      if (File.Exists(this.OriginCurrentFile))
-      {
-        try
-        {
-          this.OriginCurrentDoc = new XmlDocument();
-          this.OriginCurrentDoc.Load(this.OriginCurrentFile);
-        }
-        catch (Exception e)
-        {
-          throw new Exception($"Error on Loading Current-XML:\n\nFile: {this.OriginCurrentFile}\n\nError:{e.Message}");
-        }
-      }
-
-      if (File.Exists(this.OriginPreviousFile))
-      {
-        try
-        {
-          this.OriginPreviousDoc = new XmlDocument();
-          this.OriginPreviousDoc.Load(this.OriginPreviousFile);
+          this.TranslatedDoc.Load(this.TranslatedFileFullName);
         }
         catch (Exception e)
         {
           throw new Exception(
-                              $"Error on Loading Previous-XML:\n\nFile: {this.OriginPreviousFile}\n\nError:{e.Message}"
+                              $"Error on Loading Translated-XML:\n\nFile: {this.TranslatedFileFullName}\n\nError:{e.Message}"
+                             );
+        }
+      }
+
+      if (File.Exists(this.OriginCurrentFileFullName))
+      {
+        try
+        {
+          this.OriginCurrentDoc = new XmlDocument();
+          this.OriginCurrentDoc.Load(this.OriginCurrentFileFullName);
+        }
+        catch (Exception e)
+        {
+          throw new Exception(
+                              $"Error on Loading Current-XML:\n\nFile: {this.OriginCurrentFileFullName}\n\nError:{e.Message}"
+                             );
+        }
+      }
+
+      if (File.Exists(this.OriginPreviousFileFullName))
+      {
+        try
+        {
+          this.OriginPreviousDoc = new XmlDocument();
+          this.OriginPreviousDoc.Load(this.OriginPreviousFileFullName);
+        }
+        catch (Exception e)
+        {
+          throw new Exception(
+                              $"Error on Loading Previous-XML:\n\nFile: {this.OriginPreviousFileFullName}\n\nError:{e.Message}"
                              );
         }
       }
@@ -245,10 +261,30 @@ partial class FormMain
     catch (Exception e) { MessageBox.Show(e.Message); }
   }
 
+  private void LoadMods()
+  {
+    this.comboBoxMods.Items.Clear();
+    var dirInfo = new DirectoryInfo(Settings.Default.pathMods);
+
+    if (!dirInfo.Exists) return;
+
+    //GeneralHelper.WriteToConsole(Properties.Resources.DirectoryName, dirName);
+    var metaFiles = dirInfo.GetFiles("meta.lsx", SearchOption.AllDirectories);
+
+    foreach (var metaFile in metaFiles)
+    {
+      this.modWorkFolder = metaFile.Directory?.Parent?.Parent;
+      this.modFolder     = modWorkFolder?.Parent;
+      var modName = modFolder?.Name;
+      if (modName != null) this.comboBoxMods.Items.Add(modName);
+    }
+  }
+
   private void LoadSettings()
   {
     try
     {
+      this.comboBoxMods.Text  = Settings.Default.lastMod;
       this.OriginCurrentFile  = Settings.Default.pathOriginCurrent;
       this.OriginPreviousFile = Settings.Default.pathOriginPrevious;
       this.TranslatedFile     = Settings.Default.pathTranslated;
@@ -256,6 +292,35 @@ partial class FormMain
       this.Location           = Settings.Default.windowPos;
     }
     finally { }
+  }
+
+  private void LoadXmlFileNames2ComboBoxes(
+    string modName
+  )
+  {
+    this.comboBoxOriginPreviousFile.Items.Clear();
+    this.comboBoxOriginCurrentFile.Items.Clear();
+    this.comboBoxTranslatedFile.Items.Clear();
+    var dirInfo   = new DirectoryInfo(Path.Combine(Settings.Default.pathMods, modName));
+    var localsDir = dirInfo.GetDirectories("Localization", SearchOption.AllDirectories).FirstOrDefault();
+    this.modWorkFolder = localsDir?.Parent;
+    var metaFiles = dirInfo.GetFiles("*.xml", SearchOption.AllDirectories);
+
+    foreach (var metaFile in metaFiles)
+    {
+      var fullName  = metaFile.FullName;
+      var shortName = Path.GetRelativePath(this.modWorkFolder?.FullName, metaFile.FullName);
+      this.comboBoxOriginPreviousFile.Items.Add(shortName);
+      this.comboBoxOriginCurrentFile.Items.Add(shortName);
+      this.comboBoxTranslatedFile.Items.Add(shortName);
+    }
+  }
+
+  private void PackingMod()
+  {
+    var packer = new PackageEngine(this.modWorkFolder.FullName, this.CurrentModName);
+    packer.BuildPackage();
+    MessageBox.Show("Mod package zip created successfully.");
   }
 
   private void RecalcRowsAndColumnSizesHeights()
@@ -296,18 +361,25 @@ partial class FormMain
     this.dataGridViewSource.Refresh();
   }
 
-  private void SaveData() { this.TranslatedDoc?.Save(this.TranslatedFile); }
+  private void SaveData()
+  {
+    this.TranslatedDoc?.Save(this.TranslatedFileFullName);
+    this.SaveLoca();
+    this.LoadData();
+    MessageBox.Show("Data saved successfully.");
+  }
 
   private void SaveLoca()
   {
-    var resource       = LocaUtils.Load(this.TranslatedFile);
-    var locaOutputPath = Path.ChangeExtension(this.TranslatedFile, "loca");
+    var resource       = LocaUtils.Load(this.TranslatedFileFullName);
+    var locaOutputPath = Path.ChangeExtension(this.TranslatedFileFullName, "loca");
     var format         = LocaUtils.ExtensionToFileFormat(locaOutputPath);
     LocaUtils.Save(resource, locaOutputPath, format);
   }
 
   private void SaveSettings()
   {
+    Settings.Default.lastMod            = this.comboBoxMods.Text;
     Settings.Default.pathOriginCurrent  = this.OriginCurrentFile;
     Settings.Default.pathOriginPrevious = this.OriginPreviousFile;
     Settings.Default.pathTranslated     = this.TranslatedFile;

@@ -6,6 +6,8 @@ using System.Xml;
 
 using Alphaleonis.Win32.Filesystem;
 
+using Bg3LocaHelper.Properties;
+
 namespace Bg3LocaHelper;
 
 public partial class FormMain : Form
@@ -44,6 +46,7 @@ public partial class FormMain : Form
   public FormMain()
   {
     this.InitializeComponent();
+    this.LoadMods();
     this.LoadSettings();
   }
 
@@ -52,6 +55,17 @@ public partial class FormMain : Form
   #region Properties
 
   private bool AutoClipbaord => this.checkBoxAutoClipboard.Checked;
+
+  private string CurrentModName
+  {
+    get => this.comboBoxMods.Text;
+  }
+
+  private string OriginCurrentFileFullName => Path.Combine(this.modWorkFolder?.FullName, this.OriginCurrentFile);
+
+  private string OriginPreviousFileFullName => Path.Combine(this.modWorkFolder?.FullName, this.OriginPreviousFile);
+
+  private string TranslatedFileFullName => Path.Combine(this.modWorkFolder?.FullName, this.TranslatedFile);
 
   /// <summary>
   /// Full Data Store
@@ -66,8 +80,8 @@ public partial class FormMain : Form
 
   private string OriginCurrentFile
   {
-    get => this.textBoxOriginCurrentFile.Text;
-    set => this.textBoxOriginCurrentFile.Text = value;
+    get => this.comboBoxOriginCurrentFile.Text;
+    set => this.comboBoxOriginCurrentFile.Text = value;
   }
 
   /// <summary>
@@ -77,8 +91,8 @@ public partial class FormMain : Form
 
   private string OriginPreviousFile
   {
-    get => this.textBoxOriginPreviousFile.Text;
-    set => this.textBoxOriginPreviousFile.Text = value;
+    get => this.comboBoxOriginPreviousFile.Text;
+    set => this.comboBoxOriginPreviousFile.Text = value;
   }
 
   /// <summary>
@@ -88,8 +102,8 @@ public partial class FormMain : Form
 
   private string TranslatedFile
   {
-    get => this.textBoxTranslatedFile.Text;
-    set => this.textBoxTranslatedFile.Text = value;
+    get => this.comboBoxTranslatedFile.Text;
+    set => this.comboBoxTranslatedFile.Text = value;
   }
 
   #endregion
@@ -112,67 +126,6 @@ public partial class FormMain : Form
     Clipboard.SetText(this.textBoxPreviousOriginText.Text);
   }
 
-  private void buttonFileOriginCurrent_Click(
-    object    sender,
-    EventArgs e
-  )
-  {
-    var result = this.openFileDialog.ShowDialog();
-
-    if (result == DialogResult.OK) { this.textBoxOriginCurrentFile.Text = this.openFileDialog.FileName; }
-
-    this.SaveSettings();
-  }
-
-  private void buttonFileOriginPrevious_Click(
-    object    sender,
-    EventArgs e
-  )
-  {
-    var result = this.openFileDialog.ShowDialog();
-
-    if (result == DialogResult.OK) { this.textBoxOriginPreviousFile.Text = this.openFileDialog.FileName; }
-
-    this.SaveSettings();
-  }
-
-  private void buttonFileTranslated_Click(
-    object    sender,
-    EventArgs e
-  )
-  {
-    var result = this.openFileDialog.ShowDialog();
-
-    if (result == DialogResult.OK) { this.textBoxTranslatedFile.Text = this.openFileDialog.FileName; }
-
-    this.SaveSettings();
-  }
-
-  private void buttonLoad_Click(
-    object    sender,
-    EventArgs e
-  )
-  {
-    this.LoadData();
-  }
-
-  private void buttonPakMod_Click(
-    object    sender,
-    EventArgs e
-  )
-  {
-    var parent = Directory.GetParent(
-                                     Directory.GetParent(Directory.GetParent(this.textBoxTranslatedFile.Text).FullName)
-                                              .FullName
-                                    );
-
-    var pakSource = parent.FullName;
-    var packer    = new PackageEngine(Directory.GetParent(parent.FullName).FullName, parent.Name);
-    packer.BuildPackage();
-
-    MessageBox.Show("mod package-zip successful create.");
-  }
-
   private void buttonPasteToTranslated_Click(
     object    sender,
     EventArgs e
@@ -193,14 +146,21 @@ public partial class FormMain : Form
     this.RecalcRowsAndColumnSizesHeights();
   }
 
-  private void buttonSave_Click(
+  private void buttonRefreshMods_Click(
     object    sender,
     EventArgs e
   )
   {
-    this.SaveData();
-    this.SaveLoca();
-    this.LoadData();
+    this.LoadMods();
+    this.LoadXmlFileNames2ComboBoxes(this.comboBoxMods.Text);
+  }
+
+  private void comboBoxMods_SelectedValueChanged(
+    object    sender,
+    EventArgs e
+  )
+  {
+    this.LoadXmlFileNames2ComboBoxes(this.comboBoxMods.Text);
   }
 
   private void dataGridViewSource_CellPainting(
@@ -220,10 +180,10 @@ public partial class FormMain : Form
 
     e.Handled = true;
     e.PaintBackground(e.CellBounds, true);
-    var cellText   = e.FormattedValue.ToString();
+    var cellText = e.FormattedValue.ToString();
     var isSelected = (e.State & DataGridViewElementStates.Selected) != 0;
-    var fontBrush  = isSelected ? new SolidBrush(e.CellStyle.SelectionForeColor) : new SolidBrush(e.CellStyle.ForeColor);
-    var pointF     = new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2);
+    var fontBrush = isSelected ? new SolidBrush(e.CellStyle.SelectionForeColor) : new SolidBrush(e.CellStyle.ForeColor);
+    var pointF = new PointF(e.CellBounds.X + 2, e.CellBounds.Y + 2);
     e.Graphics.DrawString(cellText, e.CellStyle.Font, fontBrush, pointF);
   }
 
@@ -307,12 +267,52 @@ public partial class FormMain : Form
     }
   }
 
+  private void exitToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    Application.Exit();
+  }
+
   private void FormMain_FormClosed(
     object              sender,
     FormClosedEventArgs e
   )
   {
     this.SaveSettings();
+  }
+
+  private void loadSourceXMLToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    this.LoadData();
+  }
+
+  private void packingModToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    this.PackingMod();
+  }
+
+  private void saveSourceXMLToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    this.SaveData();
+  }
+
+  private void settingsToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    new FormSettings().ShowDialog();
   }
 
   private void textBoxFile_Validated(

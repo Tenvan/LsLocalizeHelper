@@ -135,21 +135,21 @@ public class PackageEngine
 
   #region Fields
 
-  private readonly string modPath;
+  private readonly string modPathEngine;
 
-  private string modName;
+  private string modNameEngine;
 
   #endregion
 
   #region Constructors
 
   public PackageEngine(
-    string modPath,
-    string modName
+    string modPathEngine,
+    string modNameEngine
   )
   {
-    this.modPath = modPath;
-    this.modName = modName;
+    this.modPathEngine = modPathEngine;
+    this.modNameEngine = modNameEngine;
   }
 
   #endregion
@@ -159,7 +159,7 @@ public class PackageEngine
   /// <summary>
   /// Path to the temp directory to use.
   /// </summary>
-  private string TempFolder => Path.Combine(this.modPath, "BG3ModPacker");
+  private string TempFolder => Path.Combine(Directory.GetParent(this.modPathEngine).FullName, "BG3ModPacker");
 
   #endregion
 
@@ -195,9 +195,11 @@ public class PackageEngine
                                    file
                                  ) => Debug.WriteLine(status);
 
+      var targetPak = Path.Combine(  this.TempFolder, this.modNameEngine + ".pak");
+
       packager.CreatePackage(
-                             Path.Combine(this.TempFolder, this.modName + ".pak"),
-                             Path.Combine(this.modPath, this.modName),
+                             targetPak,
+                             this.modPathEngine,
                              options
                             );
     }
@@ -212,7 +214,7 @@ public class PackageEngine
     }
   }
 
-  private string modContentPath => Path.Combine(this.modPath, this.modName);
+  private string modContentPath => Path.Combine(this.modPathEngine, this.modNameEngine);
 
   /// <summary>
   /// Creates the metadata info.json file.
@@ -221,7 +223,7 @@ public class PackageEngine
   /// <returns>Whether or not info.json was generated</returns>
   private bool GenerateInfoJson()
   {
-    var dirInfo  = new DirectoryInfo(modContentPath);
+    var dirInfo  = new DirectoryInfo(this.modPathEngine);
 
     //GeneralHelper.WriteToConsole(Properties.Resources.DirectoryName, dirName);
     var metaFiles   = dirInfo.GetFiles("meta.lsx", System.IO.SearchOption.AllDirectories);
@@ -278,8 +280,8 @@ public class PackageEngine
   private void GenerateZip()
   {
     // save zip next to folder that was dropped
-    var parentDir       = this.modPath;
-    var archiveFileName = $"{parentDir}\\{this.modName}.zip";
+    var parentDir       = Directory.GetParent(this.modPathEngine).FullName;
+    var archiveFileName = $"{parentDir}\\{this.modNameEngine}.zip";
 
     if (File.Exists(archiveFileName)) { File.Delete(archiveFileName); }
 

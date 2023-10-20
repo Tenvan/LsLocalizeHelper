@@ -25,6 +25,30 @@ namespace Bg3LocaHelper.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string pathMods {
+            get {
+                return ((string)(this["pathMods"]));
+            }
+            set {
+                this["pathMods"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string lastMod {
+            get {
+                return ((string)(this["lastMod"]));
+            }
+            set {
+                this["lastMod"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string pathOriginPrevious {
             get {
                 return ((string)(this["pathOriginPrevious"]));

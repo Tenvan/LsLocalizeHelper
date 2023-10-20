@@ -4,6 +4,12 @@
     <Profile Name="(Default)" />
   </Profiles>
   <Settings>
+    <Setting Name="pathMods" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="lastMod" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
     <Setting Name="pathOriginPrevious" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

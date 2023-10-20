@@ -75,6 +75,9 @@
     <Compile Remove="LSLib\Enums\ResourceFormat.cs" />
     <Compile Remove="LSLib\Matrix.cs" />
     <Compile Remove="LSLib\**" />
+    <Compile Update="FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
