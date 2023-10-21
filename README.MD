@@ -6,18 +6,28 @@ schnell und einfach zu bearbeiten.
 Die Bearbeitung der XML-Dateien erfolgt im Localization-Ordner des jeweiligen Moduls unter Angabe eines Verweises auf die Original-XML-Datei.
 Diese dient zur Kontrolle der bereits übersetzten Texte.
 
-![screen1.png](images/screen1.png)
+Die Arbeitsgrundlage ist ein Ordner - Workspace genannt - in dem eine Sammlung verschiedener Mods bearbeitet werden kann.
 
-## Release 2.0.1
-Das Zusammenführen von Änderungen aus Mod-Updates wird nun unterstützt.
-Neue Texte werden hinzugefügt, sobald der Text geändert wurde.
-Nicht mehr vorhandene Texte werden beim Speichern gelöscht.
+## Screenshot
+
+Hier ein parr Screenshot, um die Arbeitsweise des Programmes zu dokumentieren.
+![screen1.png](images/screen1.png)
 
 ![screen2.png](images/screen2.png)
 
-## Release 2.1.0
-Mit 'Auto Clipboard' kann das automatische kopieren in die Zwischenablage beim Zeilenwechsel abgeschaltet werden.
-Mehrzeilige Daten werden jetzt auch im Grid so angezeigt.
-Ausserdem ist jetzt eine Schnellfilterunktion eingebaut worden.
+Beim ersten Start der App oder im Menü Punkt "Settings" **MUSS** dieser eingestellt werden: 
+![workspace_folder.png](images/workspace_folder.png)
 
-![screen3.png](images/screen3.png)
+Die Struktur des Ordner **MUSS** folgenden Aufbau haben:
+
+```
+<ModRootFolder>
+    <ModFolder>
+        <Work>
+            <Default Mod Structure>
+```
+
+Hier ein Beispiel meines Wokspace Ordners:
+
+![workspace_structure.png](images/workspace_structure.png)
+
