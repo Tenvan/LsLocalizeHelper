@@ -22,6 +22,22 @@ public partial class FormMain : Form
     return row.Cells[(int)column].Value.ToString();
   }
 
+  private static string? GetTextFromSource(
+    object sender
+  )
+  {
+    if (sender is not ToolStripMenuItem tmenu)
+      return null;
+
+    if (tmenu.Owner is not ContextMenuStrip cmenu)
+      return null;
+
+    if (cmenu.SourceControl is not ComboBox combobox)
+      return null;
+
+    return combobox.Text;
+  }
+
   private static XmlNode? SelectNode(
     XmlNode? doc,
     object   keySource,
@@ -166,9 +182,13 @@ public partial class FormMain : Form
     EventArgs e
   )
   {
-    this.LoadMods();
-    this.LoadXmlFileNames2ComboBoxes(this.comboBoxMods.Text);
+    this.RefreshMods();
   }
+
+  private void checkBoxAutoClipboard_CheckedChanged(
+    object    sender,
+    EventArgs e
+  ) { }
 
   private void comboBoxMods_SelectedValueChanged(
     object    sender,
@@ -176,6 +196,67 @@ public partial class FormMain : Form
   )
   {
     this.LoadXmlFileNames2ComboBoxes(this.comboBoxMods.Text);
+  }
+
+  private void comboBoxOriginCurrentFile_SelectedValueChanged(
+    object    sender,
+    EventArgs e
+  )
+  {
+    Settings.Default.pathOriginCurrent = this.comboBoxOriginCurrentFile.Text;
+    Settings.Default.Save();
+  }
+
+  private void comboBoxOriginPreviousFile_SelectedValueChanged(
+    object    sender,
+    EventArgs e
+  )
+  {
+    Settings.Default.pathOriginPrevious = this.comboBoxOriginPreviousFile.Text;
+    Settings.Default.Save();
+  }
+
+  private void comboBoxTranslatedFile_SelectedValueChanged(
+    object    sender,
+    EventArgs e
+  )
+  {
+    Settings.Default.pathTranslated = this.comboBoxTranslatedFile.Text;
+    Settings.Default.Save();
+  }
+
+  private void copyFileToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    var fileName = FormMain.GetTextFromSource(sender);
+
+    if (fileName == null) return;
+
+    var fileHelper = new FileEngine(
+                                    Settings.Default.pathMods,
+                                    this.comboBoxMods.Text
+                                   );
+
+    if (fileHelper.CopyFile(fileName: fileName)) { this.RefreshMods(); }
+  }
+
+  private void copyFileToOtherLanguageToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    var fileName = FormMain.GetTextFromSource(sender);
+
+    if (fileName == null) return;
+
+    var fileHelper = new FileEngine(
+                                    Settings.Default.pathMods,
+                                    this.comboBoxMods.Text
+                                   );
+
+    if (fileHelper.CopyFileToNewLanguage(fileName: fileName)) { this.RefreshMods(); }
   }
 
   private void dataGridViewSource_CellPainting(
@@ -283,6 +364,23 @@ public partial class FormMain : Form
     }
   }
 
+  private void deleteFileToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    var fileName = FormMain.GetTextFromSource(sender);
+
+    if (fileName == null) return;
+
+    var fileHelper = new FileEngine(
+                                    Settings.Default.pathMods,
+                                    this.comboBoxMods.Text
+                                   );
+
+    if (fileHelper.DeleteFile(fileName: fileName)) { this.RefreshMods(); }
+  }
+
   private void exitToolStripMenuItem_Click(
     object    sender,
     EventArgs e
@@ -299,6 +397,27 @@ public partial class FormMain : Form
     this.SaveSettings();
   }
 
+  private void importModToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    var formImport   = new FormImport();
+    var dialogResult = formImport.ShowDialog();
+
+    if (dialogResult != DialogResult.OK
+        || !File.Exists(formImport.PakToImport)
+        || string.IsNullOrWhiteSpace(formImport.ModName)) return;
+
+    var packer = new UnpackageEngine(
+                                     Settings.Default.pathMods,
+                                     formImport.PakToImport,
+                                     formImport.ModName
+                                    );
+
+    packer.ImportPackage();
+  }
+
   private void loadSourceXMLToolStripMenuItem_Click(
     object    sender,
     EventArgs e
@@ -313,6 +432,30 @@ public partial class FormMain : Form
   )
   {
     this.PackingMod();
+  }
+
+  private void RefreshMods()
+  {
+    this.LoadMods();
+    this.LoadXmlFileNames2ComboBoxes(this.comboBoxMods.Text);
+    this.LoadSettings();
+  }
+
+  private void renameFileToolStripMenuItem_Click(
+    object    sender,
+    EventArgs e
+  )
+  {
+    var fileName = FormMain.GetTextFromSource(sender);
+
+    if (fileName == null) return;
+
+    var fileHelper = new FileEngine(
+                                    Settings.Default.pathMods,
+                                    this.comboBoxMods.Text
+                                   );
+
+    if (fileHelper.RenameFile(fileName: fileName)) { this.RefreshMods(); }
   }
 
   private void saveSourceXMLToolStripMenuItem_Click(
@@ -406,30 +549,4 @@ public partial class FormMain : Form
   }
 
   #endregion
-
-  private void checkBoxAutoClipboard_CheckedChanged(
-    object    sender,
-    EventArgs e
-  ) { }
-
-  private void importModToolStripMenuItem_Click(
-    object    sender,
-    EventArgs e
-  )
-  {
-    var formImport   = new FormImport();
-    var dialogResult = formImport.ShowDialog();
-
-    if (dialogResult != DialogResult.OK
-        || !File.Exists(formImport.PakToImport)
-        || string.IsNullOrWhiteSpace(formImport.ModName)) return;
-
-    var packer = new UnpackageEngine(
-                                     Settings.Default.pathMods,
-                                     formImport.PakToImport,
-                                     formImport.ModName
-                                    );
-
-    packer.ImportPackage();
-  }
 }

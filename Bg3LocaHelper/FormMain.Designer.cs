@@ -28,43 +28,50 @@
     /// </summary>
     private void InitializeComponent()
     {
-      this.labelSource                    = new System.Windows.Forms.Label();
-      this.labelReference                 = new System.Windows.Forms.Label();
-      this.textBoxTranslatedText          = new System.Windows.Forms.TextBox();
-      this.textBoxCurrentOriginText       = new System.Windows.Forms.TextBox();
-      this.label1                         = new System.Windows.Forms.Label();
-      this.label2                         = new System.Windows.Forms.Label();
-      this.dataGridViewSource             = new System.Windows.Forms.DataGridView();
-      this.buttonPasteToTranslated        = new System.Windows.Forms.Button();
-      this.buttonCopyFromOrigin           = new System.Windows.Forms.Button();
-      this.label3                         = new System.Windows.Forms.Label();
-      this.label4                         = new System.Windows.Forms.Label();
-      this.label5                         = new System.Windows.Forms.Label();
-      this.buttonCopyFromPrevious         = new System.Windows.Forms.Button();
-      this.label6                         = new System.Windows.Forms.Label();
-      this.textBoxPreviousOriginText      = new System.Windows.Forms.TextBox();
-      this.textBoxFilter                  = new System.Windows.Forms.TextBox();
-      this.label7                         = new System.Windows.Forms.Label();
-      this.checkBoxAutoClipboard          = new System.Windows.Forms.CheckBox();
-      this.menuStrip1                     = new System.Windows.Forms.MenuStrip();
-      this.dateiToolStripMenuItem         = new System.Windows.Forms.ToolStripMenuItem();
-      this.settingsToolStripMenuItem      = new System.Windows.Forms.ToolStripMenuItem();
-      this.importModToolStripMenuItem     = new System.Windows.Forms.ToolStripMenuItem();
-      this.loadSourceXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.saveSourceXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-      this.packingModToolStripMenuItem    = new System.Windows.Forms.ToolStripMenuItem();
-      this.exitToolStripMenuItem          = new System.Windows.Forms.ToolStripMenuItem();
-      this.label8                         = new System.Windows.Forms.Label();
-      this.comboBoxMods                   = new System.Windows.Forms.ComboBox();
-      this.buttonRefreshMods              = new System.Windows.Forms.Button();
-      this.comboBoxOriginPreviousFile     = new System.Windows.Forms.ComboBox();
-      this.comboBoxOriginCurrentFile      = new System.Windows.Forms.ComboBox();
-      this.comboBoxTranslatedFile         = new System.Windows.Forms.ComboBox();
-      this.toolStripButton1               = new System.Windows.Forms.ToolStripButton();
-      this.toolStripButton2               = new System.Windows.Forms.ToolStripButton();
-      this.toolStripComboBox1             = new System.Windows.Forms.ToolStripComboBox();
+      this.components                               = new System.ComponentModel.Container();
+      this.labelSource                              = new System.Windows.Forms.Label();
+      this.labelReference                           = new System.Windows.Forms.Label();
+      this.textBoxTranslatedText                    = new System.Windows.Forms.TextBox();
+      this.textBoxCurrentOriginText                 = new System.Windows.Forms.TextBox();
+      this.label1                                   = new System.Windows.Forms.Label();
+      this.label2                                   = new System.Windows.Forms.Label();
+      this.dataGridViewSource                       = new System.Windows.Forms.DataGridView();
+      this.buttonPasteToTranslated                  = new System.Windows.Forms.Button();
+      this.buttonCopyFromOrigin                     = new System.Windows.Forms.Button();
+      this.label3                                   = new System.Windows.Forms.Label();
+      this.label4                                   = new System.Windows.Forms.Label();
+      this.label5                                   = new System.Windows.Forms.Label();
+      this.buttonCopyFromPrevious                   = new System.Windows.Forms.Button();
+      this.label6                                   = new System.Windows.Forms.Label();
+      this.textBoxPreviousOriginText                = new System.Windows.Forms.TextBox();
+      this.textBoxFilter                            = new System.Windows.Forms.TextBox();
+      this.label7                                   = new System.Windows.Forms.Label();
+      this.checkBoxAutoClipboard                    = new System.Windows.Forms.CheckBox();
+      this.menuStrip1                               = new System.Windows.Forms.MenuStrip();
+      this.dateiToolStripMenuItem                   = new System.Windows.Forms.ToolStripMenuItem();
+      this.settingsToolStripMenuItem                = new System.Windows.Forms.ToolStripMenuItem();
+      this.importModToolStripMenuItem               = new System.Windows.Forms.ToolStripMenuItem();
+      this.loadSourceXMLToolStripMenuItem           = new System.Windows.Forms.ToolStripMenuItem();
+      this.saveSourceXMLToolStripMenuItem           = new System.Windows.Forms.ToolStripMenuItem();
+      this.packingModToolStripMenuItem              = new System.Windows.Forms.ToolStripMenuItem();
+      this.exitToolStripMenuItem                    = new System.Windows.Forms.ToolStripMenuItem();
+      this.label8                                   = new System.Windows.Forms.Label();
+      this.comboBoxMods                             = new System.Windows.Forms.ComboBox();
+      this.buttonRefreshMods                        = new System.Windows.Forms.Button();
+      this.comboBoxOriginPreviousFile               = new System.Windows.Forms.ComboBox();
+      this.contextMenuStripFileBox                  = new System.Windows.Forms.ContextMenuStrip(this.components);
+      this.renameFileToolStripMenuItem              = new System.Windows.Forms.ToolStripMenuItem();
+      this.copyFileToolStripMenuItem                = new System.Windows.Forms.ToolStripMenuItem();
+      this.copyFileToOtherLanguageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.deleteFileToolStripMenuItem              = new System.Windows.Forms.ToolStripMenuItem();
+      this.comboBoxOriginCurrentFile                = new System.Windows.Forms.ComboBox();
+      this.comboBoxTranslatedFile                   = new System.Windows.Forms.ComboBox();
+      this.toolStripButton1                         = new System.Windows.Forms.ToolStripButton();
+      this.toolStripButton2                         = new System.Windows.Forms.ToolStripButton();
+      this.toolStripComboBox1                       = new System.Windows.Forms.ToolStripComboBox();
       ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSource)).BeginInit();
       this.menuStrip1.SuspendLayout();
+      this.contextMenuStripFileBox.SuspendLayout();
       this.SuspendLayout();
 
       // 
@@ -401,12 +408,53 @@
       this.comboBoxOriginPreviousFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                                                                                      | System.Windows.Forms.AnchorStyles.Right)));
 
-      this.comboBoxOriginPreviousFile.DropDownStyle     = System.Windows.Forms.ComboBoxStyle.DropDownList;
-      this.comboBoxOriginPreviousFile.FormattingEnabled = true;
-      this.comboBoxOriginPreviousFile.Location          = new System.Drawing.Point(147, 94);
-      this.comboBoxOriginPreviousFile.Name              = "comboBoxOriginPreviousFile";
-      this.comboBoxOriginPreviousFile.Size              = new System.Drawing.Size(722, 21);
-      this.comboBoxOriginPreviousFile.TabIndex          = 36;
+      this.comboBoxOriginPreviousFile.ContextMenuStrip     =  this.contextMenuStripFileBox;
+      this.comboBoxOriginPreviousFile.DropDownStyle        =  System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.comboBoxOriginPreviousFile.FormattingEnabled    =  true;
+      this.comboBoxOriginPreviousFile.Location             =  new System.Drawing.Point(147, 94);
+      this.comboBoxOriginPreviousFile.Name                 =  "comboBoxOriginPreviousFile";
+      this.comboBoxOriginPreviousFile.Size                 =  new System.Drawing.Size(722, 21);
+      this.comboBoxOriginPreviousFile.TabIndex             =  36;
+      this.comboBoxOriginPreviousFile.SelectedValueChanged += new System.EventHandler(this.comboBoxOriginPreviousFile_SelectedValueChanged);
+
+      // 
+      // contextMenuStripFileBox
+      // 
+      this.contextMenuStripFileBox.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.renameFileToolStripMenuItem, this.copyFileToolStripMenuItem, this.copyFileToOtherLanguageToolStripMenuItem, this.deleteFileToolStripMenuItem });
+      this.contextMenuStripFileBox.Name = "contextMenuStripFileBox";
+      this.contextMenuStripFileBox.Size = new System.Drawing.Size(224, 92);
+
+      // 
+      // renameFileToolStripMenuItem
+      // 
+      this.renameFileToolStripMenuItem.Name  =  "renameFileToolStripMenuItem";
+      this.renameFileToolStripMenuItem.Size  =  new System.Drawing.Size(223, 22);
+      this.renameFileToolStripMenuItem.Text  =  "Rename file";
+      this.renameFileToolStripMenuItem.Click += new System.EventHandler(this.renameFileToolStripMenuItem_Click);
+
+      // 
+      // copyFileToolStripMenuItem
+      // 
+      this.copyFileToolStripMenuItem.Name  =  "copyFileToolStripMenuItem";
+      this.copyFileToolStripMenuItem.Size  =  new System.Drawing.Size(223, 22);
+      this.copyFileToolStripMenuItem.Text  =  "Copy File";
+      this.copyFileToolStripMenuItem.Click += new System.EventHandler(this.copyFileToolStripMenuItem_Click);
+
+      // 
+      // copyFileToOtherLanguageToolStripMenuItem
+      // 
+      this.copyFileToOtherLanguageToolStripMenuItem.Name  =  "copyFileToOtherLanguageToolStripMenuItem";
+      this.copyFileToOtherLanguageToolStripMenuItem.Size  =  new System.Drawing.Size(223, 22);
+      this.copyFileToOtherLanguageToolStripMenuItem.Text  =  "Copy File to other Language";
+      this.copyFileToOtherLanguageToolStripMenuItem.Click += new System.EventHandler(this.copyFileToOtherLanguageToolStripMenuItem_Click);
+
+      // 
+      // deleteFileToolStripMenuItem
+      // 
+      this.deleteFileToolStripMenuItem.Name  =  "deleteFileToolStripMenuItem";
+      this.deleteFileToolStripMenuItem.Size  =  new System.Drawing.Size(223, 22);
+      this.deleteFileToolStripMenuItem.Text  =  "Delete File";
+      this.deleteFileToolStripMenuItem.Click += new System.EventHandler(this.deleteFileToolStripMenuItem_Click);
 
       // 
       // comboBoxOriginCurrentFile
@@ -414,12 +462,14 @@
       this.comboBoxOriginCurrentFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                                                                                     | System.Windows.Forms.AnchorStyles.Right)));
 
-      this.comboBoxOriginCurrentFile.DropDownStyle     = System.Windows.Forms.ComboBoxStyle.DropDownList;
-      this.comboBoxOriginCurrentFile.FormattingEnabled = true;
-      this.comboBoxOriginCurrentFile.Location          = new System.Drawing.Point(147, 121);
-      this.comboBoxOriginCurrentFile.Name              = "comboBoxOriginCurrentFile";
-      this.comboBoxOriginCurrentFile.Size              = new System.Drawing.Size(722, 21);
-      this.comboBoxOriginCurrentFile.TabIndex          = 37;
+      this.comboBoxOriginCurrentFile.ContextMenuStrip     =  this.contextMenuStripFileBox;
+      this.comboBoxOriginCurrentFile.DropDownStyle        =  System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.comboBoxOriginCurrentFile.FormattingEnabled    =  true;
+      this.comboBoxOriginCurrentFile.Location             =  new System.Drawing.Point(147, 121);
+      this.comboBoxOriginCurrentFile.Name                 =  "comboBoxOriginCurrentFile";
+      this.comboBoxOriginCurrentFile.Size                 =  new System.Drawing.Size(722, 21);
+      this.comboBoxOriginCurrentFile.TabIndex             =  37;
+      this.comboBoxOriginCurrentFile.SelectedValueChanged += new System.EventHandler(this.comboBoxOriginCurrentFile_SelectedValueChanged);
 
       // 
       // comboBoxTranslatedFile
@@ -427,12 +477,14 @@
       this.comboBoxTranslatedFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                                                                                  | System.Windows.Forms.AnchorStyles.Right)));
 
-      this.comboBoxTranslatedFile.DropDownStyle     = System.Windows.Forms.ComboBoxStyle.DropDownList;
-      this.comboBoxTranslatedFile.FormattingEnabled = true;
-      this.comboBoxTranslatedFile.Location          = new System.Drawing.Point(147, 178);
-      this.comboBoxTranslatedFile.Name              = "comboBoxTranslatedFile";
-      this.comboBoxTranslatedFile.Size              = new System.Drawing.Size(722, 21);
-      this.comboBoxTranslatedFile.TabIndex          = 38;
+      this.comboBoxTranslatedFile.ContextMenuStrip     =  this.contextMenuStripFileBox;
+      this.comboBoxTranslatedFile.DropDownStyle        =  System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.comboBoxTranslatedFile.FormattingEnabled    =  true;
+      this.comboBoxTranslatedFile.Location             =  new System.Drawing.Point(147, 178);
+      this.comboBoxTranslatedFile.Name                 =  "comboBoxTranslatedFile";
+      this.comboBoxTranslatedFile.Size                 =  new System.Drawing.Size(722, 21);
+      this.comboBoxTranslatedFile.TabIndex             =  38;
+      this.comboBoxTranslatedFile.SelectedValueChanged += new System.EventHandler(this.comboBoxTranslatedFile_SelectedValueChanged);
 
       // 
       // toolStripButton1
@@ -494,9 +546,20 @@
       ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSource)).EndInit();
       this.menuStrip1.ResumeLayout(false);
       this.menuStrip1.PerformLayout();
+      this.contextMenuStripFileBox.ResumeLayout(false);
       this.ResumeLayout(false);
       this.PerformLayout();
     }
+
+    private System.Windows.Forms.ContextMenuStrip contextMenuStripFileBox;
+
+    private System.Windows.Forms.ToolStripMenuItem renameFileToolStripMenuItem;
+
+    private System.Windows.Forms.ToolStripMenuItem copyFileToolStripMenuItem;
+
+    private System.Windows.Forms.ToolStripMenuItem deleteFileToolStripMenuItem;
+
+    private System.Windows.Forms.ToolStripMenuItem copyFileToOtherLanguageToolStripMenuItem;
 
     private System.Windows.Forms.ToolStripButton toolStripButton2;
 
