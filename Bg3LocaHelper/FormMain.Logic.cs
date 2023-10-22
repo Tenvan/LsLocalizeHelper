@@ -214,6 +214,9 @@ partial class FormMain
         {
           var uid     = translatedNode.Attributes["contentuid"].InnerText;
           var version = translatedNode.Attributes["version"]?.InnerText;
+
+          if (string.IsNullOrEmpty(uid)) continue;
+
           var xpath   = version == null ? $"//content[@contentuid='{uid}']" : $"//content[@contentuid='{uid}' and @version='{version}']";
 
           var currentNode =
