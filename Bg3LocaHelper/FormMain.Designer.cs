@@ -542,7 +542,7 @@
       this.Name          =  "FormMain";
       this.StartPosition =  System.Windows.Forms.FormStartPosition.Manual;
       this.Text          =  "BG3 Loca Helper";
-      this.FormClosed    += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
+      this.ResizeEnd     += new System.EventHandler(this.FormMain_ResizeEnd);
       ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSource)).EndInit();
       this.menuStrip1.ResumeLayout(false);
       this.menuStrip1.PerformLayout();

@@ -195,6 +195,8 @@ public partial class FormMain : Form
     EventArgs e
   )
   {
+    Settings.Default.lastMod = this.comboBoxMods.Text;
+    Settings.Default.Save();
     this.LoadXmlFileNames2ComboBoxes(this.comboBoxMods.Text);
   }
 
@@ -389,14 +391,6 @@ public partial class FormMain : Form
     Application.Exit();
   }
 
-  private void FormMain_FormClosed(
-    object              sender,
-    FormClosedEventArgs e
-  )
-  {
-    this.SaveSettings();
-  }
-
   private void importModToolStripMenuItem_Click(
     object    sender,
     EventArgs e
@@ -549,4 +543,14 @@ public partial class FormMain : Form
   }
 
   #endregion
+
+  private void FormMain_ResizeEnd(
+    object    sender,
+    EventArgs e
+  )
+  {
+    Settings.Default.windowPos  = this.Location;
+    Settings.Default.windowSize = this.Size;
+    Settings.Default.Save();
+  }
 }

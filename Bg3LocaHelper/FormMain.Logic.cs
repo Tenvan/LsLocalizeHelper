@@ -379,17 +379,6 @@ partial class FormMain
     LocaUtils.Save(resource, locaOutputPath, format);
   }
 
-  private void SaveSettings()
-  {
-    Settings.Default.lastMod            = this.comboBoxMods.Text;
-    Settings.Default.pathOriginCurrent  = this.OriginCurrentFile;
-    Settings.Default.pathOriginPrevious = this.OriginPreviousFile;
-    Settings.Default.pathTranslated     = this.TranslatedFile;
-    Settings.Default.windowPos          = this.Location;
-    Settings.Default.windowSize         = this.Size;
-    Settings.Default.Save();
-  }
-
   private void UpdateRowStatus()
   {
     var row = this.dataGridViewSource.CurrentRow;
