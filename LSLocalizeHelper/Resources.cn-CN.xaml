@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+    <System:String x:Key="LabelText1">BLUB 英语</System:String>
+    <System:String x:Key="ButtonContent1">是</System:String>
+</ResourceDictionary>

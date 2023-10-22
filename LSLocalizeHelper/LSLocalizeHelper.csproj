@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latestmajor</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Page Remove="Resources.cn-CN.xaml" />
+    <Page Remove="Resources.de-DE.xaml" />
+    <Page Remove="Resources.en-US.xaml" />
+    <Page Update="Views\MainWindow\MainWindow.xaml">
+      <XamlRuntime>Wpf</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources.cn-CN.xaml">
+    </Resource>
+    <Resource Include="Resources.de-DE.xaml">
+    </Resource>
+    <Resource Include="Resources.en-US.xaml">
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Classes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AlphaFS" Version="2.2.6" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Include="FileAssociation" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="zlib.net" Version="1.0.4" />
+  </ItemGroup>
+
+</Project>

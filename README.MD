@@ -1,5 +1,11 @@
 # Baldurs Gate 3 Loca Helper
 
+<!-- TOC -->
+* [Baldurs Gate 3 Loca Helper](#baldurs-gate-3-loca-helper)
+  * [Features](#features)
+  * [Screenshot](#screenshot)
+<!-- TOC -->
+
 Einfaches Werkzeug, um die für die Lokalisierung benötigten Dateien
 schnell und einfach zu bearbeiten.
 
