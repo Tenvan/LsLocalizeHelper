@@ -35,7 +35,7 @@ namespace LSLocalizeHelper.Services
         public static void Save()
         {
             Directory.CreateDirectory(Path.GetDirectoryName( SettingsManager.settingsPath));
-            var json = JsonConvert.SerializeObject(SettingsManager.Settings);
+            var json = JsonConvert.SerializeObject(SettingsManager.Settings, Formatting.Indented);
             File.WriteAllText(SettingsManager.settingsPath, json);
         }
     }

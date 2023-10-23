@@ -12,13 +12,13 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         SizeChanged="WindowMain_SizeChanged"
         LocationChanged="WindowMain_LocationChanged">
-    <Grid Margin="10,10,10,10" ShowGridLines="True">
+    <Grid Margin="10,10,10,10" ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition ToolTip="RowToolbar" Height="40" />
             <RowDefinition ToolTip="Header" Height="200" />
             <RowDefinition ToolTip="Content" Height="*" />
-            <RowDefinition ToolTip="RowOrigins" Height="100" />
-            <RowDefinition ToolTip="RowTranslation" Height="100" />
+            <RowDefinition ToolTip="RowOrigins" Height="150" />
+            <RowDefinition ToolTip="RowTranslation" Height="150" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100*" />
@@ -26,6 +26,7 @@
             <ColumnDefinition Width="100*" />
             <ColumnDefinition Width="100*" />
         </Grid.ColumnDefinitions>
+
         <ToolBar Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Grid.ColumnSpan="4">
             <Button x:Name="CmdShowSettings" Content="Einstellungen" Click="CmdShowSettings_Click" />
             <Separator />
@@ -40,6 +41,7 @@
 
         <Label Grid.Row="1" Grid.Column="0" Content="Projekt auswählen" Margin="5,0,5,5" VerticalAlignment="Top"
                Height="24" />
+
         <ListBox Grid.Row="1" Grid.Column="0" Name="ListBoxMods" Margin="5,24,5,5" ItemsSource="{Binding ProjectItems}"
                  SelectionChanged="ListBoxMods_SelectionChanged" SelectionMode="Extended">
             <ListBox.ItemTemplate>
@@ -53,7 +55,8 @@
 
         <Label Grid.Row="1" Grid.Column="1" Content="Aktuelle Original XML" Margin="5,0,5,5" VerticalAlignment="Top"
                Height="24" />
-        <ListBox Grid.Row="1" Grid.Column="1" Name="comboBoxOriginCurrentFile" Margin="5,24,5,5"
+        <ListBox Grid.Row="1" Grid.Column="1" Name="ListBoxOriginCurrentFile" Margin="5,24,5,5"
+                 SelectionChanged="ListBoxOriginCurrentFile_OnSelectionChanged"
                  ItemsSource="{Binding OriginCurrentFileItems}" SelectionMode="Extended">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -68,7 +71,8 @@
 
         <Label Grid.Row="1" Grid.Column="2" Content="Vorherige Original XML" Margin="5,0,5,5" VerticalAlignment="Top"
                Height="24" />
-        <ListBox Grid.Row="1" Grid.Column="2" Name="comboBoxOriginPreviousFile" Margin="5,24,5,5"
+        <ListBox Grid.Row="1" Grid.Column="2" Name="ListBoxOriginPreviousFile" Margin="5,24,5,5"
+                 SelectionChanged="ListBoxOriginPreviousFile_OnSelectionChanged"
                  ItemsSource="{Binding OriginPreviousFileItems}" SelectionMode="Extended">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -83,7 +87,8 @@
 
         <Label Grid.Row="1" Grid.Column="3" Content="Übersetzungsdatei" Margin="5,0,5,5" VerticalAlignment="Top"
                Height="24" />
-        <ListBox Grid.Row="1" Grid.Column="3" Name="comboBoxTranslatedFile" Margin="5,24,5,5"
+        <ListBox Grid.Row="1" Grid.Column="3" Name="ListBoxTranslatedFile" Margin="5,24,5,5"
+                 SelectionChanged="ListBoxTranslatedFile_OnSelectionChanged"
                  ItemsSource="{Binding TranslatedFileItems}" SelectionMode="Extended">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -96,19 +101,37 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <DataGrid Grid.Row="2" Grid.Column="0" Name="TranslationGrid" Margin="0,0,0,0" d:ItemsSource="{d:SampleData ItemCount=5}"
-                  Grid.ColumnSpan="4" />
+        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
+                  x:Name="TranslationGrid" AutoGenerateColumns="False"
+                  ItemsSource="{Binding DataService.TranslatedItems}"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  SelectionChanged="TranslationGrid_OnSelectionChanged"
+                  Margin="0,0,0,40">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Mod" Binding="{Binding Mod.Name}"/>
+                <DataGridTextColumn Header="Datei" Binding="{Binding Source.Name}"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Uid" Binding="{Binding Uuid}"/>
+                <DataGridTextColumn Header="Version" Binding="{Binding Version}"/>
+                <DataGridTextColumn Header="Text" Binding="{Binding Text}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Height="40" VerticalAlignment="Bottom" Grid.ColumnSpan="4">
+            <TextBlock Text="Status:" Height="40"></TextBlock>
+        </StackPanel>
 
         <Label Grid.Row="3" Grid.Column="0" Content="Aktueller Text" VerticalAlignment="Top" Height="24"
                Grid.ColumnSpan="2" />
-        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="TextBox" Margin="0,24,0,0" />
+        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TextBoxCurrentOrigin" TextWrapping="Wrap" Text="TextBox" Margin="0,24,0,0" />
 
         <Label Grid.Row="3" Grid.Column="2" Content="Vorheriger Text" VerticalAlignment="Top" Height="24"
                Grid.ColumnSpan="2" />
-        <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="TextBox" Margin="0,24,0,0" />
+        <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2"  x:Name="TextBoxPreviousOrigin" TextWrapping="Wrap" Text="TextBox" Margin="0,24,0,0" />
 
         <Label Grid.Row="4" Grid.Column="0" Content="Übersetzter Text" VerticalAlignment="Top" Height="24"
                Grid.ColumnSpan="4" />
-        <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" TextWrapping="Wrap" Text="TextBox" Margin="0,24,0,0" />
+        <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4"  x:Name="TextBoxTranslated" TextWrapping="Wrap" Text="TextBox" Margin="0,24,0,0" />
     </Grid>
 </Window>

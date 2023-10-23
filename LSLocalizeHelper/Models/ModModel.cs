@@ -4,11 +4,15 @@ namespace LSLocalizeHelper.Models;
 
 public class ModModel
 {
-  public string? Name { get; set; }
+  #region Properties
 
   public DirectoryInfo Folder { get; set; }
 
-  public string Version { get; set; }
+  public string? Name { get; set; }
 
   public string UUID { get; set; }
+
+  public string Version { get; set; }
+
+  #endregion
 }

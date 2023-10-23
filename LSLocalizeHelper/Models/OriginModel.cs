@@ -2,15 +2,15 @@ namespace LSLocalizeHelper.Models;
 
 public class OriginModel
 {
-  #region Fields
+  #region Properties
 
-  public ModModel Mod;
+  public ModModel Mod { get; set; }
 
-  public string Text;
+  public string Text { get; set; }
 
-  public string Uuid;
+  public string Uuid { get; set; }
 
-  public string Version;
+  public string Version { get; set; }
 
   #endregion
 }

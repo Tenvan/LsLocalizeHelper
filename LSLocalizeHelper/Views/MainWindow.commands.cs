@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
@@ -28,9 +29,12 @@ public partial class MainWindow
   )
   {
     this.DataService = new LsWorkingDataService();
-    this.DataService.Load(this.TranslatedFileItems.ToArray(),
+
+    this.DataService.Load(
+                          this.TranslatedFileItems.ToArray(),
                           this.OriginCurrentFileItems.ToArray(),
-                          this.OriginPreviousFileItems.ToArray());
+                          this.OriginPreviousFileItems.ToArray()
+                         );
 
     this.TranslationGrid.ItemsSource = this.DataService.TranslatedItems;
   }
@@ -41,6 +45,14 @@ public partial class MainWindow
   )
   {
     throw new NotImplementedException();
+  }
+
+  private void DoOnRowChanged(
+    DataRowModel? row
+  )
+  {
+    this.TextBoxTranslated.Text = row?.Text;
+    if (row?.Text != null) Clipboard.SetText(row.Text);
   }
 
   private void LoadMods()
@@ -56,7 +68,6 @@ public partial class MainWindow
     this.OriginPreviousFileItems.Clear();
     this.OriginCurrentFileItems.Clear();
     this.TranslatedFileItems.Clear();
-
     var selectedValue = this.ListBoxMods.SelectedItems.Cast<ModModel>().ToArray();
     this.XmlFilesService.Load(selectedValue);
 

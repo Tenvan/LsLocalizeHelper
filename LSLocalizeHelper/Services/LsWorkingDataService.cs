@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -11,11 +12,11 @@ public class LsWorkingDataService
 {
   #region Properties
 
-  public List<OriginModel> OriginCurrentItems { get; set; }
+  public ObservableCollection<OriginModel> OriginCurrentItems { get; set; } = new();
 
-  public List<OriginModel> OriginPreviousItems { get; set; }
+  public ObservableCollection<OriginModel> OriginPreviousItems { get; set; } = new();
 
-  public List<DataRowModel> TranslatedItems { get; set; } = new();
+  public ObservableCollection<DataRowModel> TranslatedItems { get; set; } = new();
 
   #endregion
 
@@ -42,7 +43,7 @@ public class LsWorkingDataService
            {
              Uuid    = node.Attributes["contentuid"]?.InnerText,
              Version = node.Attributes["version"]?.InnerText,
-             Text    = node.Attributes["text"]?.InnerText
+             Text    = node.InnerText
            };
   }
 
@@ -89,7 +90,9 @@ public class LsWorkingDataService
                                          Status  = TranslationStatus.origin,
                                          Uuid    = newRow.Uuid,
                                          Version = newRow.Version,
-                                         Text    = newRow.Text
+                                         Text    = newRow.Text,
+                                         Mod     = xmlFileModel.Mod,
+                                         Source  = xmlFileModel,
                                        }
                                       );
 
