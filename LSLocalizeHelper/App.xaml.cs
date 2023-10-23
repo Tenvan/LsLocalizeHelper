@@ -8,6 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
+using LSLocalizeHelper.Views.Settings;
+
 namespace LSLocalizeHelper
 {
     /// <summary>
@@ -17,7 +19,7 @@ namespace LSLocalizeHelper
     {
         public App()
         {
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
+            // Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
         }
     }
 }

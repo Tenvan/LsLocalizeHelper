@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:System="clr-namespace:System;assembly=System.Runtime">
 
-    <System:String x:Key="LabelText1">BLUB Deutsch</System:String>
-    <System:String x:Key="ButtonContent1">Ja</System:String>
-    <System:String x:Key="ButtonContent2">Nein</System:String>
+    <System:String x:Key="ButtonYes">Ja</System:String>
+    <System:String x:Key="ButtonNo">Nein</System:String>
+    <System:String x:Key="ButtonApply">Übernehmen</System:String>
+    <System:String x:Key="LblSettingsModsFolder">Mods Arbeitsordner</System:String>
 </ResourceDictionary>

@@ -2,40 +2,41 @@
 
 using Alphaleonis.Win32.Filesystem;
 
+using LSLocalizeHelper.Models;
+
 using Newtonsoft.Json;
 
 namespace LSLocalizeHelper.Services
 {
-    internal class SettingsManager<T> where T : class, new()
+    internal static class SettingsManager
     {
-        private readonly string settingsPath;
+        private static readonly string                        settingsPath;
 
-        public SettingsManager()
+        static SettingsManager()
         {
-            this.settingsPath = this.GetLocalFilePath("UserSettings.json");
-            this.Settings  = new T();
+            SettingsManager.settingsPath = SettingsManager.GetLocalFilePath("UserSettings.json");
+            SettingsManager.Settings     = new UserSettings();
         }
 
-        public T? Settings { get; set; }
+        public static UserSettings? Settings { get; set; }
 
-        private string GetLocalFilePath(string fileName)
+        private static string GetLocalFilePath(string fileName)
         {
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             return Path.Combine(appData, "LSLocalizeHelper", fileName);
         }
 
-        public void Load()
+        public static void Load()
         {
-
-            if (File.Exists(this.settingsPath))
-                this.Settings = JsonConvert.DeserializeObject<T>(File.ReadAllText(this.settingsPath));
+            if (File.Exists(SettingsManager.settingsPath))
+                SettingsManager.Settings = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(SettingsManager.settingsPath));
         }
 
-        public void Save()
+        public static void Save()
         {
-            Directory.CreateDirectory(Path.GetDirectoryName( this.settingsPath));
-            var json = JsonConvert.SerializeObject(this.Settings);
-            File.WriteAllText(this.settingsPath, json);
+            Directory.CreateDirectory(Path.GetDirectoryName( SettingsManager.settingsPath));
+            var json = JsonConvert.SerializeObject(SettingsManager.Settings);
+            File.WriteAllText(SettingsManager.settingsPath, json);
         }
     }
 }

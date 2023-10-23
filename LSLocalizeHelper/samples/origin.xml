@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<contentList>
+	<content contentuid="111" version="1">Debug [1]</content>
+	<content contentuid="222" version="1">Debug [2a]</content>
+	<content contentuid="222" version="2">Debug [2b]</content>
+	<content contentuid="333" version="2">Debug [3]</content>
+	<content contentuid="555" version="3">Debug [5]</content>
+	<content contentuid="666" version="1">Debug [6]</content>
+	<content contentuid="777" version="1">Debug [6]</content>
+	<content contentuid="888" version="1">Debug [6]</content>
+	<content contentuid="999" version="1">Debug [6]</content>
+</contentList>
