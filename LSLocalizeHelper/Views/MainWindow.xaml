@@ -6,6 +6,7 @@
         xmlns:views="clr-namespace:LSLocalizeHelper.Views"
         xmlns:converter="clr-namespace:LSLocalizeHelper.Converter"
         xmlns:services="clr-namespace:LSLocalizeHelper.Services"
+        xmlns:enums="clr-namespace:LSLocalizeHelper.Enums"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="700" Width="1280"
@@ -21,10 +22,12 @@
   <Grid Margin="10,10,10,10" ShowGridLines="False">
     <Grid.RowDefinitions>
       <RowDefinition ToolTip="RowToolbar" Height="40" />
-      <RowDefinition ToolTip="Header" Height="200" />
-      <RowDefinition ToolTip="Content" Height="*" />
-      <RowDefinition ToolTip="RowOrigins" Height="150" />
+      <RowDefinition ToolTip="Files" Height="200" />
+      <RowDefinition ToolTip="SplitterGridTop" Height="5" />
+      <RowDefinition ToolTip="Grid" Height="*" />
+      <RowDefinition ToolTip="SplitterGridBottom" Height="5" />
       <RowDefinition ToolTip="RowTranslation" Height="150" />
+      <RowDefinition ToolTip="RowOrigins" Height="150" />
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="100*" />
@@ -107,16 +110,19 @@
       </ListBox.ItemTemplate>
     </ListBox>
 
-    <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
+    <GridSplitter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Height="5" Background="DimGray"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows">
+    </GridSplitter>
+
+    <DataGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
               x:Name="TranslationGrid" AutoGenerateColumns="False"
-              ItemsSource="{Binding DataService.TranslatedItems}"
+              ItemsSource="{Binding DataGridItems}"
               IsReadOnly="True"
               SelectionMode="Single"
               Margin="0,0,0,40">
       <DataGrid.Columns>
         <DataGridTextColumn Header="#"
-                            Binding="{Binding Path=.,
-        Converter={StaticResource OriginStatusConverter}}" />
+                            Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" />
         <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
         <DataGridTextColumn Header="Mod" Binding="{Binding Mod.Name}" />
         <DataGridTextColumn Header="Datei" Binding="{Binding Source.Name}" />
@@ -124,25 +130,54 @@
         <DataGridTextColumn Header="Version" Binding="{Binding Version}" />
         <DataGridTextColumn Header="Text" Binding="{Binding Text}" />
       </DataGrid.Columns>
+      <DataGrid.RowStyle>
+        <Style TargetType="DataGridRow">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.DeletedStatus}">
+              <Setter Property="Background" Value="Brown"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.NewStatus}">
+              <Setter Property="Background" Value="Blue"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.OriginStatus}">
+              <Setter Property="Foreground" Value="Brown"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.TranslatedStatus}">
+              <Setter Property="Foreground" Value="Green"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.UpdatedStatus}">
+              <Setter Property="Foreground" Value="Blue"></Setter>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </DataGrid.RowStyle>
     </DataGrid>
 
-    <StackPanel Grid.Row="2" Grid.Column="0" Height="40" VerticalAlignment="Bottom" Grid.ColumnSpan="4">
+    <StackPanel Grid.Row="3" Grid.Column="0" Height="40" VerticalAlignment="Bottom" Grid.ColumnSpan="4">
       <TextBlock Text="Status:" Height="40" />
     </StackPanel>
 
-    <Label Grid.Row="3" Grid.Column="0" Content="Aktueller Text" VerticalAlignment="Top" Height="24"
-           Grid.ColumnSpan="2" />
-    <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TextBoxCurrentOrigin" TextWrapping="Wrap"
-             Text="TextBox" Margin="0,24,0,0" />
+    <GridSplitter Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Height="5" Background="DimGray"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows">
+    </GridSplitter>
 
-    <Label Grid.Row="3" Grid.Column="2" Content="Vorheriger Text" VerticalAlignment="Top" Height="24"
-           Grid.ColumnSpan="2" />
-    <TextBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" x:Name="TextBoxPreviousOrigin" TextWrapping="Wrap"
-             Text="TextBox" Margin="0,24,0,0" />
-
-    <Label Grid.Row="4" Grid.Column="0" Content="Übersetzter Text" VerticalAlignment="Top" Height="24"
+    <Label Grid.Row="5" Grid.Column="0" Content="Übersetzter Text" VerticalAlignment="Top" Height="24"
            Grid.ColumnSpan="4" />
-    <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" x:Name="TextBoxTranslated" TextWrapping="Wrap"
+    <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" x:Name="TextBoxTranslated" TextWrapping="Wrap"
+             Text="TextBox" Margin="0,24,0,0" />
+
+    <Label Grid.Row="6" Grid.Column="0" Content="Aktueller Text" VerticalAlignment="Top" Height="24"
+           Grid.ColumnSpan="2" />
+    <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" x:Name="TextBoxPreviousOrigin" TextWrapping="Wrap"
+             Text="TextBox" Margin="0,24,0,0" />
+    <Label Grid.Row="6" Grid.Column="2" Content="Vorheriger Text" VerticalAlignment="Top" Height="24"
+           Grid.ColumnSpan="2" />
+    <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TextBoxCurrentOrigin" TextWrapping="Wrap"
              Text="TextBox" Margin="0,24,0,0" />
   </Grid>
 </Window>

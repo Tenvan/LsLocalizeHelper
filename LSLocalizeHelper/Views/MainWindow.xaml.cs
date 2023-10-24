@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Markup;
 
 using LSLocalizeHelper.Models;
@@ -41,7 +39,7 @@ public partial class MainWindow
     this.TranslationGrid.Events()
         .SelectionChanged.Throttle(TimeSpan.FromSeconds(0.8))
         .ObserveOn(RxApp.MainThreadScheduler)
-        .Select(e => e.AddedItems[0] as DataRowModel)
+        .Select(e => e.AddedItems.Count > 0 ? e.AddedItems[0] as DataRowModel : null)
         .Subscribe(this.DoOnRowChanged);
   }
 

@@ -1,3 +1,5 @@
+using LSLocalizeHelper.Enums;
+
 namespace LSLocalizeHelper.Models;
 
 public class DataRowModel

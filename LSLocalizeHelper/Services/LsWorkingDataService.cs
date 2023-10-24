@@ -1,50 +1,80 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 
+using LSLocalizeHelper.Enums;
 using LSLocalizeHelper.Models;
 
 namespace LSLocalizeHelper.Services;
 
-public class LsWorkingDataService
+public static class LsWorkingDataService
 {
 
-  #region Properties
+  #region Static Properties
 
-  public ObservableCollection<OriginModel> OriginCurrentItems { get; set; } = new();
+  public static ObservableCollection<OriginModel> OriginCurrentItems { get; set; } = new();
 
-  public ObservableCollection<OriginModel> OriginPreviousItems { get; set; } = new();
+  public static ObservableCollection<OriginModel> OriginPreviousItems { get; set; } = new();
 
-  public ObservableCollection<DataRowModel> TranslatedItems { get; set; } = new();
+  public static ObservableCollection<DataRowModel> TranslatedItems { get; set; } = new();
 
   #endregion
 
-  #region Methods
+  #region Static Methods
 
-  public void Load(IEnumerable<XmlFileModel> translatedFiles,
-                   IEnumerable<XmlFileModel> currentFiles,
-                   IEnumerable<XmlFileModel> previousFiles
+  public static void Clear()
+  {
+    LsWorkingDataService.OriginCurrentItems.Clear();
+    LsWorkingDataService.OriginPreviousItems.Clear();
+    LsWorkingDataService.TranslatedItems.Clear();
+  }
+
+  public static OriginModel? GetCurrentForUid(string uuid)
+  {
+    var result = LsWorkingDataService.OriginCurrentItems.FirstOrDefault(o => o.Uuid == uuid);
+
+    return result;
+  }
+
+  public static OriginModel? GetPreviousForUid(string uuid)
+  {
+    var result = LsWorkingDataService.OriginPreviousItems.FirstOrDefault(o => o.Uuid == uuid);
+
+    return result;
+  }
+
+  public static DataRowModel? GetTranslatedForUid(string uuid)
+  {
+    var result = LsWorkingDataService.TranslatedItems.FirstOrDefault(o => o.Uuid == uuid);
+
+    return result;
+  }
+
+  public static void Load(IEnumerable<XmlFileModel> translatedFiles,
+                          IEnumerable<XmlFileModel> currentFiles,
+                          IEnumerable<XmlFileModel> previousFiles
   )
   {
     foreach (var xmlFileModel in translatedFiles)
     {
-      this.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Translated);
+      LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Translated);
     }
 
     foreach (var xmlFileModel in currentFiles)
     {
-      this.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Current);
+      LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Current);
     }
 
     foreach (var xmlFileModel in previousFiles)
     {
-      this.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Previous);
+      LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Previous);
     }
   }
 
-  private OriginModel BuildOriginModel(XmlElement node) =>
+  private static OriginModel BuildOriginModel(XmlElement node) =>
     new()
     {
       Uuid = node.Attributes["contentuid"]?.InnerText,
@@ -52,11 +82,11 @@ public class LsWorkingDataService
       Text = node.InnerText,
     };
 
-  private bool LoadFiles(XmlFileModel xmlFileModel, FileTypes type)
+  private static void LoadFiles(XmlFileModel xmlFileModel, FileTypes type)
   {
     if (!xmlFileModel.FullPath!.Exists)
     {
-      return false;
+      return;
     }
 
     try
@@ -67,35 +97,35 @@ public class LsWorkingDataService
 
       if (nodes == null)
       {
-        return true;
+        return;
       }
 
       foreach (XmlElement node in nodes)
       {
         try
         {
-          var newRow = this.BuildOriginModel(node);
+          var newRow = LsWorkingDataService.BuildOriginModel(node);
 
           switch (type)
           {
             case FileTypes.Current:
 
-              this.OriginCurrentItems.Add(newRow);
+              LsWorkingDataService.OriginCurrentItems.Add(newRow);
 
               break;
 
             case FileTypes.Previous:
 
-              this.OriginPreviousItems.Add(newRow);
+              LsWorkingDataService.OriginPreviousItems.Add(newRow);
 
               break;
 
             case FileTypes.Translated:
 
-              this.TranslatedItems.Add(
+              LsWorkingDataService.TranslatedItems.Add(
                 new DataRowModel()
                 {
-                  Status = TranslationStatus.origin,
+                  Status = TranslationStatus.OriginStatus,
                   Uuid = newRow.Uuid,
                   Version = newRow.Version,
                   Text = newRow.Text,
@@ -110,12 +140,8 @@ public class LsWorkingDataService
         catch (Exception ex)
         {
           MessageBox.Show($"Error during node processing:\n\nError: {ex.Message}");
-
-          return false;
         }
       }
-
-      return true;
     }
     catch (Exception e)
     {
@@ -123,8 +149,6 @@ public class LsWorkingDataService
         $"Error during loading of {type}-XML:\n\nFile: {xmlFileModel.FullPath.FullName}\n\nError:{e.Message}"
       );
     }
-
-    return false;
   }
 
   #endregion

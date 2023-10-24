@@ -1,16 +1,16 @@
-namespace LSLocalizeHelper.Models;
+namespace LSLocalizeHelper.Enums;
 
 public enum TranslationStatus
 {
 
-  origin,
+  OriginStatus,
 
-  translated,
+  TranslatedStatus,
 
-  newtext,
+  NewStatus,
 
-  deleted,
+  DeletedStatus,
 
-  updated,
+  UpdatedStatus,
 
 }
