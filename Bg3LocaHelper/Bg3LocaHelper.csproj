@@ -18,7 +18,7 @@
     <Product>Bg3LocaHelper</Product>
     <Title>Bg3LocaHelper</Title>
     <Version>2.4.1.0</Version>
-    <AssemblyOriginatorKeyFile>Bg3LocaHelper.snk</AssemblyOriginatorKeyFile>    
+    <AssemblyOriginatorKeyFile>Bg3LocaHelper.snk</AssemblyOriginatorKeyFile>
     <PublicSign>false</PublicSign>
   </PropertyGroup>
 

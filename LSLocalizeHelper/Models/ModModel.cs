@@ -4,6 +4,7 @@ namespace LSLocalizeHelper.Models;
 
 public class ModModel
 {
+
   #region Properties
 
   public DirectoryInfo Folder { get; set; }
@@ -15,4 +16,5 @@ public class ModModel
   public string Version { get; set; }
 
   #endregion
+
 }

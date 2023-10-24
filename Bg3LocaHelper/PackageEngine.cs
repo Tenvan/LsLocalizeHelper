@@ -21,32 +21,37 @@ namespace Bg3LocaHelper;
 
 public class PackageEngine
 {
+
   #region Static Methods
 
-  public static MetaLsx ReadMeta(
-    string                              meta,
-    DateTime?                           created  = null,
-    KeyValuePair<string, List<string>>? modGroup = null
+  public static MetaLsx ReadMeta(string meta,
+                                 DateTime? created = null,
+                                 KeyValuePair<string, List<string>>? modGroup = null
   )
   {
     // generate info.json section
-    XmlDocument doc = new XmlDocument();
+    var doc = new XmlDocument();
     doc.Load(meta);
     var moduleInfo = doc.SelectSingleNode("//node[@id='ModuleInfo']");
 
     var metadata = new MetaLsx
-                   {
-                     Author = moduleInfo.SelectSingleNode("attribute[@id='Author']")?.Attributes["value"].InnerText,
-                     Name   = moduleInfo.SelectSingleNode("attribute[@id='Name']")?.Attributes["value"].InnerText,
-                     Description = moduleInfo.SelectSingleNode("attribute[@id='Description']")
-                                             ?.Attributes["value"].InnerText,
-                     Version = moduleInfo.SelectSingleNode("attribute[@id='Version']")?.Attributes["value"].InnerText,
-                     Folder = moduleInfo.SelectSingleNode("attribute[@id='Folder']")?.Attributes["value"].InnerText,
-                     UUID = moduleInfo.SelectSingleNode("attribute[@id='UUID']")?.Attributes["value"].InnerText,
-                     Created = created,
-                     Group = modGroup?.Key ?? string.Empty,
-                     Dependencies = new List<ModuleShortDesc>()
-                   };
+    {
+      Author = moduleInfo.SelectSingleNode("attribute[@id='Author']")
+                        ?.Attributes["value"].InnerText,
+      Name = moduleInfo.SelectSingleNode("attribute[@id='Name']")
+                      ?.Attributes["value"].InnerText,
+      Description = moduleInfo.SelectSingleNode("attribute[@id='Description']")
+                             ?.Attributes["value"].InnerText,
+      Version = moduleInfo.SelectSingleNode("attribute[@id='Version']")
+                         ?.Attributes["value"].InnerText,
+      Folder = moduleInfo.SelectSingleNode("attribute[@id='Folder']")
+                        ?.Attributes["value"].InnerText,
+      UUID = moduleInfo.SelectSingleNode("attribute[@id='UUID']")
+                      ?.Attributes["value"].InnerText,
+      Created = created,
+      Group = modGroup?.Key ?? string.Empty,
+      Dependencies = new List<ModuleShortDesc>(),
+    };
 
     var dependencies = doc.SelectSingleNode("//node[@id='Dependencies']");
 
@@ -57,15 +62,16 @@ public class PackageEngine
       foreach (XmlNode moduleDescription in moduleDescriptions)
       {
         var depInfo = new ModuleShortDesc
-                      {
-                        Name = moduleDescription.SelectSingleNode("attribute[@id='Name']")
-                                                .Attributes["value"].InnerText,
-                        Version = moduleDescription.SelectSingleNode("attribute[@id='Version']")
-                                                   .Attributes["value"].InnerText,
-                        Folder = moduleDescription.SelectSingleNode("attribute[@id='Folder']")
-                                                  .Attributes["value"].InnerText,
-                        UUID = moduleDescription.SelectSingleNode("attribute[@id='UUID']").Attributes["value"].InnerText
-                      };
+        {
+          Name = moduleDescription.SelectSingleNode("attribute[@id='Name']")
+                                  .Attributes["value"].InnerText,
+          Version = moduleDescription.SelectSingleNode("attribute[@id='Version']")
+                                     .Attributes["value"].InnerText,
+          Folder = moduleDescription.SelectSingleNode("attribute[@id='Folder']")
+                                    .Attributes["value"].InnerText,
+          UUID = moduleDescription.SelectSingleNode("attribute[@id='UUID']")
+                                  .Attributes["value"].InnerText,
+        };
 
         metadata.Dependencies.Add(depInfo);
       }
@@ -80,10 +86,7 @@ public class PackageEngine
   /// <param name="path">The mod path</param>
   /// <param name="modName">The mod name</param>
   /// <returns>The list of meta.lsx files found</returns>
-  private static List<string> CheckAndCreateMeta(
-    string path,
-    string modName
-  )
+  private static List<string> CheckAndCreateMeta(string path, string modName)
   {
     // Create meta if it does not exist
     var modsPath = Path.Combine(path, "Mods");
@@ -93,10 +96,14 @@ public class PackageEngine
     {
       var newModsPath = Path.Combine(modsPath, modName);
       Directory.CreateDirectory(newModsPath);
-      pathList = new string[] { newModsPath };
+
+      pathList = new string[]
+      {
+        newModsPath,
+      };
     }
 
-    var metaList = GetMetalsxList(pathList);
+    var metaList = PackageEngine.GetMetalsxList(pathList);
 
     return metaList;
   }
@@ -106,17 +113,16 @@ public class PackageEngine
   /// </summary>
   /// <param name="pathlist">The list of directories within the \Mods folder.</param>
   /// <returns></returns>
-  private static List<string> GetMetalsxList(
-    string[] pathlist
-  )
+  private static List<string> GetMetalsxList(string[] pathlist)
   {
     var metaList = new List<string>();
 
-    foreach (string mod in pathlist)
+    foreach (var mod in pathlist)
     {
-      foreach (string file in Directory.GetFiles(mod))
+      foreach (var file in Directory.GetFiles(mod))
       {
-        if (Path.GetFileName(file).Equals("meta.lsx"))
+        if (Path.GetFileName(file)
+                .Equals("meta.lsx"))
         {
           metaList.Add(file);
           var modRoot = new FileInfo(file).Directory.Parent.Parent.Parent.FullName;
@@ -142,10 +148,7 @@ public class PackageEngine
 
   #region Constructors
 
-  public PackageEngine(
-    string modPathEngine,
-    string modNameEngine
-  )
+  public PackageEngine(string modPathEngine, string modNameEngine)
   {
     this.modPathEngine = modPathEngine;
     this.modNameEngine = modNameEngine;
@@ -158,7 +161,12 @@ public class PackageEngine
   /// <summary>
   /// Path to the temp directory to use.
   /// </summary>
-  private string TempFolder => Path.Combine(Directory.GetParent(this.modPathEngine).FullName, "BG3ModPacker");
+  private string TempFolder =>
+    Path.Combine(
+      Directory.GetParent(this.modPathEngine)
+               .FullName,
+      "BG3ModPacker"
+    );
 
   #endregion
 
@@ -174,7 +182,7 @@ public class PackageEngine
 
   private void CleanUp()
   {
-    Directory.Delete(this.TempFolder, true);
+    Directory.Delete(path: this.TempFolder, recursive: true);
   }
 
   private void CreatePackage()
@@ -182,7 +190,7 @@ public class PackageEngine
     try
     {
       var options = new PackageCreationOptions();
-      options.Version     = PackageVersion.V18;
+      options.Version = PackageVersion.V18;
       options.Compression = CompressionMethod.LZ4;
 
       // options.FastCompression = false;
@@ -193,29 +201,24 @@ public class PackageEngine
       options.Priority = 0;
       var packager = new Packager();
 
-      packager.ProgressUpdate += (
-                                   status,
-                                   numerator,
-                                   denominator,
-                                   file
+      packager.ProgressUpdate += (status,
+                                  numerator,
+                                  denominator,
+                                  file
                                  ) => Debug.WriteLine(status);
 
-      var targetPak = Path.Combine(  this.TempFolder, this.modNameEngine + ".pak");
+      var targetPak = Path.Combine(this.TempFolder, this.modNameEngine + ".pak");
 
-      packager.CreatePackage(
-                             targetPak,
-                             this.modPathEngine,
-                             options
-                            );
+      packager.CreatePackage(packagePath: targetPak, inputPath: this.modPathEngine, options: options);
     }
     catch (Exception ex)
     {
       MessageBox.Show(
-                      $"Internal error!{Environment.NewLine}{Environment.NewLine}{ex}",
-                      "Package Build Failed",
-                      MessageBoxButtons.OK,
-                      MessageBoxIcon.Error
-                     );
+        text: $"Internal error!{Environment.NewLine}{Environment.NewLine}{ex}",
+        caption: "Package Build Failed",
+        buttons: MessageBoxButtons.OK,
+        icon: MessageBoxIcon.Error
+      );
     }
   }
 
@@ -228,51 +231,68 @@ public class PackageEngine
   /// <returns>Whether or not info.json was generated</returns>
   private bool GenerateInfoJson()
   {
-    var dirInfo  = new DirectoryInfo(this.modPathEngine);
+    var dirInfo = new DirectoryInfo(this.modPathEngine);
 
     //GeneralHelper.WriteToConsole(Properties.Resources.DirectoryName, dirName);
-    var metaFiles   = dirInfo.GetFiles("meta.lsx", SearchOption.AllDirectories);
+    var metaFiles = dirInfo.GetFiles(searchPattern: "meta.lsx", searchOption: SearchOption.AllDirectories);
 
-    if (metaFiles.Length != 1) throw new Exception("excaptly one meta.lsx must exists");
+    if (metaFiles.Length != 1)
+    {
+      throw new Exception("excaptly one meta.lsx must exists");
+    }
 
     var metaFile = metaFiles[0].FullName;
 
     var info = new InfoJson
-               {
-                 Mods = new List<MetaLsx>()
-               };
+    {
+      Mods = new List<MetaLsx>(),
+    };
 
-    var created  = DateTime.Now;
-    var metadata = ReadMeta(metaFile, created);
+    var created = DateTime.Now;
+    var metadata = PackageEngine.ReadMeta(meta: metaFile, created: created);
 
     info.Mods.Add(metadata);
 
     if (info.Mods.Count == 0)
+    {
       return false;
+    }
 
     // calculate md5 hash of .pak(s)
     using (var md5 = MD5.Create())
     {
-      var paks     = Directory.GetFiles(TempFolder);
+      var paks = Directory.GetFiles(this.TempFolder);
       var pakCount = 1;
 
       foreach (var pak in paks)
       {
-        byte[] contentBytes = File.ReadAllBytes(pak);
+        var contentBytes = File.ReadAllBytes(pak);
 
         if (pakCount == paks.Length)
-          md5.TransformFinalBlock(contentBytes, 0, contentBytes.Length);
+        {
+          md5.TransformFinalBlock(inputBuffer: contentBytes, inputOffset: 0, inputCount: contentBytes.Length);
+        }
         else
-          md5.TransformBlock(contentBytes, 0, contentBytes.Length, contentBytes, 0);
+        {
+          md5.TransformBlock(
+            inputBuffer: contentBytes,
+            inputOffset: 0,
+            inputCount: contentBytes.Length,
+            outputBuffer: contentBytes,
+            outputOffset: 0
+          );
+        }
 
         pakCount++;
       }
 
-      info.MD5 = BitConverter.ToString(md5.Hash).Replace("-", "").ToLower();
+      info.MD5 = BitConverter.ToString(md5.Hash)
+                             .Replace(oldValue: "-", newValue: "")
+                             .ToLower();
     }
 
     var json = JsonConvert.SerializeObject(info);
-    File.WriteAllText(TempFolder + @"\info.json", json);
+    File.WriteAllText(path: this.TempFolder + @"\info.json", contents: json);
 
     return true;
   }
@@ -285,13 +305,19 @@ public class PackageEngine
   private void GenerateZip()
   {
     // save zip next to folder that was dropped
-    var parentDir       = Directory.GetParent(this.modPathEngine).FullName;
+    var parentDir = Directory.GetParent(this.modPathEngine)
+                             .FullName;
+
     var archiveFileName = $"{parentDir}\\{this.modNameEngine}.zip";
 
-    if (File.Exists(archiveFileName)) { File.Delete(archiveFileName); }
+    if (File.Exists(archiveFileName))
+    {
+      File.Delete(archiveFileName);
+    }
 
-    ZipFile.CreateFromDirectory(this.TempFolder, archiveFileName);
+    ZipFile.CreateFromDirectory(sourceDirectoryName: this.TempFolder, destinationArchiveFileName: archiveFileName);
   }
 
   #endregion
+
 }

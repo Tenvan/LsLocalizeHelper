@@ -7,9 +7,10 @@ namespace Bg3LocaHelper;
 
 public partial class FormSettings : Form
 {
+
   public FormSettings()
   {
-    InitializeComponent();
+    this.InitializeComponent();
     this.LoadSettings();
   }
 
@@ -18,10 +19,7 @@ public partial class FormSettings : Form
     this.textBoxModsPath.Text = Settings.Default.pathMods;
   }
 
-  private void buttonFileModsPath_Click(
-    object    sender,
-    EventArgs e
-  )
+  private void buttonFileModsPath_Click(object sender, EventArgs e)
   {
     var result = this.folderBrowserDialogModsPath.ShowDialog();
 
@@ -31,10 +29,7 @@ public partial class FormSettings : Form
     }
   }
 
-  private void buttonApply_Click(
-    object    sender,
-    EventArgs e
-  )
+  private void buttonApply_Click(object sender, EventArgs e)
   {
     this.SaveSettings();
     this.Close();
@@ -45,4 +40,5 @@ public partial class FormSettings : Form
     Settings.Default.pathMods = this.textBoxModsPath.Text;
     Settings.Default.Save();
   }
+
 }

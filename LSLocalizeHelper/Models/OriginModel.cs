@@ -2,6 +2,7 @@ namespace LSLocalizeHelper.Models;
 
 public class OriginModel
 {
+
   #region Properties
 
   public ModModel Mod { get; set; }
@@ -13,4 +14,5 @@ public class OriginModel
   public string Version { get; set; }
 
   #endregion
+
 }

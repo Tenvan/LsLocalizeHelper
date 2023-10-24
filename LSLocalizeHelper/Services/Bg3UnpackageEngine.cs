@@ -16,17 +16,14 @@ namespace LSLocalizeHelper.Services;
 
 public class Bg3UnpackageEngine
 {
+
   #region Constructors
 
-  public Bg3UnpackageEngine(
-    string modsPath,
-    string pakPath,
-    string modName
-  )
+  public Bg3UnpackageEngine(string modsPath, string pakPath, string modName)
   {
     this.ModsPath = modsPath;
-    this.PakPath  = pakPath;
-    this.ModName  = modName;
+    this.PakPath = pakPath;
+    this.ModName = modName;
   }
 
   #endregion
@@ -70,26 +67,58 @@ public class Bg3UnpackageEngine
     }
   }
 
-  private void CleanUp() { Directory.Delete(this.TempFolder, true); }
+  private void CleanUp()
+  {
+    Directory.Delete(path: this.TempFolder, recursive: true);
+  }
 
-  private void GenerateMetaLsx(
-    string        metaPath,
-    string        author,
-    string        description,
-    PackedVersion version
+  private void GenerateMetaLsx(string metaPath,
+                               string author,
+                               string description,
+                               PackedVersion version
   )
   {
     if (string.IsNullOrEmpty(author)
-        || string.IsNullOrEmpty(description)) return;
+        || string.IsNullOrEmpty(description))
+    {
+      return;
+    }
 
     var xmlText = FileHelper.LoadFileTemplate("meta.lsx");
-    var xml     = XDocument.Parse(xmlText);
-    xml.Descendants("attribute").Single(n => n.Attribute("id")!.Value == "Author").Attribute("value")!.Value      = author;
-    xml.Descendants("attribute").Single(n => n.Attribute("id")!.Value == "Description").Attribute("value")!.Value = description;
-    xml.Descendants("attribute").Single(n => n.Attribute("id")!.Value == "Folder").Attribute("value")!.Value      = this.ModName;
-    xml.Descendants("attribute").Single(n => n.Attribute("id")!.Value == "Name").Attribute("value")!.Value        = this.ModName;
-    xml.Descendants("attribute").Single(n => n.Attribute("id")!.Value == "UUID").Attribute("value")!.Value        = Guid.NewGuid().ToString();
-    xml.Descendants("attribute").Where(n => n.Attribute("id")!.Value == "Version").ToList().ForEach(n => { n.Attribute("value")!.Value = version.ToVersion64().ToString(); });
+    var xml = XDocument.Parse(xmlText);
+
+    xml.Descendants("attribute")
+       .Single(n => n.Attribute("id")!.Value == "Author")
+       .Attribute("value")!.Value = author;
+
+    xml.Descendants("attribute")
+       .Single(n => n.Attribute("id")!.Value == "Description")
+       .Attribute("value")!.Value = description;
+
+    xml.Descendants("attribute")
+       .Single(n => n.Attribute("id")!.Value == "Folder")
+       .Attribute("value")!.Value = this.ModName;
+
+    xml.Descendants("attribute")
+       .Single(n => n.Attribute("id")!.Value == "Name")
+       .Attribute("value")!.Value = this.ModName;
+
+    xml.Descendants("attribute")
+       .Single(n => n.Attribute("id")!.Value == "UUID")
+       .Attribute("value")!.Value = Guid.NewGuid()
+                                        .ToString();
+
+    xml.Descendants("attribute")
+       .Where(n => n.Attribute("id")!.Value == "Version")
+       .ToList()
+       .ForEach(
+          n =>
+          {
+            n.Attribute("value")!.Value = version.ToVersion64()
+                                                 .ToString();
+          }
+        );
+
     xml.Save(metaPath);
   }
 
@@ -105,27 +134,39 @@ public class Bg3UnpackageEngine
   private void PrepareMeta()
   {
     var version = new PackedVersion()
-                  {
-                    Major    = 1,
-                    Minor    = 0,
-                    Build    = 0,
-                    Revision = 0
-                  };
+    {
+      Major = 1,
+      Minor = 0,
+      Build = 0,
+      Revision = 0,
+    };
 
     Directory.CreateDirectory(Path.Combine(this.ModWorkFolder, "Mods", this.ModName));
-    var metaFile = Path.Combine(this.ModWorkFolder, "Mods", this.ModName, "meta.lsx");
-    this.GenerateMetaLsx(metaFile, "Tenvan", "new translation", version);
+
+    var metaFile = Path.Combine(
+      this.ModWorkFolder,
+      "Mods",
+      this.ModName,
+      "meta.lsx"
+    );
+
+    this.GenerateMetaLsx(
+      metaPath: metaFile,
+      author: "Tenvan",
+      description: "new translation",
+      version: version
+    );
   }
 
   private void PrepareMod()
   {
-    var tempDir   = new DirectoryInfo(this.TempFolder);
-    var localsDir = tempDir.GetDirectories("Localization", SearchOption.AllDirectories);
+    var tempDir = new DirectoryInfo(this.TempFolder);
+    var localsDir = tempDir.GetDirectories(searchPattern: "Localization", searchOption: SearchOption.AllDirectories);
 
     foreach (var dir in localsDir)
     {
       var localsTargetPath = Path.Combine(this.ModWorkFolder, "Localization");
-      Directory.Copy(dir.FullName, localsTargetPath);
+      Directory.Copy(sourcePath: dir.FullName, destinationPath: localsTargetPath);
     }
 
     var modsDir = Path.Combine(this.ModWorkFolder, "Mods");
@@ -137,26 +178,24 @@ public class Bg3UnpackageEngine
     try
     {
       var options = new PackageCreationOptions();
-      options.Version     = PackageVersion.V18;
+      options.Version = PackageVersion.V18;
       options.Compression = CompressionMethod.LZ4;
-      options.Priority    = 0;
+      options.Priority = 0;
       var packager = new Packager();
 
-      packager.UncompressPackage(
-                                 this.PakPath,
-                                 this.TempFolder
-                                );
+      packager.UncompressPackage(packagePath: this.PakPath, outputPath: this.TempFolder);
     }
     catch (Exception ex)
     {
       MessageBox.Show(
-                      $"Internal error!{Environment.NewLine}{Environment.NewLine}{ex}",
-                      "Package Uncompress Failed",
-                      MessageBoxButtons.OK,
-                      MessageBoxIcon.Error
-                     );
+        text: $"Internal error!{Environment.NewLine}{Environment.NewLine}{ex}",
+        caption: "Package Uncompress Failed",
+        buttons: MessageBoxButtons.OK,
+        icon: MessageBoxIcon.Error
+      );
     }
   }
 
   #endregion
+
 }

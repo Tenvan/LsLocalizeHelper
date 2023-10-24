@@ -2,6 +2,7 @@ namespace LSLocalizeHelper.Models;
 
 public class DataRowModel
 {
+
   #region Properties
 
   public ModModel Mod { get; set; }
@@ -19,4 +20,5 @@ public class DataRowModel
   public string Version { get; set; }
 
   #endregion
+
 }

@@ -11,9 +11,10 @@ namespace LSLocalizeHelper.Services;
 
 public class XmlFilesService
 {
+
   #region Constructors
 
-  public XmlFilesService() { this.Items = new List<XmlFileModel>(); }
+  public XmlFilesService() => this.Items = new List<XmlFileModel>();
 
   #endregion
 
@@ -27,39 +28,43 @@ public class XmlFilesService
 
   #region Methods
 
-  public void Load(
-    ModModel[] mods
-  )
+  public void Load(ModModel[] mods)
   {
     this.Mods = mods;
 
     this.Items.Clear();
-    foreach (var modModel in mods) { this.LoadFiles(modModel); }
+
+    foreach (var modModel in mods)
+    {
+      this.LoadFiles(modModel);
+    }
   }
 
-  private void LoadFiles(
-    ModModel mod
-  )
+  private void LoadFiles(ModModel mod)
   {
-    var dirInfo       = new DirectoryInfo(Path.Combine(SettingsManager.Settings?.ModsPath, mod.Name));
-    var localsDir     = dirInfo.GetDirectories("Localization", SearchOption.AllDirectories).FirstOrDefault();
+    var dirInfo = new DirectoryInfo(Path.Combine(SettingsManager.Settings?.ModsPath, mod.Name));
+
+    var localsDir = dirInfo.GetDirectories(searchPattern: "Localization", searchOption: SearchOption.AllDirectories)
+                           .FirstOrDefault();
+
     var modWorkFolder = localsDir?.Parent;
-    var metaFiles     = dirInfo.GetFiles("*.xml", SearchOption.AllDirectories);
+    var metaFiles = dirInfo.GetFiles(searchPattern: "*.xml", searchOption: SearchOption.AllDirectories);
 
     foreach (var metaFile in metaFiles)
     {
-      var shortName = Path.GetRelativePath(localsDir?.FullName, metaFile.FullName);
+      var shortName = Path.GetRelativePath(startPath: localsDir?.FullName, selectedPath: metaFile.FullName);
 
       var fileModel = new XmlFileModel()
-                      {
-                        FullPath = metaFile,
-                        Name     = shortName,
-                        Mod      = mod
-                      };
+      {
+        FullPath = metaFile,
+        Name = shortName,
+        Mod = mod,
+      };
 
       this.Items.Add(fileModel);
     }
   }
 
   #endregion
+
 }

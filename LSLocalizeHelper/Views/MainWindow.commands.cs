@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
@@ -15,6 +13,7 @@ namespace LSLocalizeHelper.Views;
 /// </summary>
 public partial class MainWindow
 {
+
   #region Properties
 
   public LsWorkingDataService DataService { get; set; }
@@ -23,36 +22,50 @@ public partial class MainWindow
 
   #region Methods
 
-  private void ButtonLoad_OnClick(
-    object          sender,
-    RoutedEventArgs e
-  )
+  private void ButtonLoad_OnClick(object sender, RoutedEventArgs e)
   {
     this.DataService = new LsWorkingDataService();
 
     this.DataService.Load(
-                          this.TranslatedFileItems.ToArray(),
-                          this.OriginCurrentFileItems.ToArray(),
-                          this.OriginPreviousFileItems.ToArray()
-                         );
+      translatedFiles: this.TranslatedFileItems.ToArray(),
+      currentFiles: this.OriginCurrentFileItems.ToArray(),
+      previousFiles: this.OriginPreviousFileItems.ToArray()
+    );
 
     this.TranslationGrid.ItemsSource = this.DataService.TranslatedItems;
   }
 
-  private void ButtonSave_OnClick(
-    object          sender,
-    RoutedEventArgs e
-  )
+  private void ButtonSave_OnClick(object sender, RoutedEventArgs e)
   {
     throw new NotImplementedException();
   }
 
-  private void DoOnRowChanged(
-    DataRowModel? row
-  )
+  private void DoOnRowChanged(DataRowModel? row)
   {
+    Console.WriteLine("Copy to Clipboard:" + row?.Text);
     this.TextBoxTranslated.Text = row?.Text;
-    if (row?.Text != null) Clipboard.SetText(row.Text);
+
+    try
+    {
+      if (row?.Text != null)
+      {
+        Clipboard.SetText(row.Text);
+      }
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine(ex.Message);
+    }
+
+    this.SetOriginTexts(row.Uuid);
+  }
+
+  private void SetOriginTexts(string uuid)
+  {
+    var currentOrigin = this.DataService.OriginCurrentItems.First(o => o.Uuid == uuid);
+    this.TextBoxCurrentOrigin.Text = currentOrigin.Text;
+    var previousOrigin = this.DataService.OriginPreviousItems.First(o => o.Uuid == uuid);
+    this.TextBoxPreviousOrigin.Text = previousOrigin.Text;
   }
 
   private void LoadMods()
@@ -60,7 +73,10 @@ public partial class MainWindow
     this.bg3ModsService.LoadMods();
     this.ProjectItems.Clear();
 
-    foreach (var modModel in this.bg3ModsService.Items) { this.ProjectItems.Add(modModel); }
+    foreach (var modModel in this.bg3ModsService.Items)
+    {
+      this.ProjectItems.Add(modModel);
+    }
   }
 
   private void LoadXmlFiles()
@@ -68,7 +84,10 @@ public partial class MainWindow
     this.OriginPreviousFileItems.Clear();
     this.OriginCurrentFileItems.Clear();
     this.TranslatedFileItems.Clear();
-    var selectedValue = this.ListBoxMods.SelectedItems.Cast<ModModel>().ToArray();
+
+    var selectedValue = this.ListBoxMods.SelectedItems.Cast<ModModel>()
+                            .ToArray();
+
     this.XmlFilesService.Load(selectedValue);
 
     foreach (var xmlFileModel in this.XmlFilesService.Items)
@@ -88,4 +107,5 @@ public partial class MainWindow
   }
 
   #endregion
+
 }

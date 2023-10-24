@@ -51,6 +51,11 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     <PackageReference Include="FileAssociation" Version="1.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="ReactiveUI" Version="19.5.1" />
+    <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
+    <PackageReference Include="ReactiveUI.WPF" Version="19.5.1" />
+    <PackageReference Include="Rx.Net.Plus" Version="1.1.15" />
+    <PackageReference Include="Rx.Net.Plus.Json" Version="1.0.0" />
     <PackageReference Include="zlib.net" Version="1.0.4" />
   </ItemGroup>
 
@@ -58,10 +63,6 @@
     <Reference Include="LSLib">
       <HintPath>..\External\LSLib.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\MainWindow\" />
   </ItemGroup>
 
 </Project>

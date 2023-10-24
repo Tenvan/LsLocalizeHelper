@@ -4,6 +4,7 @@ namespace LSLocalizeHelper.Models;
 
 public class XmlFileModel
 {
+
   /// <summary>
   /// Short Name/Path of Xml-File
   /// </summary>
@@ -18,4 +19,5 @@ public class XmlFileModel
   /// The Mod which contains this file
   /// </summary>
   public ModModel Mod { get; set; }
+
 }

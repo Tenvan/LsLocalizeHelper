@@ -1,5 +1,6 @@
 internal enum GridColumns
 {
+
   Status = 0,
 
   Uuid = 1,
@@ -9,4 +10,5 @@ internal enum GridColumns
   Text = 3,
 
   Origin = 4,
+
 }

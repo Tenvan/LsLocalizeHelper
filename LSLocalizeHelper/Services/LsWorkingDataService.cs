@@ -10,6 +10,7 @@ namespace LSLocalizeHelper.Services;
 
 public class LsWorkingDataService
 {
+
   #region Properties
 
   public ObservableCollection<OriginModel> OriginCurrentItems { get; set; } = new();
@@ -22,37 +23,41 @@ public class LsWorkingDataService
 
   #region Methods
 
-  public void Load(
-    IEnumerable<XmlFileModel> translatedFiles,
-    IEnumerable<XmlFileModel> currentFiles,
-    IEnumerable<XmlFileModel> previousFiles
+  public void Load(IEnumerable<XmlFileModel> translatedFiles,
+                   IEnumerable<XmlFileModel> currentFiles,
+                   IEnumerable<XmlFileModel> previousFiles
   )
   {
-    foreach (var xmlFileModel in translatedFiles) { this.LoadFiles(xmlFileModel, FileTypes.Translated); }
+    foreach (var xmlFileModel in translatedFiles)
+    {
+      this.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Translated);
+    }
 
-    foreach (var xmlFileModel in currentFiles) { this.LoadFiles(xmlFileModel, FileTypes.Current); }
+    foreach (var xmlFileModel in currentFiles)
+    {
+      this.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Current);
+    }
 
-    foreach (var xmlFileModel in previousFiles) { this.LoadFiles(xmlFileModel, FileTypes.Previous); }
+    foreach (var xmlFileModel in previousFiles)
+    {
+      this.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Previous);
+    }
   }
 
-  private OriginModel BuildOriginModel(
-    XmlElement node
-  )
-  {
-    return new OriginModel
-           {
-             Uuid    = node.Attributes["contentuid"]?.InnerText,
-             Version = node.Attributes["version"]?.InnerText,
-             Text    = node.InnerText
-           };
-  }
+  private OriginModel BuildOriginModel(XmlElement node) =>
+    new()
+    {
+      Uuid = node.Attributes["contentuid"]?.InnerText,
+      Version = node.Attributes["version"]?.InnerText,
+      Text = node.InnerText,
+    };
 
-  private bool LoadFiles(
-    XmlFileModel xmlFileModel,
-    FileTypes    type
-  )
+  private bool LoadFiles(XmlFileModel xmlFileModel, FileTypes type)
   {
-    if (!xmlFileModel.FullPath!.Exists) return false;
+    if (!xmlFileModel.FullPath!.Exists)
+    {
+      return false;
+    }
 
     try
     {
@@ -60,7 +65,10 @@ public class LsWorkingDataService
       doc.Load(xmlFileModel.FullPath.FullName);
       var nodes = doc.SelectNodes("//content");
 
-      if (nodes == null) return true;
+      if (nodes == null)
+      {
+        return true;
+      }
 
       foreach (XmlElement node in nodes)
       {
@@ -85,16 +93,16 @@ public class LsWorkingDataService
             case FileTypes.Translated:
 
               this.TranslatedItems.Add(
-                                       new DataRowModel()
-                                       {
-                                         Status  = TranslationStatus.origin,
-                                         Uuid    = newRow.Uuid,
-                                         Version = newRow.Version,
-                                         Text    = newRow.Text,
-                                         Mod     = xmlFileModel.Mod,
-                                         Source  = xmlFileModel,
-                                       }
-                                      );
+                new DataRowModel()
+                {
+                  Status = TranslationStatus.origin,
+                  Uuid = newRow.Uuid,
+                  Version = newRow.Version,
+                  Text = newRow.Text,
+                  Mod = xmlFileModel.Mod,
+                  Source = xmlFileModel,
+                }
+              );
 
               break;
           }
@@ -112,12 +120,13 @@ public class LsWorkingDataService
     catch (Exception e)
     {
       MessageBox.Show(
-                      $"Error during loading of {type}-XML:\n\nFile: {xmlFileModel.FullPath.FullName}\n\nError:{e.Message}"
-                     );
+        $"Error during loading of {type}-XML:\n\nFile: {xmlFileModel.FullPath.FullName}\n\nError:{e.Message}"
+      );
     }
 
     return false;
   }
 
   #endregion
+
 }

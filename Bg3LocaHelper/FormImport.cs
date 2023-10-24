@@ -7,9 +7,13 @@ namespace Bg3LocaHelper;
 
 public partial class FormImport : Form
 {
+
   #region Constructors
 
-  public FormImport() { InitializeComponent(); }
+  public FormImport()
+  {
+    this.InitializeComponent();
+  }
 
   #endregion
 
@@ -23,10 +27,7 @@ public partial class FormImport : Form
 
   #region Methods
 
-  private void buttonOpenFileDialog_Click(
-    object    sender,
-    EventArgs e
-  )
+  private void buttonOpenFileDialog_Click(object sender, EventArgs e)
   {
     var result = this.openFileDialog.ShowDialog();
 
@@ -39,12 +40,10 @@ public partial class FormImport : Form
 
   #endregion
 
-  private void buttonImport_Click(
-    object    sender,
-    EventArgs e
-  )
+  private void buttonImport_Click(object sender, EventArgs e)
   {
     this.DialogResult = DialogResult.OK;
     this.Close();
   }
+
 }

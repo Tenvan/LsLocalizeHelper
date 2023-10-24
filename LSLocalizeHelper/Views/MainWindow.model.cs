@@ -10,6 +10,7 @@ namespace LSLocalizeHelper.Views;
 /// </summary>
 public partial class MainWindow
 {
+
   #region Fields
 
   private Bg3ModsService bg3ModsService = new();
@@ -29,4 +30,5 @@ public partial class MainWindow
   public ObservableCollection<XmlFileModel> TranslatedFileItems { get; set; } = new();
 
   #endregion
+
 }

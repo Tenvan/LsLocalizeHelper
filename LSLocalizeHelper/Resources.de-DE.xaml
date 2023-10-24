@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+                    xmlns:System="clr-namespace:System;assembly=System.Runtime">
 
-    <System:String x:Key="ButtonYes">Ja</System:String>
-    <System:String x:Key="ButtonNo">Nein</System:String>
-    <System:String x:Key="ButtonApply">Übernehmen</System:String>
-    <System:String x:Key="LblSettingsModsFolder">Mods Arbeitsordner</System:String>
+  <System:String x:Key="ButtonYes">Ja</System:String>
+  <System:String x:Key="ButtonNo">Nein</System:String>
+  <System:String x:Key="ButtonApply">Übernehmen</System:String>
+  <System:String x:Key="LblSettingsModsFolder">Mods Arbeitsordner</System:String>
 </ResourceDictionary>

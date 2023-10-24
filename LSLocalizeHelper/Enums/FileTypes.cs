@@ -1,3 +1,12 @@
 namespace LSLocalizeHelper.Models;
 
-public enum FileTypes { Current, Previous, Translated }
+public enum FileTypes
+{
+
+  Current,
+
+  Previous,
+
+  Translated,
+
+}
