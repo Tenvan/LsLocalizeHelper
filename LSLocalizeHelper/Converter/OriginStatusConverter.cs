@@ -10,46 +10,69 @@ namespace LSLocalizeHelper.Converter;
 
 public class OriginStatusConverter : IValueConverter
 {
-  public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+
+  public object Convert(object value,
+                        Type targetType,
+                        object parameter,
+                        CultureInfo culture
+  )
   {
     // Implement your function here
     var translatedData = value as DataRowModel;
 
-    var currentOrigin  = LsWorkingDataService.GetCurrentForUid(translatedData!.Uuid);
-    var previousOrigin  = LsWorkingDataService.GetPreviousForUid(translatedData!.Uuid);
+    var currentOrigin = LsWorkingDataService.GetCurrentForUid(translatedData!.Uuid);
+    var previousOrigin = LsWorkingDataService.GetPreviousForUid(translatedData!.Uuid);
 
     // var result  = translatedData.Status;
 
-    var result = CalculateStatus(translatedData, currentOrigin, previousOrigin);
+    var result = this.CalculateStatus(
+      translatedNode: translatedData,
+      currentNode: currentOrigin,
+      previousNode: previousOrigin,
+      translatedDataFlag: translatedData.Flag
+    );
 
     return result;
   }
 
-  private TranslationStatus CalculateStatus(DataRowModel? translatedNode, OriginModel? currentNode, OriginModel? previousNode)
+  private TranslationStatus CalculateStatus(DataRowModel? translatedNode,
+                                            OriginModel? currentNode,
+                                            OriginModel? previousNode,
+                                            DatSetFlag translatedDataFlag
+  )
   {
-    var isTranslatedNodeNull = translatedNode == null;
-    var isCurrentNodeNull    = currentNode == null;
+    var isCurrentNodeNull = currentNode == null;
 
-    if (isTranslatedNodeNull && !isCurrentNodeNull)
+    if (translatedDataFlag == DatSetFlag.NewSet)
     {
       return TranslationStatus.NewStatus;
     }
 
-    if (!isTranslatedNodeNull && isCurrentNodeNull)
+    if (isCurrentNodeNull)
     {
       return TranslationStatus.DeletedStatus;
     }
 
-    if (translatedNode?.Text == currentNode?.Text)
+    if (translatedNode?.Text != currentNode?.Text)
     {
-      var wasTextUpdated = currentNode?.Text != previousNode?.Text && previousNode != null;
-      return wasTextUpdated ? TranslationStatus.UpdatedStatus : TranslationStatus.OriginStatus;
+      return TranslationStatus.TranslatedStatus;
     }
 
-    return TranslationStatus.TranslatedStatus;
+    var wasTextUpdated = currentNode?.Text != previousNode?.Text && previousNode != null;
+
+    return wasTextUpdated
+             ? TranslationStatus.UpdatedStatus
+             : TranslationStatus.OriginStatus;
+
   }
-  public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+
+  public object ConvertBack(object value,
+                            Type targetType,
+                            object parameter,
+                            CultureInfo culture
+  )
   {
     throw new NotImplementedException();
   }
+
 }

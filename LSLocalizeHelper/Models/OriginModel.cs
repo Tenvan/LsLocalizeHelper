@@ -7,6 +7,8 @@ public class OriginModel
 
   public ModModel Mod { get; set; }
 
+  public XmlFileModel SourceFile { get; set; }
+
   public string Text { get; set; }
 
   public string Uuid { get; set; }

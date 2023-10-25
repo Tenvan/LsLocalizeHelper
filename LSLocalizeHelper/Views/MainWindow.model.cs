@@ -27,7 +27,11 @@ public partial class MainWindow
 
   public ObservableCollection<ModModel> ProjectItems { get; set; } = new();
 
+  public bool RefreshMode { get; set; } = false;
+
   public ObservableCollection<XmlFileModel> TranslatedFileItems { get; set; } = new();
+
+  private bool IsUpdating { get; set; } = false;
 
   #endregion
 

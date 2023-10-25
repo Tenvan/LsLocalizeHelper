@@ -7,11 +7,13 @@ public class DataRowModel
 
   #region Properties
 
+  public DatSetFlag Flag { get; set; }
+
   public ModModel Mod { get; set; }
 
   public string Origin { get; set; }
 
-  public XmlFileModel Source { get; set; }
+  public XmlFileModel SourceFile { get; set; }
 
   public TranslationStatus Status { get; set; }
 

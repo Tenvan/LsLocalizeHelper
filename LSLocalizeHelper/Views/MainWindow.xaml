@@ -3,9 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:LSLocalizeHelper.Views"
         xmlns:converter="clr-namespace:LSLocalizeHelper.Converter"
-        xmlns:services="clr-namespace:LSLocalizeHelper.Services"
         xmlns:enums="clr-namespace:LSLocalizeHelper.Enums"
         mc:Ignorable="d"
         Title="MainWindow"
@@ -42,17 +40,20 @@
       <Button x:Name="ButtonLoad" Content="Laden" Click="ButtonLoad_OnClick" />
       <Button x:Name="ButtonSave" Content="Speichern" Click="ButtonSave_OnClick" />
       <Separator />
-      <Button x:Name="ButtonImport" Content="Importiere" />
-      <Button x:Name="ButtonPackMods" Content="Packen" />
+      <Button x:Name="ButtonImport" Content="Importiere" Click="ButtonImport_OnClick" />
+      <Button x:Name="ButtonPackMods" Content="Packen" Click="ButtonPackMods_OnClick" />
       <Separator />
-      <Button x:Name="ButtonRefresh" Content="Aktualisieren" />
+      <Button x:Name="ButtonRefresh" Content="Aktualisieren" Click="ButtonRefresh_OnClick" />
+      <Separator />
+      <Label Content="Schnellfilter Datagrid:" VerticalContentAlignment="Center"></Label>
+      <TextBox x:Name="TextBoxQuickSerach" Width="200"></TextBox>
     </ToolBar>
 
     <Label Grid.Row="1" Grid.Column="0" Content="Projekt auswählen"
            Margin="5,0,5,5" VerticalAlignment="Top" Height="24" />
 
     <ListBox x:Name="ListBoxMods" Grid.Row="1" Grid.Column="0" Margin="5,24,5,5" ItemsSource="{Binding ProjectItems}"
-             SelectionChanged="ListBoxMods_SelectionChanged" SelectionMode="Extended">
+             SelectionMode="Extended">
       <ListBox.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal">
@@ -65,7 +66,6 @@
     <Label Grid.Row="1" Grid.Column="1" Content="Aktuelle Original XML"
            Margin="5,0,5,5" VerticalAlignment="Top" Height="24" />
     <ListBox x:Name="ListBoxOriginCurrentFile" Grid.Row="1" Grid.Column="1" Margin="5,24,5,5"
-             SelectionChanged="ListBoxOriginCurrentFile_OnSelectionChanged"
              ItemsSource="{Binding OriginCurrentFileItems}" SelectionMode="Extended">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -81,7 +81,6 @@
     <Label Grid.Row="1" Grid.Column="2" Content="Vorherige Original XML" Margin="5,0,5,5" VerticalAlignment="Top"
            Height="24" />
     <ListBox Grid.Row="1" Grid.Column="2" Name="ListBoxOriginPreviousFile" Margin="5,24,5,5"
-             SelectionChanged="ListBoxOriginPreviousFile_OnSelectionChanged"
              ItemsSource="{Binding OriginPreviousFileItems}" SelectionMode="Extended">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -97,7 +96,6 @@
     <Label Grid.Row="1" Grid.Column="3" Content="Übersetzungsdatei" Margin="5,0,5,5" VerticalAlignment="Top"
            Height="24" />
     <ListBox Grid.Row="1" Grid.Column="3" Name="ListBoxTranslatedFile" Margin="5,24,5,5"
-             SelectionChanged="ListBoxTranslatedFile_OnSelectionChanged"
              ItemsSource="{Binding TranslatedFileItems}" SelectionMode="Extended">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -111,8 +109,7 @@
     </ListBox>
 
     <GridSplitter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Height="5" Background="DimGray"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows">
-    </GridSplitter>
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows" />
 
     <DataGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
               x:Name="TranslationGrid" AutoGenerateColumns="False"
@@ -123,34 +120,53 @@
       <DataGrid.Columns>
         <DataGridTextColumn Header="#"
                             Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" />
+        <DataGridTextColumn Header="#"
+                            Binding="{Binding Flag}" />
         <DataGridTextColumn Header="Mod" Binding="{Binding Mod.Name}" />
-        <DataGridTextColumn Header="Datei" Binding="{Binding Source.Name}" />
+        <DataGridTextColumn Header="Datei" Binding="{Binding SourceFile.Name}" />
         <DataGridTextColumn Header="Uid" Binding="{Binding Uuid}" />
         <DataGridTextColumn Header="Version" Binding="{Binding Version}" />
-        <DataGridTextColumn Header="Text" Binding="{Binding Text}" />
+        <!-- <DataGridTextColumn Header="Text" Binding="{Binding Text}" /> -->
+        <DataGridTemplateColumn Header="Text" Width="*" >
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Text}" TextWrapping="Wrap" TextOptions.TextHintingMode="Auto" ></TextBlock>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+        <!-- <DataGridTextColumn Header="Origin" Binding="{Binding Origin}" /> -->
+        <DataGridTemplateColumn Header="Origin" Width="*" >
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Origin}" TextWrapping="WrapWithOverflow" TextOptions.TextHintingMode="Auto" ></TextBlock>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
       </DataGrid.Columns>
       <DataGrid.RowStyle>
         <Style TargetType="DataGridRow">
           <Style.Triggers>
             <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
                          Value="{x:Static enums:TranslationStatus.DeletedStatus}">
-              <Setter Property="Background" Value="Brown"></Setter>
+              <Setter Property="Background" Value="Brown" />
+              <Setter Property="Foreground" Value="White" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
                          Value="{x:Static enums:TranslationStatus.NewStatus}">
-              <Setter Property="Background" Value="Blue"></Setter>
+              <Setter Property="Background" Value="Blue" />
+              <Setter Property="Foreground" Value="White" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
                          Value="{x:Static enums:TranslationStatus.OriginStatus}">
-              <Setter Property="Foreground" Value="Brown"></Setter>
+              <Setter Property="Foreground" Value="Brown" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
                          Value="{x:Static enums:TranslationStatus.TranslatedStatus}">
-              <Setter Property="Foreground" Value="Green"></Setter>
+              <Setter Property="Foreground" Value="Green" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
                          Value="{x:Static enums:TranslationStatus.UpdatedStatus}">
-              <Setter Property="Foreground" Value="Blue"></Setter>
+              <Setter Property="Foreground" Value="Blue" />
             </DataTrigger>
           </Style.Triggers>
         </Style>
@@ -162,8 +178,7 @@
     </StackPanel>
 
     <GridSplitter Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Height="5" Background="DimGray"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows">
-    </GridSplitter>
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows" />
 
     <Button Grid.Row="4" Grid.Column="0" x:Name="ButtonPasteTranslated" Content="Einfügen"
             Click="ButtonPasteTranslated_OnClick"

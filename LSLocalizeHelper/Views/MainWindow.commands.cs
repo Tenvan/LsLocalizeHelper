@@ -2,6 +2,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
+
+using DynamicData;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
@@ -17,13 +20,13 @@ public partial class MainWindow
 
   #region Properties
 
-  public ObservableCollection<DataRowModel> DataGridItems { get; } = LsWorkingDataService.TranslatedItems;
+  public ObservableCollection<DataRowModel?> DataGridItems { get; } = LsWorkingDataService.TranslatedItems;
 
   #endregion
 
   #region Methods
 
-  private void ButtonLoad_OnClick(object sender, RoutedEventArgs e)
+  private void LoadData()
   {
     LsWorkingDataService.Clear();
 
@@ -36,42 +39,9 @@ public partial class MainWindow
     var previousFiles = this.ListBoxOriginPreviousFile.SelectedItems.Cast<XmlFileModel>()
                             .ToArray();
 
-    LsWorkingDataService.Load(
-      translatedFiles: translatedFiles,
-      currentFiles: currentFiles,
-      previousFiles: previousFiles
-    );
+    LsWorkingDataService.Load(translatedFiles: translatedFiles, currentFiles: currentFiles, previousFiles: previousFiles);
 
     this.TranslationGrid.ItemsSource = LsWorkingDataService.TranslatedItems;
-  }
-
-  private void ButtonSave_OnClick(object sender, RoutedEventArgs e)
-  {
-    throw new NotImplementedException();
-  }
-
-  private void DoOnRowChanged(DataRowModel? row)
-  {
-    if (row == null)
-    {
-      return;
-    }
-
-    try
-    {
-      if (row?.Text != null)
-      {
-        Clipboard.SetText(row.Text);
-      }
-
-      Console.WriteLine("Copy to Clipboard:" + row?.Text);
-      this.TextBoxTranslated.Text = row?.Text;
-      this.SetOriginTexts(row!.Uuid);
-    }
-    catch (Exception ex)
-    {
-      Console.WriteLine(ex.Message);
-    }
   }
 
   private void LoadMods()
@@ -91,10 +61,10 @@ public partial class MainWindow
     this.OriginCurrentFileItems.Clear();
     this.TranslatedFileItems.Clear();
 
-    var selectedValue = this.ListBoxMods.SelectedItems.Cast<ModModel>()
+    var selectedMods = this.ListBoxMods.SelectedItems.Cast<ModModel>()
                             .ToArray();
 
-    this.XmlFilesService.Load(selectedValue);
+    this.XmlFilesService.Load(selectedMods);
 
     foreach (var xmlFileModel in this.XmlFilesService.Items)
     {

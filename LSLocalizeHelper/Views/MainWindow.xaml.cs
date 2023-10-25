@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Markup;
 
 using LSLocalizeHelper.Models;
@@ -31,16 +32,17 @@ public partial class MainWindow
       this.Close();
     }
 
-    this.LoadMods();
-    this.LoadModsListBox();
-    this.LoadXmlFiles();
-    this.LoadSettings();
+    this.LoadWindowSettings();
 
-    this.TranslationGrid.Events()
-        .SelectionChanged.Throttle(TimeSpan.FromSeconds(0.8))
-        .ObserveOn(RxApp.MainThreadScheduler)
-        .Select(e => e.AddedItems.Count > 0 ? e.AddedItems[0] as DataRowModel : null)
-        .Subscribe(this.DoOnRowChanged);
+    this.LoadMods();
+    this.SetListBoxModsSelections();
+
+    this.LoadXmlFiles();
+    this.SetListBoxCurrentFileSelections();
+    this.SetListBoxPreviousFileSelections();
+    this.SetListBoxTranslatedFileSelections();
+
+    this.SetEvents();
   }
 
   #endregion
@@ -52,172 +54,66 @@ public partial class MainWindow
     return "calculated";
   }
 
-  private void ButtonCopyCurrent_OnClick(object sender, RoutedEventArgs e)
+  protected void BeginUpdating()
   {
-    Clipboard.SetText(this.TextBoxCurrentOrigin.Text);
+    this.IsUpdating = true;
   }
 
-  private void ButtonCopyPrevious_OnClick(object sender, RoutedEventArgs e)
+  protected void EndUpdating()
   {
-    Clipboard.SetText(this.TextBoxPreviousOrigin.Text);
-  }
-
-  private void ButtonCopyTranslated_OnClick(object sender, RoutedEventArgs e)
-  {
-    Clipboard.SetText(this.TextBoxTranslated.Text);
-  }
-
-  private void ButtonPasteTranslated_OnClick(object sender, RoutedEventArgs e)
-  {
-    this.TextBoxTranslated.Text = Clipboard.GetText();
+    this.IsUpdating = false;
   }
 
   private bool CheckIfWindowCanOpen() =>
     !string.IsNullOrEmpty(SettingsManager.Settings?.ModsPath) || this.ShowSettingsDialog();
 
-  private void CmdShowSettings_Click(object sender, RoutedEventArgs e)
+  private void SetListBoxModsSelections()
   {
-    this.ShowSettingsDialog();
-  }
-
-  private void ListBoxMods_SelectionChanged(object sender, SelectionChangedEventArgs e)
-  {
-    var selectedValue = this.ListBoxMods.SelectedItems.Cast<ModModel>()
-                            .Select(model => model.Name)
-                            .ToArray();
-
-    SettingsManager.Settings!.LastMods = selectedValue;
-    SettingsManager.Save();
-    this.LoadXmlFiles();
-  }
-
-  private void ListBoxOriginCurrentFile_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-  {
-    var selectedValue = this.ListBoxOriginCurrentFile.SelectedItems.Cast<XmlFileModel>()
-                            .Select(
-                               model => new SelectionModel()
-                               {
-                                 Name = model.Name,
-                                 ModName = model.Mod.Name,
-                               }
-                             )
-                            .ToArray();
-
-    SettingsManager.Settings!.LastOriginsCurrent = selectedValue;
-    SettingsManager.Save();
-  }
-
-  private void ListBoxOriginPreviousFile_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-  {
-    var selectedValue = this.ListBoxOriginPreviousFile.SelectedItems.Cast<XmlFileModel>()
-                            .Select(
-                               model => new SelectionModel()
-                               {
-                                 Name = model.Name,
-                                 ModName = model.Mod.Name,
-                               }
-                             )
-                            .ToArray();
-
-    SettingsManager.Settings!.LastOriginsPrevious = selectedValue;
-    SettingsManager.Save();
-  }
-
-  private void ListBoxTranslatedFile_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-  {
-    var selectedValue = this.ListBoxTranslatedFile.SelectedItems.Cast<XmlFileModel>()
-                            .Select(
-                               model => new SelectionModel()
-                               {
-                                 Name = model.Name,
-                                 ModName = model.Mod.Name,
-                               }
-                             )
-                            .ToArray();
-
-    SettingsManager.Settings!.LastOriginsTranslated = selectedValue;
-    SettingsManager.Save();
-  }
-
-  private void LoadCurrentFileListBox()
-  {
-    // Reload selected Current Origin files
-    this.ListBoxOriginCurrentFile.SelectionChanged -= this.ListBoxOriginCurrentFile_OnSelectionChanged;
-
-    foreach (var lastMod in SettingsManager.Settings.LastOriginsCurrent)
-    {
-      var item = this.OriginCurrentFileItems.First(
-        delegate(XmlFileModel xmlFileModel)
-        {
-          return xmlFileModel.Name == lastMod.Name && xmlFileModel.Mod.Name == lastMod.ModName;
-        }
-      );
-
-      this.ListBoxOriginCurrentFile.SelectedItems.Add(item);
-    }
-
-    this.ListBoxOriginCurrentFile.SelectionChanged += this.ListBoxOriginCurrentFile_OnSelectionChanged;
-  }
-
-  private void LoadModsListBox()
-  {
-    this.ListBoxMods.SelectionChanged -= this.ListBoxMods_SelectionChanged;
-
     // Reload selected Mods
     foreach (var lastMod in SettingsManager.Settings.LastMods)
     {
       var item = this.ProjectItems.First(m => m.Name == lastMod);
       this.ListBoxMods.SelectedItems.Add(item);
     }
-
-    this.ListBoxMods.SelectionChanged += this.ListBoxMods_SelectionChanged;
   }
 
-  private void LoadPreviousFileListBox()
+  private void SetListBoxCurrentFileSelections()
+  {
+    // Reload selected Current Origin files
+    foreach (var lastMod in SettingsManager.Settings.LastOriginsCurrent)
+    {
+      var item = this.OriginCurrentFileItems.FirstOrDefault(
+        xmlFileModel => xmlFileModel.Name == lastMod.Name && xmlFileModel.Mod.Name == lastMod.ModName
+      );
+
+      this.ListBoxOriginCurrentFile.SelectedItems.Add(item);
+    }
+  }
+
+  private void SetListBoxPreviousFileSelections()
   {
     // Reload selected Previous Origin files
-    this.ListBoxOriginPreviousFile.SelectionChanged -= this.ListBoxOriginPreviousFile_OnSelectionChanged;
-
     foreach (var lastMod in SettingsManager.Settings.LastOriginsPrevious)
     {
-      var item = this.OriginPreviousFileItems.First(
+      var item = this.OriginPreviousFileItems.FirstOrDefault(
         xmlFileModel => xmlFileModel.Name == lastMod.Name && xmlFileModel.Mod.Name == lastMod.ModName
       );
 
       this.ListBoxOriginPreviousFile.SelectedItems.Add(item);
     }
-
-    this.ListBoxOriginPreviousFile.SelectionChanged += this.ListBoxOriginPreviousFile_OnSelectionChanged;
   }
 
-  private void LoadSettings()
-  {
-    if (SettingsManager.Settings == null)
-    {
-      return;
-    }
-
-    this.LoadWindowSettings();
-    this.LoadCurrentFileListBox();
-    this.LoadPreviousFileListBox();
-    this.LoadTranslatedFileListBox();
-  }
-
-  private void LoadTranslatedFileListBox()
+  private void SetListBoxTranslatedFileSelections()
   {
     // Reload selected Previous Origin files
-    this.ListBoxTranslatedFile.SelectionChanged -= this.ListBoxTranslatedFile_OnSelectionChanged;
-
     foreach (var lastMod in SettingsManager.Settings.LastOriginsTranslated)
     {
-      var item = this.TranslatedFileItems.First(
+      var item = this.TranslatedFileItems.FirstOrDefault(
         xmlFileModel => xmlFileModel.Name == lastMod.Name && xmlFileModel.Mod.Name == lastMod.ModName
       );
 
       this.ListBoxTranslatedFile.SelectedItems.Add(item);
     }
-
-    this.ListBoxTranslatedFile.SelectionChanged += this.ListBoxTranslatedFile_OnSelectionChanged;
   }
 
   private void LoadWindowSettings()
@@ -251,32 +147,6 @@ public partial class MainWindow
     };
 
     Application.Current.Resources.MergedDictionaries.Add(newDict);
-  }
-
-  private void WindowMain_LocationChanged(object sender, EventArgs e)
-  {
-    var userSettingsSettings = SettingsManager.Settings;
-
-    if (userSettingsSettings != null)
-    {
-      userSettingsSettings.WindowTop = this.Top;
-      userSettingsSettings.WindowLeft = this.Left;
-    }
-
-    SettingsManager.Save();
-  }
-
-  private void WindowMain_SizeChanged(object sender, SizeChangedEventArgs e)
-  {
-    var userSettingsSettings = SettingsManager.Settings;
-
-    if (userSettingsSettings != null)
-    {
-      userSettingsSettings.WindowWidth = this.Width;
-      userSettingsSettings.WindowHeight = this.Height;
-    }
-
-    SettingsManager.Save();
   }
 
   #endregion
