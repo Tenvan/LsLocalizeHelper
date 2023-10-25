@@ -39,19 +39,19 @@
     <ToolBar Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Grid.ColumnSpan="4">
       <Button x:Name="CmdShowSettings" Content="Einstellungen" Click="CmdShowSettings_Click" />
       <Separator />
-      <Button Content="Laden" x:Name="ButtonLoad" Click="ButtonLoad_OnClick" />
-      <Button Content="Speichern" x:Name="ButtonSave" Click="ButtonSave_OnClick" />
+      <Button x:Name="ButtonLoad" Content="Laden" Click="ButtonLoad_OnClick" />
+      <Button x:Name="ButtonSave" Content="Speichern" Click="ButtonSave_OnClick" />
       <Separator />
-      <Button Content="Importiere" x:Name="ButtonImport" />
-      <Button Content="Packen" x:Name="ButtonPackMods" />
+      <Button x:Name="ButtonImport" Content="Importiere" />
+      <Button x:Name="ButtonPackMods" Content="Packen" />
       <Separator />
-      <Button Content="Aktualisieren" x:Name="ButtonRefresh" />
+      <Button x:Name="ButtonRefresh" Content="Aktualisieren" />
     </ToolBar>
 
-    <Label Grid.Row="1" Grid.Column="0" Content="Projekt auswählen" Margin="5,0,5,5" VerticalAlignment="Top"
-           Height="24" />
+    <Label Grid.Row="1" Grid.Column="0" Content="Projekt auswählen"
+           Margin="5,0,5,5" VerticalAlignment="Top" Height="24" />
 
-    <ListBox Grid.Row="1" Grid.Column="0" Name="ListBoxMods" Margin="5,24,5,5" ItemsSource="{Binding ProjectItems}"
+    <ListBox x:Name="ListBoxMods" Grid.Row="1" Grid.Column="0" Margin="5,24,5,5" ItemsSource="{Binding ProjectItems}"
              SelectionChanged="ListBoxMods_SelectionChanged" SelectionMode="Extended">
       <ListBox.ItemTemplate>
         <DataTemplate>
@@ -62,9 +62,9 @@
       </ListBox.ItemTemplate>
     </ListBox>
 
-    <Label Grid.Row="1" Grid.Column="1" Content="Aktuelle Original XML" Margin="5,0,5,5" VerticalAlignment="Top"
-           Height="24" />
-    <ListBox Grid.Row="1" Grid.Column="1" Name="ListBoxOriginCurrentFile" Margin="5,24,5,5"
+    <Label Grid.Row="1" Grid.Column="1" Content="Aktuelle Original XML"
+           Margin="5,0,5,5" VerticalAlignment="Top" Height="24" />
+    <ListBox x:Name="ListBoxOriginCurrentFile" Grid.Row="1" Grid.Column="1" Margin="5,24,5,5"
              SelectionChanged="ListBoxOriginCurrentFile_OnSelectionChanged"
              ItemsSource="{Binding OriginCurrentFileItems}" SelectionMode="Extended">
       <ListBox.ItemTemplate>
@@ -123,7 +123,6 @@
       <DataGrid.Columns>
         <DataGridTextColumn Header="#"
                             Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" />
-        <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
         <DataGridTextColumn Header="Mod" Binding="{Binding Mod.Name}" />
         <DataGridTextColumn Header="Datei" Binding="{Binding Source.Name}" />
         <DataGridTextColumn Header="Uid" Binding="{Binding Uuid}" />
@@ -166,18 +165,33 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows">
     </GridSplitter>
 
-    <Label Grid.Row="5" Grid.Column="0" Content="Übersetzter Text" VerticalAlignment="Top" Height="24"
-           Grid.ColumnSpan="4" />
-    <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" x:Name="TextBoxTranslated" TextWrapping="Wrap"
-             Text="TextBox" Margin="0,24,0,0" />
+    <Button Grid.Row="4" Grid.Column="0" x:Name="ButtonPasteTranslated" Content="Einfügen"
+            Click="ButtonPasteTranslated_OnClick"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,5,0,0" Grid.RowSpan="2" Width="100" />
 
-    <Label Grid.Row="6" Grid.Column="0" Content="Aktueller Text" VerticalAlignment="Top" Height="24"
-           Grid.ColumnSpan="2" />
+    <Button Grid.Row="4" x:Name="ButtonCopyTranslated" Content="Kopieren"
+            Click="ButtonCopyTranslated_OnClick"
+            Margin="110,5,105,0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.RowSpan="2" Width="100" />
+
+    <Label Grid.Row="4" Grid.Column="0" Content="Übersetzter Text" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="220,5,0,0" Grid.RowSpan="2" Height="24" />
+
+    <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4" x:Name="TextBoxTranslated" TextWrapping="Wrap"
+             Margin="0,24,0,0" />
+
+    <Label Grid.Row="6" Grid.Column="0" Content="Aktueller Text" VerticalAlignment="Top" Height="24" />
+    <Button x:Name="ButtonCopyCurrent" Grid.Row="6" Grid.Column="1" Content="Kopieren"
+            Click="ButtonCopyCurrent_OnClick"
+            HorizontalAlignment="Right" VerticalAlignment="Top" Height="24" />
+
     <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2" x:Name="TextBoxPreviousOrigin" TextWrapping="Wrap"
-             Text="TextBox" Margin="0,24,0,0" />
+             Margin="0,24,0,0" />
+
     <Label Grid.Row="6" Grid.Column="2" Content="Vorheriger Text" VerticalAlignment="Top" Height="24"
            Grid.ColumnSpan="2" />
+    <Button x:Name="ButtonCopyPrevious" Grid.Row="6" Grid.Column="3" Content="Kopieren"
+            Click="ButtonCopyPrevious_OnClick"
+            HorizontalAlignment="Right"             VerticalAlignment="Top"             Height="24" />
     <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" x:Name="TextBoxCurrentOrigin" TextWrapping="Wrap"
-             Text="TextBox" Margin="0,24,0,0" />
+             Margin="0,24,0,0" />
   </Grid>
 </Window>

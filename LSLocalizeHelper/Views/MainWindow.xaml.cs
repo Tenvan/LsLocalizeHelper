@@ -47,6 +47,31 @@ public partial class MainWindow
 
   #region Methods
 
+  public string CalculateRowStatus(DataRowModel row)
+  {
+    return "calculated";
+  }
+
+  private void ButtonCopyCurrent_OnClick(object sender, RoutedEventArgs e)
+  {
+    Clipboard.SetText(this.TextBoxCurrentOrigin.Text);
+  }
+
+  private void ButtonCopyPrevious_OnClick(object sender, RoutedEventArgs e)
+  {
+    Clipboard.SetText(this.TextBoxPreviousOrigin.Text);
+  }
+
+  private void ButtonCopyTranslated_OnClick(object sender, RoutedEventArgs e)
+  {
+    Clipboard.SetText(this.TextBoxTranslated.Text);
+  }
+
+  private void ButtonPasteTranslated_OnClick(object sender, RoutedEventArgs e)
+  {
+    this.TextBoxTranslated.Text = Clipboard.GetText();
+  }
+
   private bool CheckIfWindowCanOpen() =>
     !string.IsNullOrEmpty(SettingsManager.Settings?.ModsPath) || this.ShowSettingsDialog();
 
@@ -256,8 +281,4 @@ public partial class MainWindow
 
   #endregion
 
-  public string CalculateRowStatus(DataRowModel row)
-  {
-    return "calculated";
-  }
 }

@@ -52,7 +52,7 @@ public partial class MainWindow
 
   private void DoOnRowChanged(DataRowModel? row)
   {
-    if (row != null)
+    if (row == null)
     {
       return;
     }
