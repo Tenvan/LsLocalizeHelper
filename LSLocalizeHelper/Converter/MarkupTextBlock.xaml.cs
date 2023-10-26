@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Markup;
+using System.Windows.Media;
 
 /// <summary>
 /// The markup text block is a replacement for <see cref="TextBlock"/> 
@@ -71,7 +72,7 @@ public class MarkupTextBlock : TextBlock
     {
       return;
     }
-
+    
     var flowDocument = new StringBuilder();
     flowDocument.Append(MarkupTextBlock.FlowDocumentPrefix);
     flowDocument.Append(dependencyPropertyChangedEventArgs.NewValue);
@@ -79,7 +80,8 @@ public class MarkupTextBlock : TextBlock
 
     try
     {
-      var document = (FlowDocument)XamlReader.Parse(flowDocument.ToString());
+      var text = flowDocument.ToString();
+      var document = (FlowDocument)XamlReader.Parse(text);
       var paragraph = document.Blocks.FirstBlock as Paragraph;
 
       if (paragraph == null)

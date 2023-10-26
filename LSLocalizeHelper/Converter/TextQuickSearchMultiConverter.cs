@@ -72,7 +72,7 @@ public class TextQuickSearchMultiConverter : IMultiValueConverter
            i < matches.Count;
            i++)
       {
-        newText.Append($"<Bold>{matches[i].Value}</Bold>");
+        newText.Append($"<Span Foreground=\"#FFFF0000\"><Bold>{matches[i].Value}</Bold></Span>");
 
         if (i < matches.Count - 1)
         {

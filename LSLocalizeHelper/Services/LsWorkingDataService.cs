@@ -49,10 +49,11 @@ public static class LsWorkingDataService
     var dataRowModels = LsWorkingDataService.TranslatedItems.Where(
       t =>
       {
-        var matchTranslated = regex.Matches(t.Text);
-        var matchOrigin = regex.Matches(t.Origin);
+        var matchTranslated = regex.Matches(t.Text ?? "");
+        var matchOrigin = regex.Matches(t.Origin ?? "");
+        var matchPrevious = regex.Matches(t.Previous ?? "");
 
-        return matchTranslated.Count > 0 || matchOrigin.Count > 0;
+        return matchTranslated.Count > 0 || matchOrigin.Count > 0 || matchPrevious.Count > 0;
       }
     );
 
@@ -108,7 +109,8 @@ public static class LsWorkingDataService
     {
       var currentUid = LsWorkingDataService.GetCurrentForUid(dataRowModel.Uuid);
       var previousUid = LsWorkingDataService.GetPreviousForUid(dataRowModel.Uuid);
-      dataRowModel.Origin = currentUid?.Text ?? previousUid?.Text;
+      dataRowModel.Origin = currentUid?.Text;
+      dataRowModel.Previous = previousUid?.Text;
     }
   }
 

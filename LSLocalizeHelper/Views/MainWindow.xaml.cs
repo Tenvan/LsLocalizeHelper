@@ -24,6 +24,11 @@ public partial class MainWindow
   public MainWindow()
   {
     this.InitializeComponent();
+    
+    // var skin = new ResourceDictionary(); 
+    // skin.Source = new Uri(@"\Themes\Dark.xaml", UriKind.Absolute); 
+    // App.Current.Resources.MergedDictionaries.Add(skin); 
+    
     this.SetLocals();
     var canOpenWindow = this.CheckIfWindowCanOpen();
 

@@ -32,7 +32,6 @@ public partial class MainWindow
 
       Console.WriteLine("Copy to Clipboard:" + row?.Text);
       this.TextBoxTranslated.Text = row?.Text;
-      this.SetOriginTexts(row!.Uuid);
     }
     catch (Exception ex)
     {

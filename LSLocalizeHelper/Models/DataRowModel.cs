@@ -13,6 +13,8 @@ public class DataRowModel
 
   public string Origin { get; set; }
 
+  public string Previous { get; set; }
+
   public XmlFileModel SourceFile { get; set; }
 
   public TranslationStatus Status { get; set; }

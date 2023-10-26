@@ -22,12 +22,12 @@ public partial class MainWindow
 
   private void ButtonCopyCurrent_OnClick(object sender, RoutedEventArgs e)
   {
-    Clipboard.SetText(this.TextBoxCurrentOrigin.Text);
+    // Clipboard.SetText(this.TextBoxCurrentOrigin.Text);
   }
 
   private void ButtonCopyPrevious_OnClick(object sender, RoutedEventArgs e)
   {
-    Clipboard.SetText(this.TextBoxPreviousOrigin.Text);
+    // Clipboard.SetText(this.TextBoxPreviousOrigin.Text);
   }
 
   private void ButtonCopyTranslated_OnClick(object sender, RoutedEventArgs e)

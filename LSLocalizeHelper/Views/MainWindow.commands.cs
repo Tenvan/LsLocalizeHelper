@@ -74,14 +74,6 @@ public partial class MainWindow
     }
   }
 
-  private void SetOriginTexts(string uuid)
-  {
-    var currentOrigin = LsWorkingDataService.OriginCurrentItems.First(o => o.Uuid == uuid);
-    this.TextBoxCurrentOrigin.Text = currentOrigin.Text;
-    var previousOrigin = LsWorkingDataService.OriginPreviousItems.First(o => o.Uuid == uuid);
-    this.TextBoxPreviousOrigin.Text = previousOrigin.Text;
-  }
-
   private bool ShowSettingsDialog()
   {
     var settingsDialog = new SettingsDialog();
