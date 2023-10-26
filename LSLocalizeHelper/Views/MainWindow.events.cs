@@ -113,7 +113,7 @@ public partial class MainWindow
         .Select(e => e)
         .Subscribe(args => this.SaveListBoxOriginPreviousFile());
 
-    this.TextBoxQuickSerach.Events()
+    this.TextBoxQuickSearch.Events()
         .TextChanged.Throttle(TimeSpan.FromMilliseconds(500))
         .ObserveOn(RxApp.MainThreadScheduler)
         .Subscribe(this.DoQuickFilter);

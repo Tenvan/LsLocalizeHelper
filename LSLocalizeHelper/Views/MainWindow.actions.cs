@@ -42,7 +42,7 @@ public partial class MainWindow
 
   private void DoQuickFilter(TextChangedEventArgs textChangedEventArgs)
   {
-    var filterText = this.TextBoxQuickSerach.Text;
+    var filterText = this.TextBoxQuickSearch.Text;
     Console.WriteLine($"QuickSearch: {filterText}");
     var filteredData = LsWorkingDataService.FilterData(filterText);
     this.TranslationGrid.ItemsSource = filteredData;

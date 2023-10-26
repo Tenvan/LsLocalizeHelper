@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -40,11 +41,22 @@ public static class LsWorkingDataService
 
   public static ObservableCollection<DataRowModel> FilterData(string filterText)
   {
-    var dataRowModels = LsWorkingDataService.TranslatedItems.Where(
-      t => t.Text.Contains(filterText) || (t.Origin?.Contains(filterText) == true)
+    var regex = new Regex(
+      filterText,
+      RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOptions.Compiled
     );
 
-    return new ObservableCollection<DataRowModel>(dataRowModels);;
+    var dataRowModels = LsWorkingDataService.TranslatedItems.Where(
+      t =>
+      {
+        var matchTranslated = regex.Matches(t.Text);
+        var matchOrigin = regex.Matches(t.Origin);
+
+        return matchTranslated.Count > 0 || matchOrigin.Count > 0;
+      }
+    );
+
+    return new ObservableCollection<DataRowModel>(dataRowModels);
   }
 
   public static OriginModel? GetCurrentForUid(string uuid)
