@@ -18,7 +18,7 @@ public partial class MainWindow
 
   private void DoOnRowChanged(DataRowModel? row)
   {
-    if (row == null)
+    if (row == null || this.CheckBoxAutoClipboard.IsChecked == false)
     {
       return;
     }
@@ -126,5 +126,6 @@ public partial class MainWindow
   }
 
   #endregion
+
 
 }

@@ -65,6 +65,11 @@ public partial class MainWindow
     MessageBox.Show("Not Implemented!");
   }
 
+  private void CmdExit_OnClick(object sender, RoutedEventArgs e)
+  {
+    this.Close();
+  }
+
   private void CmdShowSettings_Click(object sender, RoutedEventArgs e)
   {
     this.ShowSettingsDialog();
@@ -73,7 +78,7 @@ public partial class MainWindow
   private void SetEvents()
   {
     this.TranslationGrid.Events()
-        .SelectionChanged.Throttle(TimeSpan.FromSeconds(0.8))
+        .SelectionChanged.Throttle(TimeSpan.FromSeconds(0.4))
         .ObserveOn(RxApp.MainThreadScheduler)
         .Select(
            e => e.AddedItems.Count > 0

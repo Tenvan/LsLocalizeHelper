@@ -1,7 +1,7 @@
-# Baldurs Gate 3 Loca Helper
+# Baldurs Gate 3 Localization Helper
 
 <!-- TOC -->
-* [Baldurs Gate 3 Loca Helper](#baldurs-gate-3-loca-helper)
+* [Baldurs Gate 3 Localization Helper](#baldurs-gate-3-localization-helper)
   * [Features](#features)
   * [Screenshot](#screenshot)
 <!-- TOC -->
@@ -27,6 +27,19 @@ Folgendes Features sind z.Zt. in der App vorhanden:
 - Einmergen der Änderungen aus den originalen Lokalisierungsdateien
 - Automatisches speichern der Translation datei - und NUR dieser(!) - in das loca-Format
 - Speichern der Translation Mod in Zip-Format (Nexusmod upload kompatibel)
+
+## Preview neue Version 3.0
+Vorschauen auf die nächste komplett mit Wpf refacturierte Version.
+
+Features der neuen Version:
+- Performancesteigerung bei der Darstellung
+- Multi Mod Bearbeitung
+- Quicksearch Anzeige in der Tabelle und Textfeldern
+
+![screen5.png](images/screen5.png)
+
+![screen6.png](images/screen6.png)
+
 
 ## Screenshot
 

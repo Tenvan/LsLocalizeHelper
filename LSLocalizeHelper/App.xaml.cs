@@ -2,6 +2,8 @@
 
 using LSLocalizeHelper.Services;
 
+using ShowMeTheXAML;
+
 namespace LSLocalizeHelper;
 
 /// <summary>
@@ -12,8 +14,14 @@ public partial class App : Application
 
   public App()
   {
-    // Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-DE");
     SettingsManager.Load();
+    
+  }
+
+  protected override void OnStartup(StartupEventArgs e)
+  {
+    XamlDisplay.Init();
+    base.OnStartup(e);
   }
 
 }

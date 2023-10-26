@@ -3,26 +3,51 @@
   Material Design Toolkit: https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit/wiki/Getting-Started
 -->
 <Window x:Class="LSLocalizeHelper.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:converter="clr-namespace:LSLocalizeHelper.Converter" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:enums="clr-namespace:LSLocalizeHelper.Enums"
-        xmlns:global="clr-namespace:" xmlns:lsLocalizeHelper="clr-namespace:LSLocalizeHelper" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converter="clr-namespace:LSLocalizeHelper.Converter"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:enums="clr-namespace:LSLocalizeHelper.Enums"
+        xmlns:global="clr-namespace:"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        x:Name="WindowMain" Title="MainWindow"
-        Width="1280" Height="700" MinWidth="640"
+        xmlns:showMeTheXaml="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
+        x:Name="WindowMain"
+        Title="MainWindow"
+        Width="1280"
+        Height="700"
+        MinWidth="640"
         MinHeight="400"
         Background="{DynamicResource MaterialDesignPaper}"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         FontFamily="{materialDesign:MaterialDesignFont}"
-        LocationChanged="WindowMain_LocationChanged" SizeChanged="WindowMain_SizeChanged" WindowStartupLocation="Manual"
+        LocationChanged="WindowMain_LocationChanged"
+        SizeChanged="WindowMain_SizeChanged"
+        TextElement.FontSize="14"
+        TextElement.FontWeight="Medium"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        WindowStartupLocation="Manual"
         mc:Ignorable="d">
   <Window.Resources>
-    <converter:OriginStatusConverter x:Key="OriginStatusConverter" />
-    <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.GroupBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+
+      <converter:OriginStatusConverter x:Key="OriginStatusConverter" />
+      <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
+    </ResourceDictionary>
   </Window.Resources>
 
   <Grid Margin="10,10,10,10" ShowGridLines="False">
     <Grid.RowDefinitions>
-      <RowDefinition Height="40" ToolTip="RowToolbar" />
+      <RowDefinition Height="50" ToolTip="RowToolbar" />
       <RowDefinition Height="200" ToolTip="Files" />
       <RowDefinition Height="5" ToolTip="SplitterGridTop" />
       <RowDefinition Height="*" ToolTip="Grid" />
@@ -37,35 +62,62 @@
       <ColumnDefinition Width="100*" />
     </Grid.ColumnDefinitions>
 
-    <ToolBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
-             HorizontalAlignment="Left">
-      <Button x:Name="CmdShowSettings"
-              Click="CmdShowSettings_Click" Content="Einstellungen" />
-      <Separator />
-      <Button x:Name="ButtonLoad"
-              Click="ButtonLoad_OnClick" Content="Laden" />
-      <Button x:Name="ButtonSave"
-              Click="ButtonSave_OnClick" Content="Speichern" />
-      <Separator />
-      <Button x:Name="ButtonImport"
-              Click="ButtonImport_OnClick" Content="Importiere" />
-      <Button x:Name="ButtonPackMods"
-              Click="ButtonPackMods_OnClick" Content="Packen" />
-      <Separator />
-      <Button x:Name="ButtonRefresh"
-              Click="ButtonRefresh_OnClick" Content="Aktualisieren" />
-      <Separator />
-      <Label VerticalContentAlignment="Center" Content="Schnellfilter Datagrid:" />
-      <TextBox x:Name="TextBoxQuickSearch" Width="200" />
-    </ToolBar>
+    <ToolBarTray Grid.Row="0"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="4">
+      <ToolBar ClipToBounds="False" Style="{StaticResource MaterialDesignToolBar}">
 
-    <Label Grid.Row="1" Grid.Column="0"
+        <Button x:Name="CmdExit"
+                Click="CmdExit_OnClick"
+                Content="{materialDesign:PackIcon Kind=ExitToApp}"
+                ToolTip="Programm beenden" />
+        <Button x:Name="CmdShowSettings"
+                Click="CmdShowSettings_Click"
+                Content="{materialDesign:PackIcon Kind=Settings}"
+                ToolTip="Einstellungen öffnen" />
+        <Separator />
+        <Button x:Name="ButtonLoad"
+                Click="ButtonLoad_OnClick"
+                Content="{materialDesign:PackIcon Kind=FolderOpen}"
+                ToolTip="Gewählte Xml-Dokumente laden" />
+        <Button x:Name="ButtonSave"
+                Click="ButtonSave_OnClick"
+                Content="{materialDesign:PackIcon Kind=ContentSaveAdd}"
+                ToolTip="Übersetzungen speichern" />
+        <Separator />
+        <Button x:Name="ButtonImport"
+                Click="ButtonImport_OnClick"
+                Content="{materialDesign:PackIcon Kind=Import}"
+                ToolTip="PAK Datei in neue Mod importieren" />
+        <Button x:Name="ButtonPackMods"
+                Click="ButtonPackMods_OnClick"
+                Content="{materialDesign:PackIcon Kind=Package}"
+                ToolTip="Ausgewählte Mods packen und zippen" />
+        <Separator />
+        <Button x:Name="ButtonRefresh"
+                Click="ButtonRefresh_OnClick"
+                Content="{materialDesign:PackIcon Kind=Refresh}"
+                ToolTip="Aktualisieren" />
+        <Separator />
+        <CheckBox x:Name="CheckBoxAutoClipboard" Content="Automtische Zwischenablage" IsChecked="True" />
+        <Separator />
+        <Label VerticalContentAlignment="Center" Content="Schnellfilter Datagrid:" />
+        <TextBox x:Name="TextBoxQuickSearch" Width="200" />
+      </ToolBar>
+
+    </ToolBarTray>
+
+
+    <Label Grid.Row="1"
+           Grid.Column="0"
            Height="24"
-           Margin="5,0,5,5" VerticalAlignment="Top"
+           Margin="5,0,5,5"
+           VerticalAlignment="Top"
            Content="Projekt auswählen" />
 
     <ListBox x:Name="ListBoxMods"
-             Grid.Row="1" Grid.Column="0"
+             Grid.Row="1"
+             Grid.Column="0"
              Margin="5,24,5,5"
              ItemsSource="{Binding ProjectItems}"
              SelectionMode="Extended">
@@ -78,12 +130,15 @@
       </ListBox.ItemTemplate>
     </ListBox>
 
-    <Label Grid.Row="1" Grid.Column="1"
+    <Label Grid.Row="1"
+           Grid.Column="1"
            Height="24"
-           Margin="5,0,5,5" VerticalAlignment="Top"
+           Margin="5,0,5,5"
+           VerticalAlignment="Top"
            Content="Aktuelle Original XML" />
     <ListBox x:Name="ListBoxOriginCurrentFile"
-             Grid.Row="1" Grid.Column="1"
+             Grid.Row="1"
+             Grid.Column="1"
              Margin="5,24,5,5"
              ItemsSource="{Binding OriginCurrentFileItems}"
              SelectionMode="Extended">
@@ -98,12 +153,15 @@
       </ListBox.ItemTemplate>
     </ListBox>
 
-    <Label Grid.Row="1" Grid.Column="2"
+    <Label Grid.Row="1"
+           Grid.Column="2"
            Height="24"
-           Margin="5,0,5,5" VerticalAlignment="Top"
+           Margin="5,0,5,5"
+           VerticalAlignment="Top"
            Content="Vorherige Original XML" />
     <ListBox Name="ListBoxOriginPreviousFile"
-             Grid.Row="1" Grid.Column="2"
+             Grid.Row="1"
+             Grid.Column="2"
              Margin="5,24,5,5"
              ItemsSource="{Binding OriginPreviousFileItems}"
              SelectionMode="Extended">
@@ -118,12 +176,15 @@
       </ListBox.ItemTemplate>
     </ListBox>
 
-    <Label Grid.Row="1" Grid.Column="3"
+    <Label Grid.Row="1"
+           Grid.Column="3"
            Height="24"
-           Margin="5,0,5,5" VerticalAlignment="Top"
+           Margin="5,0,5,5"
+           VerticalAlignment="Top"
            Content="Übersetzungsdatei" />
     <ListBox Name="ListBoxTranslatedFile"
-             Grid.Row="1" Grid.Column="3"
+             Grid.Row="1"
+             Grid.Column="3"
              Margin="5,24,5,5"
              ItemsSource="{Binding TranslatedFileItems}"
              SelectionMode="Extended">
@@ -138,15 +199,22 @@
       </ListBox.ItemTemplate>
     </ListBox>
 
-    <GridSplitter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
+    <GridSplitter Grid.Row="2"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="4"
                   Height="5"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                  Background="DimGray" ResizeDirection="Rows" />
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Center"
+                  Background="DimGray"
+                  ResizeDirection="Rows" />
 
     <DataGrid x:Name="TranslationGrid"
-              Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
+              Grid.Row="3"
+              Grid.Column="0"
+              Grid.ColumnSpan="4"
               Margin="0,0,0,40"
-              AutoGenerateColumns="False" IsReadOnly="True"
+              AutoGenerateColumns="False"
+              IsReadOnly="True"
               ItemsSource="{Binding DataGridItems}"
               SelectionMode="Single">
       <DataGrid.Columns>
@@ -210,93 +278,180 @@
               <Setter Property="Foreground" Value="White" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.OriginStatus}">
-              <Setter Property="Foreground" Value="Brown" />
+              <Setter Property="Foreground" Value="Orange" />
+              <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.TranslatedStatus}">
-              <Setter Property="Foreground" Value="Green" />
+              <Setter Property="Foreground" Value="LightGreen" />
+              <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.UpdatedStatus}">
               <Setter Property="Foreground" Value="Blue" />
+              <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
           </Style.Triggers>
         </Style>
       </DataGrid.RowStyle>
     </DataGrid>
 
-    <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
+    <StackPanel Grid.Row="3"
+                Grid.Column="0"
+                Grid.ColumnSpan="4"
                 Height="40"
                 VerticalAlignment="Bottom">
       <TextBlock Height="40" Text="Status:" />
     </StackPanel>
 
-    <Button x:Name="ButtonCopyTranslated"
-            Grid.Row="4" Grid.RowSpan="2"
-            Width="100"
-            Margin="110,5,105,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-            Click="ButtonCopyTranslated_OnClick" Content="Kopieren" />
-
-    <GridSplitter Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4"
+    <GridSplitter Grid.Row="4"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="4"
                   Height="5"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                  Background="DimGray" ResizeDirection="Rows" />
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Center"
+                  Background="DimGray"
+                  ResizeDirection="Rows" />
 
-    <Button x:Name="ButtonPasteTranslated"
-            Grid.Row="4" Grid.RowSpan="2" Grid.Column="0"
-            Width="100"
-            Margin="0,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-            Click="ButtonPasteTranslated_OnClick" Content="Einfügen" />
+    <GroupBox Grid.Row="5"
+              Grid.Column="0"
+              Grid.ColumnSpan="4"
+              Margin="5"
+              Header="Übersetzter Text"
+              Style="{StaticResource MaterialDesignCardGroupBox}">
+      <GroupBox.HeaderTemplate>
+        <DataTemplate>
+          <StackPanel Height="24" Orientation="Horizontal">
+            <materialDesign:PackIcon Width="20"
+                                     Height="20"
+                                     VerticalAlignment="Center"
+                                     Kind="ReceiptTextEditOutline" />
+            <TextBlock Margin="8,0,20,0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Text="{Binding}" />
 
-    <Label Grid.Row="4" Grid.RowSpan="2" Grid.Column="0"
-           Height="24"
-           Margin="220,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-           Content="Übersetzter Text" />
+            <Button x:Name="ButtonCopyTranslated"
+                    Margin="5, 0"
+                    Height="Auto"
+                    Click="ButtonCopyTranslated_OnClick"
+                    Content="Kopieren"
+                    Style="{StaticResource MaterialDesignFlatLightBgButton}" />
 
-    <TextBox x:Name="TextBoxTranslated"
-             Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4"
-             Margin="0,24,0,0"
-             TextWrapping="Wrap" />
+            <Button x:Name="ButtonPasteTranslated"
+                    Margin="5, 0"
+                    Height="Auto"
+                    Click="ButtonPasteTranslated_OnClick"
+                    Content="Einfügen"
+                    Style="{StaticResource MaterialDesignFlatLightBgButton}" />
+            <Button x:Name="ButtonApplyTranslated"
+                    Margin="5, 0"
+                    Height="Auto"
+                    Content="Übernehmen"
+                    Style="{StaticResource MaterialDesignFlatLightBgButton}" />
 
-    <Label Grid.Row="6" Grid.Column="0"
-           Height="24"
-           VerticalAlignment="Top"
-           Content="Aktueller Text" />
+          </StackPanel>
+        </DataTemplate>
+      </GroupBox.HeaderTemplate>
 
-    <global:MarkupTextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+      <TextBox x:Name="TextBoxTranslated"
+               Grid.Row="5"
+               Grid.Column="0"
+               Grid.ColumnSpan="4"
+               TextWrapping="Wrap" />
+
+    </GroupBox>
+
+    <global:MarkupTextBlock Grid.Row="6"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
                             Margin="5,30,5,5"
                             TextWrapping="Wrap">
       <global:MarkupTextBlock.MarkupText>
         <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
-          <Binding ElementName="TranslationGrid" Path="CurrentItem.Origin" />
+          <Binding ElementName="TranslationGrid" Path="SelectedItem.Origin" />
           <Binding ElementName="TextBoxQuickSearch" Path="Text" />
         </MultiBinding>
       </global:MarkupTextBlock.MarkupText>
     </global:MarkupTextBlock>
 
-    <Button x:Name="ButtonCopyCurrent"
-            Grid.Row="6" Grid.Column="1"
-            Height="24"
-            HorizontalAlignment="Right" VerticalAlignment="Top"
-            Click="ButtonCopyCurrent_OnClick" Content="Kopieren" />
 
-    <global:MarkupTextBlock Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2"
-                            Margin="5,30,5,5"
-                            TextWrapping="Wrap">
-      <global:MarkupTextBlock.MarkupText>
-        <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
-          <Binding ElementName="TranslationGrid" Path="CurrentItem.Previous" />
-          <Binding ElementName="TextBoxQuickSearch" Path="Text" />
-        </MultiBinding>
-      </global:MarkupTextBlock.MarkupText>
-    </global:MarkupTextBlock>
+    <GroupBox Grid.Row="6"
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Margin="5"
+              Header="Aktueller Text"
+              Style="{StaticResource MaterialDesignCardGroupBox}">
+      <GroupBox.HeaderTemplate>
+        <DataTemplate>
+          <StackPanel Height="24" Orientation="Horizontal">
+            <materialDesign:PackIcon Width="20"
+                                     Height="20"
+                                     VerticalAlignment="Center"
+                                     Kind="ReceiptTextCheckOutline" />
+            <TextBlock Margin="8,0,20,0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Text="{Binding}" />
 
-    <Label Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="2"
-           Height="24"
-           VerticalAlignment="Top"
-           Content="Vorheriger Text" />
-    <Button x:Name="ButtonCopyPrevious"
-            Grid.Row="6" Grid.Column="3"
-            Height="24"
-            HorizontalAlignment="Right" VerticalAlignment="Top"
-            Click="ButtonCopyPrevious_OnClick" Content="Kopieren" />
+            <Button x:Name="ButtonCopyCurrent"
+                    Height="Auto"
+                    Click="ButtonCopyCurrent_OnClick"
+                    Content="Kopieren"
+                    Style="{StaticResource MaterialDesignFlatLightBgButton}" />
+          </StackPanel>
+        </DataTemplate>
+      </GroupBox.HeaderTemplate>
+
+      <global:MarkupTextBlock TextWrapping="Wrap">
+        <global:MarkupTextBlock.MarkupText>
+          <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
+            <Binding ElementName="TranslationGrid" Path="SelectedItem.Origin" />
+            <Binding ElementName="TextBoxQuickSearch" Path="Text" />
+          </MultiBinding>
+        </global:MarkupTextBlock.MarkupText>
+      </global:MarkupTextBlock>
+
+    </GroupBox>
+
+    <GroupBox Grid.Row="6"
+              Grid.Column="2"
+              Grid.ColumnSpan="2"
+              Margin="5"
+              Header="Vorheriger Text"
+              Style="{StaticResource MaterialDesignCardGroupBox}">
+      <GroupBox.HeaderTemplate>
+        <DataTemplate>
+          <StackPanel Height="24" Orientation="Horizontal">
+            <materialDesign:PackIcon Width="20"
+                                     Height="20"
+                                     VerticalAlignment="Center"
+                                     Kind="ReceiptTextClock" />
+            <TextBlock Margin="8,0,20,0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Text="{Binding}" />
+
+            <Button x:Name="ButtonCopyPrevious"
+                    Height="Auto"
+                    Click="ButtonCopyPrevious_OnClick"
+                    Content="Kopieren"
+                    Style="{StaticResource MaterialDesignFlatLightBgButton}" />
+
+
+          </StackPanel>
+        </DataTemplate>
+      </GroupBox.HeaderTemplate>
+      <global:MarkupTextBlock TextWrapping="Wrap">
+
+        <global:MarkupTextBlock.MarkupText>
+          <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
+            <Binding ElementName="TranslationGrid" Path="SelectedItem.Previous" />
+            <Binding ElementName="TextBoxQuickSearch" Path="Text" />
+          </MultiBinding>
+        </global:MarkupTextBlock.MarkupText>
+      </global:MarkupTextBlock>
+    </GroupBox>
+
   </Grid>
+
+
 </Window>
