@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Markup;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
-
-using ReactiveUI;
 
 namespace LSLocalizeHelper.Views;
 
@@ -24,18 +19,15 @@ public partial class MainWindow
   public MainWindow()
   {
     this.InitializeComponent();
-    
+
     // var skin = new ResourceDictionary(); 
     // skin.Source = new Uri(@"\Themes\Dark.xaml", UriKind.Absolute); 
     // App.Current.Resources.MergedDictionaries.Add(skin); 
-    
-    this.SetLocals();
+
+    this.SetLocals(XmlLanguage.GetLanguage("de"));
     var canOpenWindow = this.CheckIfWindowCanOpen();
 
-    if (!canOpenWindow)
-    {
-      this.Close();
-    }
+    if (!canOpenWindow) { this.Close(); }
 
     this.LoadWindowSettings();
 
@@ -54,20 +46,11 @@ public partial class MainWindow
 
   #region Methods
 
-  public string CalculateRowStatus(DataRowModel row)
-  {
-    return "calculated";
-  }
+  public string CalculateRowStatus(DataRowModel row) { return "calculated"; }
 
-  protected void BeginUpdating()
-  {
-    this.IsUpdating = true;
-  }
+  protected void BeginUpdating() { this.IsUpdating = true; }
 
-  protected void EndUpdating()
-  {
-    this.IsUpdating = false;
-  }
+  protected void EndUpdating() { this.IsUpdating = false; }
 
   private bool CheckIfWindowCanOpen() =>
     !string.IsNullOrEmpty(SettingsManager.Settings?.ModsPath) || this.ShowSettingsDialog();
@@ -127,28 +110,35 @@ public partial class MainWindow
     this.Height = SettingsManager.Settings.WindowHeight;
     this.Top = SettingsManager.Settings.WindowTop;
     this.Left = SettingsManager.Settings.WindowLeft;
+    var settingsProjectHeight = (double)SettingsManager.Settings.ProjectHeight;
+    this.RowDefinitionProjects.Height = new GridLength(Math.Max(settingsProjectHeight, 100));
+    var settingsTranslationHeight = (double)SettingsManager.Settings.TranslationHeight;
+    this.RowDefinitionTranslation.Height = new GridLength(Math.Max(settingsTranslationHeight, 100));
   }
 
-  private void SetLocals()
+  private void SetLocals(XmlLanguage? locals)
   {
-    // Setzen Sie die Sprache auf Deutsch (Deutschland)
-    this.Language = XmlLanguage.GetLanguage("de-DE");
+    if (this.LanguageItems.Count == 0)
+    {
+      this.LanguageItems.Add(XmlLanguage.GetLanguage("de"));
+      this.LanguageItems.Add(XmlLanguage.GetLanguage("en"));
+      this.LanguageItems.Add(XmlLanguage.GetLanguage("zh"));
+    }
+
+    this.Language = locals;
+    var lower = locals.IetfLanguageTag;
 
     var oldDict = Application.Current.Resources.MergedDictionaries.FirstOrDefault(
-      d =>
-      {
-        return d.Source.OriginalString == "/Resources.de-DE.xaml";
-      }
+      d => d.Source != null
+           && d.Source.OriginalString.ToLower()
+               .Contains($"locals.{lower}")
     );
 
-    if (oldDict != null)
-    {
-      Application.Current.Resources.MergedDictionaries.Remove(oldDict);
-    }
+    if (oldDict != null) { Application.Current.Resources.MergedDictionaries.Remove(oldDict); }
 
     var newDict = new ResourceDictionary
     {
-      Source = new Uri(uriString: "/Resources.de-DE.xaml", uriKind: UriKind.Relative),
+      Source = new Uri(uriString: $"locals/locals.{locals}.xaml", uriKind: UriKind.Relative),
     };
 
     Application.Current.Resources.MergedDictionaries.Add(newDict);

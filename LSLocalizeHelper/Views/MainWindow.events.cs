@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Markup;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
@@ -35,45 +36,24 @@ public partial class MainWindow
     Clipboard.SetText(this.TextBoxTranslated.Text);
   }
 
-  private void ButtonImport_OnClick(object sender, RoutedEventArgs e)
-  {
-    MessageBox.Show("Not Implemented!");
-  }
+  private void ButtonImport_OnClick(object sender, RoutedEventArgs e) { MessageBox.Show("Not Implemented!"); }
 
-  private void ButtonLoad_OnClick(object sender, RoutedEventArgs e)
-  {
-    this.LoadData();
-  }
+  private void ButtonLoad_OnClick(object sender, RoutedEventArgs e) { this.LoadData(); }
 
-  private void ButtonPackMods_OnClick(object sender, RoutedEventArgs e)
-  {
-    MessageBox.Show("Not Implemented!");
-  }
+  private void ButtonPackMods_OnClick(object sender, RoutedEventArgs e) { MessageBox.Show("Not Implemented!"); }
 
   private void ButtonPasteTranslated_OnClick(object sender, RoutedEventArgs e)
   {
     this.TextBoxTranslated.Text = Clipboard.GetText();
   }
 
-  private void ButtonRefresh_OnClick(object sender, RoutedEventArgs e)
-  {
-    this.DoRefresh();
-  }
+  private void ButtonRefresh_OnClick(object sender, RoutedEventArgs e) { this.DoRefresh(); }
 
-  private void ButtonSave_OnClick(object sender, RoutedEventArgs e)
-  {
-    MessageBox.Show("Not Implemented!");
-  }
+  private void ButtonSave_OnClick(object sender, RoutedEventArgs e) { MessageBox.Show("Not Implemented!"); }
 
-  private void CmdExit_OnClick(object sender, RoutedEventArgs e)
-  {
-    this.Close();
-  }
+  private void CmdExit_OnClick(object sender, RoutedEventArgs e) { this.Close(); }
 
-  private void CmdShowSettings_Click(object sender, RoutedEventArgs e)
-  {
-    this.ShowSettingsDialog();
-  }
+  private void CmdShowSettings_Click(object sender, RoutedEventArgs e) { this.ShowSettingsDialog(); }
 
   private void SetEvents()
   {
@@ -122,6 +102,16 @@ public partial class MainWindow
         .TextChanged.Throttle(TimeSpan.FromMilliseconds(500))
         .ObserveOn(RxApp.MainThreadScheduler)
         .Subscribe(this.DoQuickFilter);
+
+    this.GroupBoxProjects.Events()
+        .SizeChanged.Throttle(TimeSpan.FromMilliseconds(500))
+        .ObserveOn(RxApp.MainThreadScheduler)
+        .Subscribe(this.DoGroupBoxProjectsOnSizeChanged);
+
+    this.GroupBoxTranslation.Events()
+        .SizeChanged.Throttle(TimeSpan.FromMilliseconds(500))
+        .ObserveOn(RxApp.MainThreadScheduler)
+        .Subscribe(this.DoGroupBoxTranslatioOnSizeChanged);
   }
 
   private void WindowMain_LocationChanged(object sender, EventArgs e)
@@ -151,5 +141,11 @@ public partial class MainWindow
   }
 
   #endregion
+
+  private void ComboBoxLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+  {
+    var selectedItem = this.ComboBoxLanguage.SelectedItem as XmlLanguage;
+    this.SetLocals(selectedItem);
+  }
 
 }

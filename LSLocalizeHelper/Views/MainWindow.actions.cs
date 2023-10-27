@@ -127,5 +127,18 @@ public partial class MainWindow
 
   #endregion
 
+  private void DoGroupBoxProjectsOnSizeChanged(SizeChangedEventArgs e)
+  {
+    if (!e.HeightChanged) { return; }
+    SettingsManager.Settings.ProjectHeight = this.RowDefinitionProjects.Height.Value;
+    SettingsManager.Save();
+  }
+
+  private void DoGroupBoxTranslatioOnSizeChanged(SizeChangedEventArgs e)
+  {
+    if (!e.HeightChanged) { return; }
+    SettingsManager.Settings.TranslationHeight = this.RowDefinitionTranslation.Height.Value;
+    SettingsManager.Save();
+  }
 
 }

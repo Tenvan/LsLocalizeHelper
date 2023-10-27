@@ -38,14 +38,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources.cn-CN.xaml">
-    </Resource>
-    <Resource Include="Resources.de-DE.xaml">
-    </Resource>
-    <Resource Include="Resources.en-US.xaml">
-    </Resource>
     <Page Remove="Themes\Dark.xaml" />
     <Page Remove="Themes\Light.xaml" />
+    <Page Remove="locals\Resources.zh-CN.xaml" />
   </ItemGroup>
 
   <ItemGroup>

@@ -31,13 +31,20 @@
   <Window.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.GroupBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+        <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+        <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+        <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.GroupBox.xaml" />
+        <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+        <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+        <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+        <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
       <converter:OriginStatusConverter x:Key="OriginStatusConverter" />
@@ -45,15 +52,15 @@
     </ResourceDictionary>
   </Window.Resources>
 
-  <Grid Margin="10,10,10,10" ShowGridLines="False">
+  <Grid Margin="10,10,10,10" ShowGridLines="False" >
     <Grid.RowDefinitions>
       <RowDefinition Height="50" ToolTip="RowToolbar" />
-      <RowDefinition Height="200" ToolTip="Files" />
+      <RowDefinition Height="200" ToolTip="Files" x:Name="RowDefinitionProjects"></RowDefinition>
       <RowDefinition Height="5" ToolTip="SplitterGridTop" />
       <RowDefinition Height="*" ToolTip="Grid" />
       <RowDefinition Height="5" ToolTip="SplitterGridBottom" />
-      <RowDefinition Height="150" ToolTip="RowTranslation" />
-      <RowDefinition Height="150" ToolTip="RowOrigins" />
+      <RowDefinition Height="150" ToolTip="RowTranslation" x:Name="RowDefinitionTranslation" />
+      <RowDefinition Height="150" ToolTip="RowOrigins" x:Name="RowDefinitionOrigins" />
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="100*" />
@@ -65,7 +72,7 @@
     <ToolBarTray Grid.Row="0"
                  Grid.Column="0"
                  Grid.ColumnSpan="4">
-      <ToolBar ClipToBounds="False" Style="{StaticResource MaterialDesignToolBar}">
+      <ToolBar ClipToBounds="False" Style="{StaticResource MaterialDesignToolBar}" Width="Auto">
 
         <Button x:Name="CmdExit"
                 Click="CmdExit_OnClick"
@@ -104,104 +111,164 @@
         <Label VerticalContentAlignment="Center" Content="Schnellfilter Datagrid:" />
         <TextBox x:Name="TextBoxQuickSearch" Width="200" />
       </ToolBar>
+      <ToolBar ClipToBounds="True" Style="{StaticResource MaterialDesignToolBar}">
+        <Label VerticalContentAlignment="Center" Content="Sprache:" />
+        <ComboBox x:Name="ComboBoxLanguage" HorizontalAlignment="Left"
+                  ItemsSource="{Binding LanguageItems}" />
+      </ToolBar>
 
     </ToolBarTray>
 
-
-    <Label Grid.Row="1"
-           Grid.Column="0"
-           Height="24"
-           Margin="5,0,5,5"
-           VerticalAlignment="Top"
-           Content="Projekt auswählen" />
-
-    <ListBox x:Name="ListBoxMods"
-             Grid.Row="1"
-             Grid.Column="0"
-             Margin="5,24,5,5"
-             ItemsSource="{Binding ProjectItems}"
-             SelectionMode="Extended">
-      <ListBox.ItemTemplate>
+    <GroupBox Grid.Row="1"
+              Grid.Column="0"
+              Margin="5"
+              Header="Projekt auswählen"
+              x:Name="GroupBoxProjects"
+              Style="{StaticResource MaterialDesignCardGroupBox}">
+      <GroupBox.HeaderTemplate>
         <DataTemplate>
-          <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding Name}" />
+          <StackPanel Height="24" Orientation="Horizontal">
+            <materialDesign:PackIcon Width="20"
+                                     Height="20"
+                                     VerticalAlignment="Center"
+                                     Kind="FormatListGroupPlus" />
+            <TextBlock Margin="8,0,20,0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Text="{Binding}" />
           </StackPanel>
         </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+      </GroupBox.HeaderTemplate>
 
-    <Label Grid.Row="1"
-           Grid.Column="1"
-           Height="24"
-           Margin="5,0,5,5"
-           VerticalAlignment="Top"
-           Content="Aktuelle Original XML" />
-    <ListBox x:Name="ListBoxOriginCurrentFile"
-             Grid.Row="1"
-             Grid.Column="1"
-             Margin="5,24,5,5"
-             ItemsSource="{Binding OriginCurrentFileItems}"
-             SelectionMode="Extended">
-      <ListBox.ItemTemplate>
+      <ListBox x:Name="ListBoxMods"
+               Grid.Row="1"
+               Grid.Column="0"
+               ItemsSource="{Binding ProjectItems}"
+               SelectionMode="Extended">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </GroupBox>
+
+    <GroupBox Grid.Row="1"
+              Grid.Column="1"
+              Margin="5"
+              Header="Aktuelle Original XML"
+              Style="{StaticResource MaterialDesignCardGroupBox}">
+      <GroupBox.HeaderTemplate>
         <DataTemplate>
-          <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding Mod.Name}" />
-            <TextBlock Text=": " />
-            <TextBlock Text="{Binding Name}" />
+          <StackPanel Height="24" Orientation="Horizontal">
+            <materialDesign:PackIcon Width="20"
+                                     Height="20"
+                                     VerticalAlignment="Center"
+                                     Kind="FormatListGroupPlus" />
+            <TextBlock Margin="8,0,20,0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Text="{Binding}" />
           </StackPanel>
         </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+      </GroupBox.HeaderTemplate>
 
-    <Label Grid.Row="1"
-           Grid.Column="2"
-           Height="24"
-           Margin="5,0,5,5"
-           VerticalAlignment="Top"
-           Content="Vorherige Original XML" />
-    <ListBox Name="ListBoxOriginPreviousFile"
-             Grid.Row="1"
-             Grid.Column="2"
-             Margin="5,24,5,5"
-             ItemsSource="{Binding OriginPreviousFileItems}"
-             SelectionMode="Extended">
-      <ListBox.ItemTemplate>
+      <ListBox x:Name="ListBoxOriginCurrentFile"
+               Grid.Row="1"
+               Grid.Column="1"
+               ItemsSource="{Binding OriginCurrentFileItems}"
+               SelectionMode="Extended">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding Mod.Name}" />
+              <TextBlock Text=": " />
+              <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </GroupBox>
+
+    <GroupBox Grid.Row="1"
+              Grid.Column="2"
+              Margin="5"
+              Header="Vorherige Original XML"
+              Style="{StaticResource MaterialDesignCardGroupBox}">
+      <GroupBox.HeaderTemplate>
         <DataTemplate>
-          <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding Mod.Name}" />
-            <TextBlock Text=": " />
-            <TextBlock Text="{Binding Name}" />
+          <StackPanel Height="24" Orientation="Horizontal">
+            <materialDesign:PackIcon Width="20"
+                                     Height="20"
+                                     VerticalAlignment="Center"
+                                     Kind="FormatListGroupPlus" />
+            <TextBlock Margin="8,0,20,0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Text="{Binding}" />
           </StackPanel>
         </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+      </GroupBox.HeaderTemplate>
 
-    <Label Grid.Row="1"
-           Grid.Column="3"
-           Height="24"
-           Margin="5,0,5,5"
-           VerticalAlignment="Top"
-           Content="Übersetzungsdatei" />
-    <ListBox Name="ListBoxTranslatedFile"
-             Grid.Row="1"
-             Grid.Column="3"
-             Margin="5,24,5,5"
-             ItemsSource="{Binding TranslatedFileItems}"
-             SelectionMode="Extended">
-      <ListBox.ItemTemplate>
+      <ListBox Name="ListBoxOriginPreviousFile"
+               Grid.Row="1"
+               Grid.Column="2"
+               ItemsSource="{Binding OriginPreviousFileItems}"
+               SelectionMode="Extended">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding Mod.Name}" />
+              <TextBlock Text=": " />
+              <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </GroupBox>
+
+    <GroupBox Grid.Row="1"
+              Grid.Column="3"
+              Margin="5"
+              Header="Übersetzte XML"
+              Style="{StaticResource MaterialDesignCardGroupBox}">
+      <GroupBox.HeaderTemplate>
         <DataTemplate>
-          <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding Mod.Name}" />
-            <TextBlock Text=": " />
-            <TextBlock Text="{Binding Name}" />
+          <StackPanel Height="24" Orientation="Horizontal">
+            <materialDesign:PackIcon Width="20"
+                                     Height="20"
+                                     VerticalAlignment="Center"
+                                     Kind="FormatListGroupPlus" />
+            <TextBlock Margin="8,0,20,0"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       Text="{Binding}" />
           </StackPanel>
         </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+      </GroupBox.HeaderTemplate>
+
+      <ListBox Name="ListBoxTranslatedFile"
+               Grid.Row="1"
+               Grid.Column="3"
+               ItemsSource="{Binding TranslatedFileItems}"
+               SelectionMode="Extended">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{Binding Mod.Name}" />
+              <TextBlock Text=": " />
+              <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </GroupBox>
 
     <GridSplitter Grid.Row="2"
-                  Grid.Column="0"
-                  Grid.ColumnSpan="4"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
                   Height="5"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Center"
@@ -269,23 +336,28 @@
       <DataGrid.RowStyle>
         <Style TargetType="DataGridRow">
           <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.DeletedStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.DeletedStatus}">
               <Setter Property="Background" Value="Brown" />
               <Setter Property="Foreground" Value="White" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.NewStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.NewStatus}">
               <Setter Property="Background" Value="Blue" />
               <Setter Property="Foreground" Value="White" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.OriginStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.OriginStatus}">
               <Setter Property="Foreground" Value="Orange" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.TranslatedStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.TranslatedStatus}">
               <Setter Property="Foreground" Value="LightGreen" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.UpdatedStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.UpdatedStatus}">
               <Setter Property="Foreground" Value="Blue" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
@@ -303,8 +375,8 @@
     </StackPanel>
 
     <GridSplitter Grid.Row="4"
-                  Grid.Column="0"
-                  Grid.ColumnSpan="4"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
                   Height="5"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Center"
@@ -316,6 +388,7 @@
               Grid.ColumnSpan="4"
               Margin="5"
               Header="Übersetzter Text"
+              x:Name="GroupBoxTranslation"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -360,25 +433,12 @@
 
     </GroupBox>
 
-    <global:MarkupTextBlock Grid.Row="6"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Margin="5,30,5,5"
-                            TextWrapping="Wrap">
-      <global:MarkupTextBlock.MarkupText>
-        <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
-          <Binding ElementName="TranslationGrid" Path="SelectedItem.Origin" />
-          <Binding ElementName="TextBoxQuickSearch" Path="Text" />
-        </MultiBinding>
-      </global:MarkupTextBlock.MarkupText>
-    </global:MarkupTextBlock>
-
-
     <GroupBox Grid.Row="6"
               Grid.Column="0"
               Grid.ColumnSpan="2"
               Margin="5"
               Header="Aktueller Text"
+              x:Name="GroupBoxOrigins"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>

@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Windows.Markup;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
@@ -20,6 +21,8 @@ public partial class MainWindow
   #endregion
 
   #region Properties
+
+  public ObservableCollection<XmlLanguage> LanguageItems { get; set; } = new();
 
   public ObservableCollection<XmlFileModel> OriginCurrentFileItems { get; set; } = new();
 

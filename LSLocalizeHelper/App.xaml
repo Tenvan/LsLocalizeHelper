@@ -6,12 +6,12 @@
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Resources.cn-CN.xaml" />
-        <ResourceDictionary Source="/Resources.en-US.xaml" />
-        <ResourceDictionary Source="/Resources.de-DE.xaml" />
+        <!-- <ResourceDictionary Source="locals/locals.zh.xaml" /> -->
+        <!-- <ResourceDictionary Source="locals/locals.en.xaml" /> -->
+        <!-- <ResourceDictionary Source="locals/locals.de.xaml" /> -->
 
         <!-- This is the current way to setup your app's initial theme -->
-        <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Orange" SecondaryColor="Red" />
+        <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Orange" SecondaryColor="Yellow" />
 
         <ResourceDictionary
           Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
