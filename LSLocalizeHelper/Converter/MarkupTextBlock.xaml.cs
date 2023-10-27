@@ -81,7 +81,8 @@ public class MarkupTextBlock : TextBlock
     try
     {
       var text = flowDocument.ToString();
-      var document = (FlowDocument)XamlReader.Parse(text);
+      var textWithLinebreak = text.Replace("\r\n", "<LineBreak/>");
+      var document = (FlowDocument)XamlReader.Parse(textWithLinebreak);
       var paragraph = document.Blocks.FirstBlock as Paragraph;
 
       if (paragraph == null)

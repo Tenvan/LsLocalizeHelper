@@ -52,15 +52,19 @@
     </ResourceDictionary>
   </Window.Resources>
 
-  <Grid Margin="10,10,10,10" ShowGridLines="False" >
+  <Grid Margin="10,10,10,10" ShowGridLines="False">
     <Grid.RowDefinitions>
       <RowDefinition Height="50" ToolTip="RowToolbar" />
-      <RowDefinition Height="200" ToolTip="Files" x:Name="RowDefinitionProjects"></RowDefinition>
+      <RowDefinition x:Name="RowDefinitionProjects"
+                     Height="200"
+                     ToolTip="Files" />
       <RowDefinition Height="5" ToolTip="SplitterGridTop" />
       <RowDefinition Height="*" ToolTip="Grid" />
       <RowDefinition Height="5" ToolTip="SplitterGridBottom" />
-      <RowDefinition Height="150" ToolTip="RowTranslation" x:Name="RowDefinitionTranslation" />
-      <RowDefinition Height="150" ToolTip="RowOrigins" x:Name="RowDefinitionOrigins" />
+      <RowDefinition x:Name="RowDefinitionTranslation"
+                     Height="150"
+                     ToolTip="RowTranslation" />
+      <RowDefinition Height="150" ToolTip="RowOrigins" />
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="100*" />
@@ -72,7 +76,9 @@
     <ToolBarTray Grid.Row="0"
                  Grid.Column="0"
                  Grid.ColumnSpan="4">
-      <ToolBar ClipToBounds="False" Style="{StaticResource MaterialDesignToolBar}" Width="Auto">
+      <ToolBar Width="Auto"
+               ClipToBounds="False"
+               Style="{StaticResource MaterialDesignToolBar}">
 
         <Button x:Name="CmdExit"
                 Click="CmdExit_OnClick"
@@ -106,24 +112,27 @@
                 Content="{materialDesign:PackIcon Kind=Refresh}"
                 ToolTip="Aktualisieren" />
         <Separator />
-        <CheckBox x:Name="CheckBoxAutoClipboard" Content="Automtische Zwischenablage" IsChecked="True" />
+        <CheckBox x:Name="CheckBoxAutoClipboard"
+                  Content="Automtische Zwischenablage"
+                  IsChecked="True" />
         <Separator />
         <Label VerticalContentAlignment="Center" Content="Schnellfilter Datagrid:" />
         <TextBox x:Name="TextBoxQuickSearch" Width="200" />
       </ToolBar>
       <ToolBar ClipToBounds="True" Style="{StaticResource MaterialDesignToolBar}">
         <Label VerticalContentAlignment="Center" Content="Sprache:" />
-        <ComboBox x:Name="ComboBoxLanguage" HorizontalAlignment="Left"
+        <ComboBox x:Name="ComboBoxLanguage"
+                  HorizontalAlignment="Left"
                   ItemsSource="{Binding LanguageItems}" />
       </ToolBar>
 
     </ToolBarTray>
 
-    <GroupBox Grid.Row="1"
+    <GroupBox x:Name="GroupBoxProjects"
+              Grid.Row="1"
               Grid.Column="0"
               Margin="5"
               Header="Projekt auswählen"
-              x:Name="GroupBoxProjects"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -283,6 +292,8 @@
               AutoGenerateColumns="False"
               IsReadOnly="True"
               ItemsSource="{Binding DataGridItems}"
+              materialDesign:DataGridAssist.CellPadding="3"
+              materialDesign:DataGridAssist.ColumnHeaderPadding="5"
               SelectionMode="Single">
       <DataGrid.Columns>
         <DataGridTextColumn Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Header="#" />
@@ -293,7 +304,7 @@
         <DataGridTemplateColumn Width="*" Header="Translated">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
-              <global:MarkupTextBlock TextWrapping="Wrap">
+              <global:MarkupTextBlock TextWrapping="NoWrap">
                 <global:MarkupTextBlock.MarkupText>
                   <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
                     <Binding Path="Text" />
@@ -383,12 +394,12 @@
                   Background="DimGray"
                   ResizeDirection="Rows" />
 
-    <GroupBox Grid.Row="5"
+    <GroupBox x:Name="GroupBoxTranslation"
+              Grid.Row="5"
               Grid.Column="0"
               Grid.ColumnSpan="4"
               Margin="5"
               Header="Übersetzter Text"
-              x:Name="GroupBoxTranslation"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -403,21 +414,21 @@
                        Text="{Binding}" />
 
             <Button x:Name="ButtonCopyTranslated"
-                    Margin="5, 0"
                     Height="Auto"
+                    Margin="5,0"
                     Click="ButtonCopyTranslated_OnClick"
                     Content="Kopieren"
                     Style="{StaticResource MaterialDesignFlatLightBgButton}" />
 
             <Button x:Name="ButtonPasteTranslated"
-                    Margin="5, 0"
                     Height="Auto"
+                    Margin="5,0"
                     Click="ButtonPasteTranslated_OnClick"
                     Content="Einfügen"
                     Style="{StaticResource MaterialDesignFlatLightBgButton}" />
             <Button x:Name="ButtonApplyTranslated"
-                    Margin="5, 0"
                     Height="Auto"
+                    Margin="5,0"
                     Content="Übernehmen"
                     Style="{StaticResource MaterialDesignFlatLightBgButton}" />
 
@@ -429,16 +440,18 @@
                Grid.Row="5"
                Grid.Column="0"
                Grid.ColumnSpan="4"
+               ScrollViewer.HorizontalScrollBarVisibility="Auto"
+               ScrollViewer.VerticalScrollBarVisibility="Auto"
                TextWrapping="Wrap" />
 
     </GroupBox>
 
-    <GroupBox Grid.Row="6"
+    <GroupBox x:Name="GroupBoxOrigins"
+              Grid.Row="6"
               Grid.Column="0"
               Grid.ColumnSpan="2"
               Margin="5"
               Header="Aktueller Text"
-              x:Name="GroupBoxOrigins"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -461,7 +474,9 @@
         </DataTemplate>
       </GroupBox.HeaderTemplate>
 
-      <global:MarkupTextBlock TextWrapping="Wrap">
+      <global:MarkupTextBlock ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              TextWrapping="Wrap">
         <global:MarkupTextBlock.MarkupText>
           <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
             <Binding ElementName="TranslationGrid" Path="SelectedItem.Origin" />
@@ -500,7 +515,11 @@
           </StackPanel>
         </DataTemplate>
       </GroupBox.HeaderTemplate>
-      <global:MarkupTextBlock TextWrapping="Wrap">
+      <global:MarkupTextBlock
+        ScrollViewer.HorizontalScrollBarVisibility="Visible"
+        ScrollViewer.VerticalScrollBarVisibility="Visible"
+        Height="Auto"
+        TextWrapping="Wrap">
 
         <global:MarkupTextBlock.MarkupText>
           <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
