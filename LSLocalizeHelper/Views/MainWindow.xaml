@@ -418,20 +418,20 @@
                     Margin="5,0"
                     Click="ButtonCopyTranslated_OnClick"
                     Content="Kopieren"
-                    Style="{StaticResource MaterialDesignFlatLightBgButton}" />
+                    Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
             <Button x:Name="ButtonPasteTranslated"
                     Height="Auto"
                     Margin="5,0"
                     Click="ButtonPasteTranslated_OnClick"
                     Content="Einfügen"
-                    Style="{StaticResource MaterialDesignFlatLightBgButton}" />
+                    Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
             <Button x:Name="ButtonApplyTranslated"
                     Height="Auto"
                     Margin="5,0"
                     Content="Übernehmen"
                     Click="ButtonApplyTranslated_OnClick"
-                    Style="{StaticResource MaterialDesignFlatLightBgButton}" />
+                    Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
           </StackPanel>
         </DataTemplate>
@@ -471,7 +471,7 @@
                     Height="Auto"
                     Click="ButtonCopyCurrent_OnClick"
                     Content="Kopieren"
-                    Style="{StaticResource MaterialDesignFlatLightBgButton}" />
+                    Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
           </StackPanel>
         </DataTemplate>
       </GroupBox.HeaderTemplate>
@@ -511,7 +511,7 @@
                     Height="Auto"
                     Click="ButtonCopyPrevious_OnClick"
                     Content="Kopieren"
-                    Style="{StaticResource MaterialDesignFlatLightBgButton}" />
+                    Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
 
           </StackPanel>
