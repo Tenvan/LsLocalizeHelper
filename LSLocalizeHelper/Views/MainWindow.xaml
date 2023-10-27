@@ -53,6 +53,9 @@
   </Window.Resources>
 
   <Grid Margin="10,10,10,10" ShowGridLines="False">
+    <materialDesign:Snackbar
+      x:Name="SnackbarSeven"
+      MessageQueue="{materialDesign:MessageQueue}" />
     <Grid.RowDefinitions>
       <RowDefinition Height="50" ToolTip="RowToolbar" />
       <RowDefinition x:Name="RowDefinitionProjects"

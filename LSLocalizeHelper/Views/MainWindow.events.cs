@@ -44,7 +44,10 @@ public partial class MainWindow
 
   private void ButtonLoad_OnClick(object sender, RoutedEventArgs e) { this.LoadData(); }
 
-  private void ButtonPackMods_OnClick(object sender, RoutedEventArgs e) { MessageBox.Show("Not Implemented!"); }
+  private void ButtonPackMods_OnClick(object sender, RoutedEventArgs e)
+  {
+    MessageBox.Show("Not Implemented!");
+  }
 
   private void ButtonPasteTranslated_OnClick(object sender, RoutedEventArgs e)
   {
