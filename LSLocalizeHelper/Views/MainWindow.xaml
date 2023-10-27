@@ -11,7 +11,6 @@
         xmlns:global="clr-namespace:"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:showMeTheXaml="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
         x:Name="WindowMain"
         Title="MainWindow"
         Width="1280"
@@ -34,17 +33,27 @@
         <ResourceDictionary
           Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
         <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
+        <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+        <ResourceDictionary
           Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
         <ResourceDictionary
           Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.GroupBox.xaml" />
         <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
+        <ResourceDictionary
           Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
+        <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Snackbar.xaml" />
         <ResourceDictionary
           Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
         <ResourceDictionary
           Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
         <ResourceDictionary
           Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+        <ResourceDictionary
+          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
       </ResourceDictionary.MergedDictionaries>
 
       <converter:OriginStatusConverter x:Key="OriginStatusConverter" />
@@ -53,9 +62,6 @@
   </Window.Resources>
 
   <Grid Margin="10,10,10,10" ShowGridLines="False">
-    <materialDesign:Snackbar
-      x:Name="SnackbarSeven"
-      MessageQueue="{materialDesign:MessageQueue}" />
     <Grid.RowDefinitions>
       <RowDefinition Height="50" ToolTip="RowToolbar" />
       <RowDefinition x:Name="RowDefinitionProjects"
@@ -88,8 +94,8 @@
                 Content="{materialDesign:PackIcon Kind=ExitToApp}"
                 ToolTip="Programm beenden" />
         <Button x:Name="CmdShowSettings"
-                Click="CmdShowSettings_Click"
                 Content="{materialDesign:PackIcon Kind=Settings}"
+                Command="{Binding OpenSettingsDialogCommand}"
                 ToolTip="Einstellungen öffnen" />
         <Separator />
         <Button x:Name="ButtonLoad"
@@ -292,11 +298,11 @@
               Grid.Column="0"
               Grid.ColumnSpan="4"
               Margin="0,0,0,40"
+              materialDesign:DataGridAssist.CellPadding="3"
+              materialDesign:DataGridAssist.ColumnHeaderPadding="5"
               AutoGenerateColumns="False"
               IsReadOnly="True"
               ItemsSource="{Binding DataGridItems}"
-              materialDesign:DataGridAssist.CellPadding="3"
-              materialDesign:DataGridAssist.ColumnHeaderPadding="5"
               SelectionMode="Single">
       <DataGrid.Columns>
         <DataGridTextColumn Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Header="#" />
@@ -432,8 +438,8 @@
             <Button x:Name="ButtonApplyTranslated"
                     Height="Auto"
                     Margin="5,0"
-                    Content="Übernehmen"
                     Click="ButtonApplyTranslated_OnClick"
+                    Content="Übernehmen"
                     Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
           </StackPanel>
@@ -520,11 +526,10 @@
           </StackPanel>
         </DataTemplate>
       </GroupBox.HeaderTemplate>
-      <global:MarkupTextBlock
-        ScrollViewer.HorizontalScrollBarVisibility="Visible"
-        ScrollViewer.VerticalScrollBarVisibility="Visible"
-        Height="Auto"
-        TextWrapping="Wrap">
+      <global:MarkupTextBlock Height="Auto"
+                              ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                              ScrollViewer.VerticalScrollBarVisibility="Visible"
+                              TextWrapping="Wrap">
 
         <global:MarkupTextBlock.MarkupText>
           <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
@@ -534,6 +539,18 @@
         </global:MarkupTextBlock.MarkupText>
       </global:MarkupTextBlock>
     </GroupBox>
+
+    <materialDesign:Snackbar x:Name="MainSnackbar"
+                             Grid.Row="1"
+                             Grid.Column="1"
+                             Grid.ColumnSpan="2"
+                             Margin="0,20,0,0"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Top"
+                             HorizontalContentAlignment="Left"
+                             ActionButtonPlacement="Inline"
+                             ActionButtonStyle="{StaticResource MaterialDesignOutlinedButton}"
+                             MessageQueue="{materialDesign:MessageQueue}" />
 
   </Grid>
 

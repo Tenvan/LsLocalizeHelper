@@ -3,12 +3,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 using DynamicData;
 
+using LSLocalizeHelper.Helper;
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
-using LSLocalizeHelper.Views.Settings;
 
 namespace LSLocalizeHelper.Views;
 
@@ -74,14 +75,21 @@ public partial class MainWindow
     }
   }
 
-  private bool ShowSettingsDialog()
+  private void ShowSettingsDialog(object? _)
   {
     var settingsDialog = new SettingsDialog();
     settingsDialog.ShowDialog();
-
-    return settingsDialog.DialogResult == true;
   }
 
   #endregion
+
+  private void InitCommands()
+  {
+    this.OpenSettingsDialogCommand = new AnotherCommandImplementation(this.ShowSettingsDialog);
+  }
+
+  private void OpenModPathDialog(object? obj) {  }
+
+  public ICommand OpenSettingsDialogCommand { get; set; }
 
 }

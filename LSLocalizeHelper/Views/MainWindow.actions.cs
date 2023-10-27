@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,6 +17,22 @@ public partial class MainWindow
 
   #region Methods
 
+  private void DoGroupBoxProjectsOnSizeChanged(SizeChangedEventArgs e)
+  {
+    if (!e.HeightChanged) { return; }
+
+    SettingsManager.Settings.ProjectHeight = this.RowDefinitionProjects.Height.Value;
+    SettingsManager.Save();
+  }
+
+  private void DoGroupBoxTranslatioOnSizeChanged(SizeChangedEventArgs e)
+  {
+    if (!e.HeightChanged) { return; }
+
+    SettingsManager.Settings.TranslationHeight = this.RowDefinitionTranslation.Height.Value;
+    SettingsManager.Save();
+  }
+
   private void DoOnRowChanged(DataRowModel? row)
   {
     if (row == null) { return; }
@@ -28,6 +45,26 @@ public partial class MainWindow
           && !string.IsNullOrEmpty(row.Text)) { App.SetClipboardText(row.Text); }
     }
     catch (Exception ex) { Console.WriteLine(ex.Message); }
+  }
+
+  private void DoPackMods()
+  {
+    foreach (ModModel modModel in this.ListBoxMods.SelectedItems)
+    {
+      var modEngine = new Bg3PackageEngine(modModel.Folder.FullName, modModel.Name!);
+      var result = modEngine.BuildPackage();
+
+      if (result == null)
+      {
+        var message = $"Package ZIP für '{modModel.Name}' erfolgreich erstellt.";
+        this.ShowToast(message: message, duration: 3);
+      }
+      else
+      {
+        var message = $"Fehler der Erstellung des Mods '{modModel.Name}'\n{result}";
+        this.ShowToast(message: message, duration: 3);
+      }
+    }
   }
 
   private void DoQuickFilter(TextChangedEventArgs textChangedEventArgs)
@@ -102,8 +139,8 @@ public partial class MainWindow
                             .Select(
                                model => new SelectionModel()
                                {
-                                 Name = model.Name,
-                                 ModName = model.Mod.Name,
+                                 Name = model.Name!,
+                                 ModName = model.Mod.Name!,
                                }
                              )
                             .ToArray();
@@ -113,21 +150,5 @@ public partial class MainWindow
   }
 
   #endregion
-
-  private void DoGroupBoxProjectsOnSizeChanged(SizeChangedEventArgs e)
-  {
-    if (!e.HeightChanged) { return; }
-
-    SettingsManager.Settings.ProjectHeight = this.RowDefinitionProjects.Height.Value;
-    SettingsManager.Save();
-  }
-
-  private void DoGroupBoxTranslatioOnSizeChanged(SizeChangedEventArgs e)
-  {
-    if (!e.HeightChanged) { return; }
-
-    SettingsManager.Settings.TranslationHeight = this.RowDefinitionTranslation.Height.Value;
-    SettingsManager.Save();
-  }
 
 }

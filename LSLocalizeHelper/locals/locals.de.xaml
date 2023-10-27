@@ -4,6 +4,7 @@
 
   <System:String x:Key="ButtonYes">Ja</System:String>
   <System:String x:Key="ButtonNo">Nein</System:String>
+  <System:String x:Key="ButtonAbort">Abbruch</System:String>
   <System:String x:Key="ButtonApply">Übernehmen</System:String>
   <System:String x:Key="LblSettingsModsFolder">Mods Arbeitsordner</System:String>
 </ResourceDictionary>

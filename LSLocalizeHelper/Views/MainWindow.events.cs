@@ -44,10 +44,7 @@ public partial class MainWindow
 
   private void ButtonLoad_OnClick(object sender, RoutedEventArgs e) { this.LoadData(); }
 
-  private void ButtonPackMods_OnClick(object sender, RoutedEventArgs e)
-  {
-    MessageBox.Show("Not Implemented!");
-  }
+  private void ButtonPackMods_OnClick(object sender, RoutedEventArgs e) { this.DoPackMods(); }
 
   private void ButtonPasteTranslated_OnClick(object sender, RoutedEventArgs e)
   {
@@ -60,7 +57,11 @@ public partial class MainWindow
 
   private void CmdExit_OnClick(object sender, RoutedEventArgs e) { this.Close(); }
 
-  private void CmdShowSettings_Click(object sender, RoutedEventArgs e) { this.ShowSettingsDialog(); }
+  private void ComboBoxLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+  {
+    var selectedItem = this.ComboBoxLanguage.SelectedItem as XmlLanguage;
+    this.SetLocals(selectedItem);
+  }
 
   private void SetEvents()
   {
@@ -121,6 +122,19 @@ public partial class MainWindow
         .Subscribe(this.DoGroupBoxTranslatioOnSizeChanged);
   }
 
+  private void ShowToast(string message, int duration = 5)
+  {
+    this.MainSnackbar.MessageQueue?.Enqueue(
+      message,
+      "OK",
+      (e) => { },
+      null,
+      true,
+      true,
+      TimeSpan.FromSeconds(duration)
+    );
+  }
+
   private void WindowMain_LocationChanged(object sender, EventArgs e)
   {
     var userSettingsSettings = SettingsManager.Settings;
@@ -148,11 +162,5 @@ public partial class MainWindow
   }
 
   #endregion
-
-  private void ComboBoxLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-  {
-    var selectedItem = this.ComboBoxLanguage.SelectedItem as XmlLanguage;
-    this.SetLocals(selectedItem);
-  }
 
 }

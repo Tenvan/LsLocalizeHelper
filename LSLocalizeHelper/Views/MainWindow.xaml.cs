@@ -20,14 +20,13 @@ public partial class MainWindow
   {
     this.InitializeComponent();
 
+    this.InitCommands();
+
     // var skin = new ResourceDictionary(); 
     // skin.Source = new Uri(@"\Themes\Dark.xaml", UriKind.Absolute); 
     // App.Current.Resources.MergedDictionaries.Add(skin); 
 
     this.SetLocals(XmlLanguage.GetLanguage("de"));
-    var canOpenWindow = this.CheckIfWindowCanOpen();
-
-    if (!canOpenWindow) { this.Close(); }
 
     this.LoadWindowSettings();
 
@@ -71,9 +70,6 @@ public partial class MainWindow
     var newText = this.TextBoxTranslated.Text;
     LsWorkingDataService.SetTranslatedForUid(this.CurrentDataRow?.Uuid, newText);
   }
-
-  private bool CheckIfWindowCanOpen() =>
-    !string.IsNullOrEmpty(SettingsManager.Settings?.ModsPath) || this.ShowSettingsDialog();
 
   private void LoadWindowSettings()
   {
