@@ -40,6 +40,7 @@ Features der neuen Version:
 
 ![screen6.png](images/screen6.png)
 
+![screen7.png](images/screen7.png)
 
 ## Screenshot
 
