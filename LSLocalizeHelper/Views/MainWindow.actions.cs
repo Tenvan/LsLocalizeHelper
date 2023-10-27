@@ -18,25 +18,16 @@ public partial class MainWindow
 
   private void DoOnRowChanged(DataRowModel? row)
   {
-    if (row == null || this.CheckBoxAutoClipboard.IsChecked == false)
-    {
-      return;
-    }
+    if (row == null) { return; }
+
+    this.TextBoxTranslated.Text = row?.Text;
 
     try
     {
-      if (!string.IsNullOrEmpty(row.Text))
-      {
-        Clipboard.SetText(row.Text);
-      }
-
-      Console.WriteLine("Copy to Clipboard:" + row?.Text);
-      this.TextBoxTranslated.Text = row?.Text;
+      if (this.CheckBoxAutoClipboard.IsChecked == true
+          && !string.IsNullOrEmpty(row.Text)) { App.SetClipboardText(row.Text); }
     }
-    catch (Exception ex)
-    {
-      Console.WriteLine(ex.Message);
-    }
+    catch (Exception ex) { Console.WriteLine(ex.Message); }
   }
 
   private void DoQuickFilter(TextChangedEventArgs textChangedEventArgs)
@@ -45,7 +36,6 @@ public partial class MainWindow
     Console.WriteLine($"QuickSearch: {filterText}");
     var filteredData = LsWorkingDataService.FilterData(filterText);
     this.TranslationGrid.ItemsSource = filteredData;
-
   }
 
   private void DoRefresh()
@@ -61,10 +51,7 @@ public partial class MainWindow
       this.SetListBoxPreviousFileSelections();
       this.SetListBoxTranslatedFileSelections();
     }
-    finally
-    {
-      this.EndUpdating();
-    }
+    finally { this.EndUpdating(); }
   }
 
   private void SaveListBoxMods()
@@ -130,6 +117,7 @@ public partial class MainWindow
   private void DoGroupBoxProjectsOnSizeChanged(SizeChangedEventArgs e)
   {
     if (!e.HeightChanged) { return; }
+
     SettingsManager.Settings.ProjectHeight = this.RowDefinitionProjects.Height.Value;
     SettingsManager.Save();
   }
@@ -137,6 +125,7 @@ public partial class MainWindow
   private void DoGroupBoxTranslatioOnSizeChanged(SizeChangedEventArgs e)
   {
     if (!e.HeightChanged) { return; }
+
     SettingsManager.Settings.TranslationHeight = this.RowDefinitionTranslation.Height.Value;
     SettingsManager.Save();
   }

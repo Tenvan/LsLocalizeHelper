@@ -44,6 +44,20 @@ public partial class MainWindow
 
   #endregion
 
+  #region Properties
+
+  private DataRowModel? CurrentDataRow
+  {
+    get
+    {
+      var currentRow = this.TranslationGrid.SelectedItem as DataRowModel;
+
+      return currentRow;
+    }
+  }
+
+  #endregion
+
   #region Methods
 
   public string CalculateRowStatus(DataRowModel row) { return "calculated"; }
@@ -52,17 +66,25 @@ public partial class MainWindow
 
   protected void EndUpdating() { this.IsUpdating = false; }
 
+  private void ButtonApplyTranslated_OnClick(object sender, RoutedEventArgs e)
+  {
+    var newText = this.TextBoxTranslated.Text;
+    LsWorkingDataService.SetTranslatedForUid(this.CurrentDataRow?.Uuid, newText);
+  }
+
   private bool CheckIfWindowCanOpen() =>
     !string.IsNullOrEmpty(SettingsManager.Settings?.ModsPath) || this.ShowSettingsDialog();
 
-  private void SetListBoxModsSelections()
+  private void LoadWindowSettings()
   {
-    // Reload selected Mods
-    foreach (var lastMod in SettingsManager.Settings.LastMods)
-    {
-      var item = this.ProjectItems.First(m => m.Name == lastMod);
-      this.ListBoxMods.SelectedItems.Add(item);
-    }
+    this.Width = SettingsManager.Settings.WindowWidth;
+    this.Height = SettingsManager.Settings.WindowHeight;
+    this.Top = SettingsManager.Settings.WindowTop;
+    this.Left = SettingsManager.Settings.WindowLeft;
+    var settingsProjectHeight = (double)SettingsManager.Settings.ProjectHeight;
+    this.RowDefinitionProjects.Height = new GridLength(Math.Max(settingsProjectHeight, 100));
+    var settingsTranslationHeight = (double)SettingsManager.Settings.TranslationHeight;
+    this.RowDefinitionTranslation.Height = new GridLength(Math.Max(settingsTranslationHeight, 100));
   }
 
   private void SetListBoxCurrentFileSelections()
@@ -75,6 +97,16 @@ public partial class MainWindow
       );
 
       this.ListBoxOriginCurrentFile.SelectedItems.Add(item);
+    }
+  }
+
+  private void SetListBoxModsSelections()
+  {
+    // Reload selected Mods
+    foreach (var lastMod in SettingsManager.Settings.LastMods)
+    {
+      var item = this.ProjectItems.First(m => m.Name == lastMod);
+      this.ListBoxMods.SelectedItems.Add(item);
     }
   }
 
@@ -102,18 +134,6 @@ public partial class MainWindow
 
       this.ListBoxTranslatedFile.SelectedItems.Add(item);
     }
-  }
-
-  private void LoadWindowSettings()
-  {
-    this.Width = SettingsManager.Settings.WindowWidth;
-    this.Height = SettingsManager.Settings.WindowHeight;
-    this.Top = SettingsManager.Settings.WindowTop;
-    this.Left = SettingsManager.Settings.WindowLeft;
-    var settingsProjectHeight = (double)SettingsManager.Settings.ProjectHeight;
-    this.RowDefinitionProjects.Height = new GridLength(Math.Max(settingsProjectHeight, 100));
-    var settingsTranslationHeight = (double)SettingsManager.Settings.TranslationHeight;
-    this.RowDefinitionTranslation.Height = new GridLength(Math.Max(settingsTranslationHeight, 100));
   }
 
   private void SetLocals(XmlLanguage? locals)

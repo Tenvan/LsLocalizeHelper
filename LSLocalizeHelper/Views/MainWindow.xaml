@@ -430,6 +430,7 @@
                     Height="Auto"
                     Margin="5,0"
                     Content="Übernehmen"
+                    Click="ButtonApplyTranslated_OnClick"
                     Style="{StaticResource MaterialDesignFlatLightBgButton}" />
 
           </StackPanel>
@@ -440,9 +441,10 @@
                Grid.Row="5"
                Grid.Column="0"
                Grid.ColumnSpan="4"
+               AcceptsReturn="True"
+               AcceptsTab="True"
                ScrollViewer.HorizontalScrollBarVisibility="Auto"
-               ScrollViewer.VerticalScrollBarVisibility="Auto"
-               TextWrapping="Wrap" />
+               ScrollViewer.VerticalScrollBarVisibility="Auto" />
 
     </GroupBox>
 

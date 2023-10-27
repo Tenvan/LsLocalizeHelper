@@ -60,17 +60,17 @@ public static class LsWorkingDataService
     return new ObservableCollection<DataRowModel>(dataRowModels);
   }
 
-  public static OriginModel? GetCurrentForUid(string uuid)
+  public static OriginModel? GetCurrentForUid(string? uuid)
   {
     return LsWorkingDataService.OriginCurrentItems.FirstOrDefault(o => o.Uuid == uuid);
   }
 
-  public static OriginModel? GetPreviousForUid(string uuid)
+  public static OriginModel? GetPreviousForUid(string? uuid)
   {
     return LsWorkingDataService.OriginPreviousItems.FirstOrDefault(o => o.Uuid == uuid);
   }
 
-  public static DataRowModel? GetTranslatedForUid(string uuid)
+  public static DataRowModel? GetTranslatedForUid(string? uuid)
   {
     return LsWorkingDataService.TranslatedItems.FirstOrDefault(o => o.Uuid == uuid);
   }
@@ -103,14 +103,14 @@ public static class LsWorkingDataService
     LsWorkingDataService.AddNewOriginTexts();
   }
 
-  private static void AddOriginTexts()
+  public static void SetTranslatedForUid(string uid, string newText)
   {
-    foreach (var dataRowModel in LsWorkingDataService.TranslatedItems)
+    var dataRow = GetTranslatedForUid(uid);
+
+    if (dataRow != null)
     {
-      var currentUid = LsWorkingDataService.GetCurrentForUid(dataRowModel.Uuid);
-      var previousUid = LsWorkingDataService.GetPreviousForUid(dataRowModel.Uuid);
-      dataRowModel.Origin = currentUid?.Text;
-      dataRowModel.Previous = previousUid?.Text;
+      dataRow.Text = newText;
+
     }
   }
 
@@ -118,10 +118,7 @@ public static class LsWorkingDataService
   {
     foreach (var originModel in LsWorkingDataService.OriginCurrentItems)
     {
-      if (LsWorkingDataService.TranslatedItems.FirstOrDefault(t => t.Uuid == originModel.Uuid) != null)
-      {
-        continue;
-      }
+      if (LsWorkingDataService.TranslatedItems.FirstOrDefault(t => t.Uuid == originModel.Uuid) != null) { continue; }
 
       var rowModel = new DataRowModel()
       {
@@ -135,10 +132,18 @@ public static class LsWorkingDataService
 
       var matchToTranslatedFile = LsWorkingDataService.MatchToTranslatedFile(rowModel);
 
-      if (matchToTranslatedFile != null)
-      {
-        LsWorkingDataService.TranslatedItems.Add(matchToTranslatedFile);
-      }
+      if (matchToTranslatedFile != null) { LsWorkingDataService.TranslatedItems.Add(matchToTranslatedFile); }
+    }
+  }
+
+  private static void AddOriginTexts()
+  {
+    foreach (var dataRowModel in LsWorkingDataService.TranslatedItems)
+    {
+      var currentUid = LsWorkingDataService.GetCurrentForUid(dataRowModel.Uuid);
+      var previousUid = LsWorkingDataService.GetPreviousForUid(dataRowModel.Uuid);
+      dataRowModel.Origin = currentUid?.Text;
+      dataRowModel.Previous = previousUid?.Text;
     }
   }
 
@@ -152,10 +157,7 @@ public static class LsWorkingDataService
 
   private static void LoadFiles(XmlFileModel xmlFileModel, FileTypes type)
   {
-    if (!xmlFileModel.FullPath!.Exists)
-    {
-      return;
-    }
+    if (!xmlFileModel.FullPath!.Exists) { return; }
 
     try
     {
@@ -163,10 +165,7 @@ public static class LsWorkingDataService
       doc.Load(xmlFileModel.FullPath.FullName);
       var nodes = doc.SelectNodes("//content");
 
-      if (nodes == null)
-      {
-        return;
-      }
+      if (nodes == null) { return; }
 
       foreach (XmlElement node in nodes)
       {
@@ -207,10 +206,7 @@ public static class LsWorkingDataService
               break;
           }
         }
-        catch (Exception ex)
-        {
-          MessageBox.Show($"Error during node processing:\n\nError: {ex.Message}");
-        }
+        catch (Exception ex) { MessageBox.Show($"Error during node processing:\n\nError: {ex.Message}"); }
       }
     }
     catch (Exception e)
@@ -225,14 +221,8 @@ public static class LsWorkingDataService
   {
     var translateFile = LsWorkingDataService.TranslatedFiles.FirstOrDefault(t => t.Mod == rowModel.Mod);
 
-    if (translateFile != null)
-    {
-      rowModel.SourceFile = translateFile;
-    }
-    else
-    {
-      rowModel = null;
-    }
+    if (translateFile != null) { rowModel.SourceFile = translateFile; }
+    else { rowModel = null; }
 
     return rowModel;
   }

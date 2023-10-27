@@ -23,17 +23,21 @@ public partial class MainWindow
 
   private void ButtonCopyCurrent_OnClick(object sender, RoutedEventArgs e)
   {
-    // Clipboard.SetText(this.TextBoxCurrentOrigin.Text);
+    var translatedUid = this.CurrentDataRow?.Uuid;
+    var current = LsWorkingDataService.GetCurrentForUid(translatedUid);
+    App.SetClipboardText(current?.Text);
   }
 
   private void ButtonCopyPrevious_OnClick(object sender, RoutedEventArgs e)
   {
-    // Clipboard.SetText(this.TextBoxPreviousOrigin.Text);
+    var translatedUid = this.CurrentDataRow?.Uuid;
+    var current = LsWorkingDataService.GetPreviousForUid(translatedUid);
+    App.SetClipboardText(current?.Text);
   }
 
   private void ButtonCopyTranslated_OnClick(object sender, RoutedEventArgs e)
   {
-    Clipboard.SetText(this.TextBoxTranslated.Text);
+    App.SetClipboardText(this.CurrentDataRow?.Text);
   }
 
   private void ButtonImport_OnClick(object sender, RoutedEventArgs e) { MessageBox.Show("Not Implemented!"); }
