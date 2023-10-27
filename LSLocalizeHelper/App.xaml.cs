@@ -3,8 +3,6 @@ using System.Windows;
 
 using LSLocalizeHelper.Services;
 
-using ShowMeTheXAML;
-
 namespace LSLocalizeHelper;
 
 /// <summary>
@@ -14,12 +12,6 @@ public partial class App : Application
 {
 
   public App() { SettingsManager.Load(); }
-
-  protected override void OnStartup(StartupEventArgs e)
-  {
-    XamlDisplay.Init();
-    base.OnStartup(e);
-  }
 
   public static void SetClipboardText(string? text)
   {

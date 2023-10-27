@@ -163,29 +163,30 @@ public class Bg3PackageEngine
   /// <summary>
   /// Path to the temp directory to use.
   /// </summary>
-  private string TempFolder =>
-    Path.Combine(
-      Directory.GetParent(this.modPathEngine)
-               .FullName,
-      "BG3ModPacker"
-    );
+  private string TempFolder => Path.Combine(this.modPathEngine, "BG3ModPacker");
 
   #endregion
 
   #region Methods
 
-  public void BuildPackage()
+  public string? BuildPackage()
   {
-    this.CreatePackage();
-    this.GenerateInfoJson();
-    this.GenerateZip();
-    this.CleanUp();
+    try
+    {
+      this.CreatePackage();
+      this.GenerateInfoJson();
+      this.GenerateZip();
+
+      return null;
+    }
+    catch (Exception ex) { return ex.Message; }
+    finally
+    {
+      this.CleanUp();
+    }
   }
 
-  private void CleanUp()
-  {
-    Directory.Delete(path: this.TempFolder, recursive: true);
-  }
+  private void CleanUp() { Directory.Delete(path: this.TempFolder, recursive: true); }
 
   private void CreatePackage()
   {
@@ -207,7 +208,7 @@ public class Bg3PackageEngine
                                   numerator,
                                   denominator,
                                   file
-                                 ) => Debug.WriteLine(status);
+                                 ) => Console.WriteLine(status);
 
       var targetPak = Path.Combine(this.TempFolder, this.modNameEngine + ".pak");
 
@@ -238,10 +239,7 @@ public class Bg3PackageEngine
     //GeneralHelper.WriteToConsole(Properties.Resources.DirectoryName, dirName);
     var metaFiles = dirInfo.GetFiles(searchPattern: "meta.lsx", searchOption: SearchOption.AllDirectories);
 
-    if (metaFiles.Length != 1)
-    {
-      throw new Exception("excaptly one meta.lsx must exists");
-    }
+    if (metaFiles.Length != 1) { throw new Exception("excaptly one meta.lsx must exists"); }
 
     var metaFile = metaFiles[0].FullName;
 
@@ -255,10 +253,7 @@ public class Bg3PackageEngine
 
     info.Mods.Add(metadata);
 
-    if (info.Mods.Count == 0)
-    {
-      return false;
-    }
+    if (info.Mods.Count == 0) { return false; }
 
     // calculate md5 hash of .pak(s)
     using (var md5 = MD5.Create())
@@ -306,16 +301,9 @@ public class Bg3PackageEngine
   /// <param name="name">The name to use for the .zip file.</param>
   private void GenerateZip()
   {
-    // save zip next to folder that was dropped
-    var parentDir = Directory.GetParent(this.modPathEngine)
-                             .FullName;
+    var archiveFileName = $"{this.modPathEngine}\\{this.modNameEngine}.zip";
 
-    var archiveFileName = $"{parentDir}\\{this.modNameEngine}.zip";
-
-    if (File.Exists(archiveFileName))
-    {
-      File.Delete(archiveFileName);
-    }
+    if (File.Exists(archiveFileName)) { File.Delete(archiveFileName); }
 
     ZipFile.CreateFromDirectory(sourceDirectoryName: this.TempFolder, destinationArchiveFileName: archiveFileName);
   }

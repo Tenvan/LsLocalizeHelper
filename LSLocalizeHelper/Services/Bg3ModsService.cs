@@ -34,7 +34,7 @@ public class Bg3ModsService
     {
       var mod = new ModModel()
       {
-        Folder = metaFile.Directory,
+        Folder = metaFile.Directory?.Parent?.Parent?.Parent!,
         Name = metaFile.Directory?.Parent?.Parent?.Parent.Name,
       };
 

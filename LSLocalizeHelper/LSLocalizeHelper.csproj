@@ -53,7 +53,6 @@
     <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
     <PackageReference Include="ReactiveUI.WPF" Version="19.5.1" />
     <PackageReference Include="Rx.Net.Plus" Version="1.1.15" />
-    <PackageReference Include="ShowMeTheXAML.MSBuild" Version="2.0.0" />
     <PackageReference Include="zlib.net" Version="1.0.4" />
   </ItemGroup>
 
