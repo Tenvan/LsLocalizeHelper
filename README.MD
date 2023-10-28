@@ -1,62 +1,46 @@
-# Baldurs Gate 3 Localization Helper
+# Baldur's Gate 3 Localization Helper
 
 <!-- TOC -->
-* [Baldurs Gate 3 Localization Helper](#baldurs-gate-3-localization-helper)
+* [Baldur's Gate 3 Localization Helper](#baldurs-gate-3-localization-helper)
   * [Features](#features)
-  * [Screenshot](#screenshot)
+  * [Configuration](#configuration)
+  * [Screens version 3.0](#screens-version-30)
 <!-- TOC -->
 
-Einfaches Werkzeug, um die für die Lokalisierung benötigten Dateien
-schnell und einfach zu bearbeiten.
+Simple tool to quickly and easily edit the files needed for localization
+quickly and easily.
 
-Die Bearbeitung der XML-Dateien erfolgt im Localization-Ordner des jeweiligen Moduls unter Angabe eines Verweises auf die Original-XML-Datei.
-Diese dient zur Kontrolle der bereits übersetzten Texte.
+The XML files are edited in the localization folder of the respective module with a reference to the original XML file.
+This is used to check the already translated texts.
 
-Die Arbeitsgrundlage ist ein Ordner - Workspace genannt - in dem eine Sammlung verschiedener Mods bearbeitet werden kann.
+The working base is a folder - called Workspace - in which a collection of different mods can be edited.
 
-Alles, was für die Erstellung einer Translation Mod benötigt wird, ist onboard und muss nicht extra beschafft werden.
-Das bedeutet, dass JEDER, ohne eine Zeile programmieren zu müssen, damit eine Translation Mod erstellen kann.
-und für den Upload in Nexusmod verpacken kann... mit einem Werkzeug.
+Everything needed to create a translation mod is onboard and does not have to be obtained separately.
+This means that ANYONE, without having to program a line, can use it to create a Translation Mod.
+And can package it up for upload to Nexusmod.... with one tool.
 
 ## Features
-Folgendes Features sind z.Zt. in der App vorhanden:
 
-- Import einer Mod Pak-Datei und umwandeln in eine neue Translations Mod
-- Bearbeitung der Lokalisierungsdateien im Format XML
-- Vergleich der Texte mit der aktuellen und einer vorherigen originalen Lokalisierungsdatei
-- Einmergen der Änderungen aus den originalen Lokalisierungsdateien
-- Automatisches speichern der Translation datei - und NUR dieser(!) - in das loca-Format
-- Speichern der Translation Mod in Zip-Format (Nexusmod upload kompatibel)
+***The following features are currently available in the app:***
 
-## Preview neue Version 3.0
-Vorschauen auf die nächste komplett mit Wpf refacturierte Version.
+- Importing a mod pak file and converting it to a new translations mod
+- Editing localization files in XML format
+- Comparison of texts with the current and a previous original localization file
+- Incorporating the changes from the original localization files
+- Automatic saving of the translation file - and ONLY this(!) - into loca format
+- Saving the translation mod in zip format (Nexusmod upload compatible)
 
-Features der neuen Version:
-- Performancesteigerung bei der Darstellung
-- Multi Mod Bearbeitung
-- Quicksearch Anzeige in der Tabelle und Textfeldern
+***Features of the new version:***
+- Localization (Currently: German, English, Chinese)
+- Performance enhancement in rendering
+- Multi mod editing
+- Quicksearch display in table and text fields
 
-![screen5.png](images/screen5.png)
-
-![screen6.png](images/screen6.png)
-
-![screen7.png](images/screen7.png)
-
-## Screenshot
-
-Hier ein parr Screenshot, um die Arbeitsweise des Programmes zu dokumentieren.
-![screen4.png](images/screen4.png)
-
-![screen1.png](images/screen1.png)
-
-![screen2.png](images/screen2.png)
-
-![screen3.png](images/screen3.png)
-
-Beim ersten Start der App oder im Menü Punkt "Settings" **MUSS** dieser eingestellt werden: 
+## Configuration
+At the first start of the app or in the menu item "Settings" **MUST** be the wokspace:
 ![workspace_folder.png](images/workspace_folder.png)
 
-Die Struktur des Ordner **MUSS** folgenden Aufbau haben:
+The structure of the folder **MUST** have the following structure:
 
 ```
 <ModRootFolder>
@@ -65,7 +49,18 @@ Die Struktur des Ordner **MUSS** folgenden Aufbau haben:
             <Default Mod Structure>
 ```
 
-Hier ein Beispiel meines Wokspace Ordners:
+Here is an example of my wokspace folder:
 
 ![workspace_structure.png](images/workspace_structure.png)
 
+## Screens version 3.0
+Previews of the next version completely refactored with Wpf.
+
+
+![screen5.png](images/screen5.png)
+
+![screen6.png](images/screen6.png)
+
+![screen7.png](images/screen7.png)
+
+![screen8.png](images/screen8.png)

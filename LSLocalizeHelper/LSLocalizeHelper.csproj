@@ -7,6 +7,9 @@
     <UseWPF>true</UseWPF>
     <LangVersion>latestmajor</LangVersion>
     <UseWindowsForms>True</UseWindowsForms>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <FileVersion>3.0.0</FileVersion>
+    <NeutralLanguage>de-DE</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,6 +28,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Remove="Services\FileEngine.cs" />
+    <Page Update="locals\locals.de.xaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
