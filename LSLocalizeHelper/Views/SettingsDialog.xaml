@@ -1,14 +1,21 @@
-﻿<Window x:Class="LSLocalizeHelper.Views.SettingsDialog"
+<Window x:Class="LSLocalizeHelper.Views.SettingsDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         x:Name="WindowSettings"
         Title="Einstellungen"
+        Width="730"
         Background="{DynamicResource MaterialDesignPaper}"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         FontFamily="{materialDesign:MaterialDesignFont}"
-        SizeToContent="Height"
-        WindowStartupLocation="CenterOwner">
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        UseLayoutRounding="False"
+        TextElement.FontSize="14"
+        TextElement.FontWeight="Medium"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="ToolWindow">
   <Grid Margin="16">
     <Grid.RowDefinitions>
       <RowDefinition />
@@ -19,34 +26,35 @@
                 Margin="0,6,0,0"
                 Orientation="Horizontal">
 
-      <Label Margin="0,10,0,0"
+      <Label Margin="0,0,5,0"
+             HorizontalAlignment="Left"
              VerticalAlignment="Center"
              HorizontalContentAlignment="Right"
              Content="{DynamicResource LblSettingsModsFolder}" />
       <TextBox x:Name="TextBoxModsPath"
                Width="500"
+               Margin="5,0,5,0"
                materialDesign:HintAssist.Hint="Arbeitsbereich"
-               FontSize="14"
-               Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-      <Button HorizontalAlignment="Right"
-              VerticalAlignment="Top"
-              Command="{Binding BrowseFolderCommand}"
+               AcceptsReturn="False"
+               Style="{StaticResource MaterialDesignFilledTextBox}" />
+      <Button Margin="5,0,0,0"
+              HorizontalAlignment="Right"
+              Click="ButtonBrowseFolder_OnClick"
               Content="..." />
     </StackPanel>
 
     <StackPanel Grid.Row="1"
                 Margin="0,16,0,0"
+                HorizontalAlignment="Right"
                 Orientation="Horizontal">
-
       <Button Margin="10,0"
-              Command="{Binding AbortSettingsCommand}"
-              Content="{DynamicResource ButtonAbort}"
-              IsDefault="True"
-              Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
-      <Button Margin="10,0"
-              Command="{Binding ApplySettingsCommand}"
+              Click="ButtonApply_OnClick"
               Content="{DynamicResource ButtonApply}"
               IsCancel="True"
+              Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+      <Button Click="ButtonAbort_OnClick"
+              Content="{DynamicResource ButtonAbort}"
+              IsDefault="True"
               Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
     </StackPanel>
   </Grid>
