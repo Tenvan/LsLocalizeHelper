@@ -24,6 +24,7 @@
       <XamlRuntime>Wpf</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Remove="Services\FileEngine.cs" />
   </ItemGroup>
 
   <ItemGroup>

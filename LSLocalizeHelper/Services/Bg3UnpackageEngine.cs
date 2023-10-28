@@ -5,10 +5,10 @@ using System.Xml.Linq;
 
 using Alphaleonis.Win32.Filesystem;
 
-using Bg3LocaHelper;
-
 using LSLib.LS;
 using LSLib.LS.Enums;
+
+using LSLocalizeHelper.Helper;
 
 using SearchOption = System.IO.SearchOption;
 
@@ -49,7 +49,7 @@ public class Bg3UnpackageEngine
 
   #region Methods
 
-  public void ImportPackage()
+  public string? ImportPackage()
   {
     try
     {
@@ -57,13 +57,19 @@ public class Bg3UnpackageEngine
       this.UncompressPackage();
       this.PrepareMod();
       this.PrepareMeta();
-      this.CleanUp();
-      MessageBox.Show($"mod {this.ModName} successfully imported ind folder:\n{this.ModFolder}");
+      Console.WriteLine($"mod {this.ModName} successfully imported ind folder:\n{this.ModFolder}");
+
+      return null;
     }
     catch (Exception ex)
     {
-      Console.WriteLine(ex);
-      MessageBox.Show($"error on import:\n{ex.Message}");
+      Console.WriteLine($"error on import:\n{ex.Message}");
+
+      return ex.Message;
+    }
+    finally
+    {
+      this.CleanUp();
     }
   }
 
@@ -187,12 +193,9 @@ public class Bg3UnpackageEngine
     }
     catch (Exception ex)
     {
-      MessageBox.Show(
-        text: $"Internal error!{Environment.NewLine}{Environment.NewLine}{ex}",
-        caption: "Package Uncompress Failed",
-        buttons: MessageBoxButtons.OK,
-        icon: MessageBoxIcon.Error
-      );
+      Console.WriteLine($"Internal error!{Environment.NewLine}{Environment.NewLine}{ex}");
+
+      throw;
     }
   }
 

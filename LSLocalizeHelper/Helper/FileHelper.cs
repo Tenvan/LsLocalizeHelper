@@ -16,7 +16,7 @@ using LSLib.LS.Enums;
 
 using Newtonsoft.Json;
 
-namespace Bg3LocaHelper;
+namespace LSLocalizeHelper.Helper;
 
 public static class FileHelper
 {
@@ -107,10 +107,7 @@ public static class FileHelper
   /// <returns>The new file path.</returns>
   public static string Convert(string file, string extension, string newPath = null)
   {
-    if (File.Exists(newPath))
-    {
-      return newPath;
-    }
+    if (File.Exists(newPath)) { return newPath; }
 
     var originalExtension = Path.GetExtension(file);
 
@@ -118,10 +115,7 @@ public static class FileHelper
                     ? $"{file}.{extension}"
                     : file.Replace(oldValue: originalExtension, newValue: $"{originalExtension}.{extension}");
 
-    if (File.Exists(FileHelper.GetPath(newFile)))
-    {
-      return newFile;
-    }
+    if (File.Exists(FileHelper.GetPath(newFile))) { return newFile; }
 
     var isConvertableToLsx = FileHelper.CanConvertToLsx(file) || FileHelper.CanConvertToLsx(newPath);
     var isConvertableToXml = originalExtension.Contains("loca") && extension == "xml";
@@ -137,10 +131,7 @@ public static class FileHelper
       path = FileHelper.GetPath(file);
       newPath = FileHelper.GetPath(newFile);
     }
-    else
-    {
-      path = file;
-    }
+    else { path = file; }
 
     if (!File.Exists(newPath))
     {
@@ -157,10 +148,7 @@ public static class FileHelper
 
         try
         {
-          if (File.GetSize(path) == 0)
-          {
-            newFile = file;
-          }
+          if (File.GetSize(path) == 0) { newFile = file; }
           else
           {
             var resource = ResourceUtils.LoadResource(
@@ -190,34 +178,32 @@ public static class FileHelper
       }
       else if (isConvertableToXml)
       {
-        using (var fs = File.Open(path: file, mode: System.IO.FileMode.Open))
+        using var fs = File.Open(path: file, mode: System.IO.FileMode.Open);
+
+        try
         {
-          try
-          {
-            var resource = LocaUtils.Load(stream: fs, format: LocaFormat.Loca);
-            LocaUtils.Save(resource: resource, outputPath: newPath, format: LocaFormat.Xml);
-          }
-          catch (Exception ex)
-          {
-            // GeneralHelper.WriteToConsole(Properties.Resources.FailedToConvertResource, extension, file.Replace(Directory.GetCurrentDirectory(), string.Empty), ex.Message.Replace(Directory.GetCurrentDirectory(), string.Empty));
-            throw new Exception(ex.Message);
-          }
+          var resource = LocaUtils.Load(stream: fs, format: LocaFormat.Loca);
+          LocaUtils.Save(resource: resource, outputPath: newPath, format: LocaFormat.Xml);
+        }
+        catch (Exception ex)
+        {
+          // GeneralHelper.WriteToConsole(Properties.Resources.FailedToConvertResource, extension, file.Replace(Directory.GetCurrentDirectory(), string.Empty), ex.Message.Replace(Directory.GetCurrentDirectory(), string.Empty));
+          throw new Exception(ex.Message);
         }
       }
       else if (isConvertableToLoca)
       {
-        using (var fs = File.Open(path: file, mode: System.IO.FileMode.Open))
+        using var fs = File.Open(path: file, mode: System.IO.FileMode.Open);
+
+        try
         {
-          try
-          {
-            var resource = LocaUtils.Load(stream: fs, format: LocaFormat.Xml);
-            LocaUtils.Save(resource: resource, outputPath: newPath, format: LocaFormat.Loca);
-          }
-          catch (Exception ex)
-          {
-            // GeneralHelper.WriteToConsole(Properties.Resources.FailedToConvertResource, extension, file.Replace(Directory.GetCurrentDirectory(), string.Empty), ex.Message.Replace(Directory.GetCurrentDirectory(), string.Empty));
-            throw new Exception(ex.Message);
-          }
+          var resource = LocaUtils.Load(stream: fs, format: LocaFormat.Xml);
+          LocaUtils.Save(resource: resource, outputPath: newPath, format: LocaFormat.Loca);
+        }
+        catch (Exception ex)
+        {
+          // GeneralHelper.WriteToConsole(Properties.Resources.FailedToConvertResource, extension, file.Replace(Directory.GetCurrentDirectory(), string.Empty), ex.Message.Replace(Directory.GetCurrentDirectory(), string.Empty));
+          throw new Exception(ex.Message);
         }
       }
     }
@@ -234,10 +220,7 @@ public static class FileHelper
   /// <returns>Whether or not the file is convertable.</returns>
   public static bool CanConvertToLsx(string file)
   {
-    if (string.IsNullOrEmpty(file))
-    {
-      return false;
-    }
+    if (string.IsNullOrEmpty(file)) { return false; }
 
     var extension = Path.GetExtension(file);
 
@@ -273,10 +256,7 @@ public static class FileHelper
   /// <returns>A list of files in the directory.</returns>
   public static List<string> DirectorySearch(string directory)
   {
-    if (!Directory.Exists(directory))
-    {
-      Directory.CreateDirectory(directory);
-    }
+    if (!Directory.Exists(directory)) { Directory.CreateDirectory(directory); }
 
     var fileList = FileHelper.RecursiveFileSearch(directory);
 
@@ -301,10 +281,7 @@ public static class FileHelper
     {
       try
       {
-        foreach (var file in Directory.GetFiles(dir))
-        {
-          fileList.Add(file);
-        }
+        foreach (var file in Directory.GetFiles(dir)) { fileList.Add(file); }
 
         fileList.AddRange(FileHelper.RecursiveFileSearch(dir));
       }
@@ -331,10 +308,7 @@ public static class FileHelper
     {
       var extension = Path.GetExtension(file);
 
-      if (!extensions.Contains(extension))
-      {
-        extensions.Add(extension);
-      }
+      if (!extensions.Contains(extension)) { extensions.Add(extension); }
     }
 
     return extensions;
@@ -368,10 +342,7 @@ public static class FileHelper
   public static string GetPath(string file)
   {
     if (!string.IsNullOrEmpty(file)
-        && (file.Contains(FileHelper.UnpackedDataPath) || file.Contains(Path.GetTempPath())))
-    {
-      return file;
-    }
+        && (file.Contains(FileHelper.UnpackedDataPath) || file.Contains(Path.GetTempPath()))) { return file; }
 
     return $"{FileHelper.UnpackedDataPath}\\{file}";
   }
@@ -396,10 +367,7 @@ public static class FileHelper
           // determine if you can determine if there is a default program
           var fileAssociation = new FileAssociationInfo(".dae");
 
-          if (fileAssociation.Exists)
-          {
-            Process.Start(dae);
-          }
+          if (fileAssociation.Exists) { Process.Start(dae); }
 
           // open folder
           Process.Start(fileName: "explorer.exe", arguments: $"/select,{dae}");
@@ -422,10 +390,7 @@ public static class FileHelper
 
             npp.Start();
           }
-          else
-          {
-            Process.Start(path);
-          }
+          else { Process.Start(path); }
         }
       }
       catch (Exception ex)
@@ -454,28 +419,19 @@ public static class FileHelper
       var listObject = serialObject as IList;
 
       if (listObject != null
-          && listObject.Count == 0)
-      {
-        return;
-      }
+          && listObject.Count == 0) { return; }
 
       var dictObject = serialObject as IDictionary;
 
       if (dictObject != null
-          && dictObject.Count == 0)
-      {
-        return;
-      }
+          && dictObject.Count == 0) { return; }
 
       // GeneralHelper.WriteToConsole(Properties.Resources.CachingFile, filename);
       System.IO.TextWriter writer = null;
 
       try
       {
-        if (!Directory.Exists("Cache"))
-        {
-          Directory.CreateDirectory("Cache");
-        }
+        if (!Directory.Exists("Cache")) { Directory.CreateDirectory("Cache"); }
 
         var contentsToWriteToFile = JsonConvert.SerializeObject(
           value: serialObject,
@@ -491,10 +447,7 @@ public static class FileHelper
       }
       finally
       {
-        if (writer != null)
-        {
-          writer.Close();
-        }
+        if (writer != null) { writer.Close(); }
       }
     }
   }
@@ -525,10 +478,7 @@ public static class FileHelper
       }
       finally
       {
-        if (reader != null)
-        {
-          reader.Close();
-        }
+        if (reader != null) { reader.Close(); }
       }
     }
 
@@ -548,10 +498,7 @@ public static class FileHelper
 
       return true;
     }
-    catch
-    {
-      return false;
-    }
+    catch { return false; }
   }
 
   /// <summary>
@@ -561,12 +508,16 @@ public static class FileHelper
   /// <returns>The file template file content string</returns>
   public static string LoadFileTemplate(string templateName)
   {
-    using (var stream = Assembly.GetExecutingAssembly()
-                                .GetManifestResourceStream($"Bg3LocaHelper.FileTemplates.{templateName}"))
-    using (var reader = new System.IO.StreamReader(stream))
-    {
-      return reader.ReadToEnd();
-    }
+    var templateResourceName = Assembly.GetExecutingAssembly()
+                                       .GetManifestResourceNames()
+                                       .First(r => r.Contains(templateName));
+
+    using var stream = Assembly.GetExecutingAssembly()
+                               .GetManifestResourceStream(templateResourceName);
+
+    using var reader = new System.IO.StreamReader(stream);
+
+    return reader.ReadToEnd();
   }
 
   /// <summary>
@@ -586,10 +537,7 @@ public static class FileHelper
 
       return true;
     }
-    catch
-    {
-      return false;
-    }
+    catch { return false; }
   }
 
   #region Process Finder
