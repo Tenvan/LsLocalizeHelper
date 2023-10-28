@@ -12,7 +12,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         x:Name="WindowMain"
-        Title="MainWindow"
+        Title="{DynamicResource R-9B9E1Bbb-Dc9D-475F-8977-5Dc8C60288F5}"
         Width="1280"
         Height="700"
         MinWidth="640"
@@ -30,33 +30,6 @@
         mc:Ignorable="d">
   <Window.Resources>
     <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.GroupBox.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Popupbox.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Snackbar.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
-        <ResourceDictionary
-          Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
-      </ResourceDictionary.MergedDictionaries>
-
       <converter:OriginStatusConverter x:Key="OriginStatusConverter" />
       <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
     </ResourceDictionary>
@@ -92,38 +65,37 @@
 
         <Button Command="{Binding ApplicationExitCommand}"
                 Content="{materialDesign:PackIcon Kind=ExitToApp}"
-                ToolTip="Programm beenden" />
+                ToolTip="{DynamicResource R-Bc06Ec85-2434-4Aa6-93D6-971C94181391}" />
         <Button Content="{materialDesign:PackIcon Kind=Settings}"
                 Command="{Binding OpenSettingsDialogCommand}"
-                ToolTip="Einstellungen öffnen" />
+                ToolTip="{DynamicResource OpenSettings}" />
         <Separator />
         <Button Command="{Binding LoadXmlDataCommand}"
                 Content="{materialDesign:PackIcon Kind=FolderOpen}"
-                ToolTip="Gewählte Xml-Dokumente laden" />
+                ToolTip="{DynamicResource R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5}" />
         <Button Command="{Binding SaveXmlDataCommand}"
                 Content="{materialDesign:PackIcon Kind=ContentSaveAdd}"
-                ToolTip="Übersetzungen speichern" />
+                ToolTip="{DynamicResource R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3}" />
         <Separator />
         <Button Command="{Binding  ImportNewModCommand}"
                 Content="{materialDesign:PackIcon Kind=Import}"
-                ToolTip="PAK Datei in neue Mod importieren" />
+                ToolTip="{DynamicResource R-0246F297-E448-4D0B-945A-32F0C73F98C7}" />
         <Button Command="{Binding PackModsCommand}"
                 Content="{materialDesign:PackIcon Kind=Package}"
-                ToolTip="Ausgewählte Mods packen und zippen" />
+                ToolTip="{DynamicResource R-933E62F0-E08A-435A-86D0-9585F2Ad6B7C}" />
         <Separator />
         <Button Command="{Binding RefreshCommand}"
                 Content="{materialDesign:PackIcon Kind=Refresh}"
-                ToolTip="Aktualisieren" />
+                ToolTip="{DynamicResource R-84Dd6204-13D5-4898-Baac-76A4A41Dbe99}" />
         <Separator />
         <CheckBox x:Name="CheckBoxAutoClipboard"
-                  Content="Automtische Zwischenablage"
+                  Content="{DynamicResource R-54B6Cde5-Effe-48B1-B19B-31B2Cb994D44}"
                   IsChecked="True" />
         <Separator />
-        <Label VerticalContentAlignment="Center" Content="Schnellfilter:" />
+        <Label VerticalContentAlignment="Center" Content="{DynamicResource R-9B8Dbcb5-C187-409F-A672-A4Ec2A8E80E1}" />
         <TextBox x:Name="TextBoxQuickSearch" Width="200" />
-      </ToolBar>
-      <ToolBar ClipToBounds="True" Style="{StaticResource MaterialDesignToolBar}">
-        <Label VerticalContentAlignment="Center" Content="Sprache:" />
+        <Separator />
+        <Label VerticalContentAlignment="Center" Content="{DynamicResource R-Ba4B59F8-8D60-4E6A-89B6-4B374Fcfe0B0}" />
         <ComboBox x:Name="ComboBoxLanguage"
                   SelectionChanged="ComboBoxLanguage_OnSelectionChanged"
                   HorizontalAlignment="Left"
@@ -136,7 +108,7 @@
               Grid.Row="1"
               Grid.Column="0"
               Margin="5"
-              Header="Projekt auswählen"
+              Header="{DynamicResource R-92C669E1-2208-46D9-Ab54-07C7E8C45283}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -171,7 +143,7 @@
     <GroupBox Grid.Row="1"
               Grid.Column="1"
               Margin="5"
-              Header="Aktuelle Original XML"
+              Header="{DynamicResource R-5E3E7030-4C59-4322-A108-157Afeb42Fad}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -208,7 +180,7 @@
     <GroupBox Grid.Row="1"
               Grid.Column="2"
               Margin="5"
-              Header="Vorherige Original XML"
+              Header="{DynamicResource R-6Cc7Af69-B89E-497E-A5C7-3B158D5Fbd1A}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -245,7 +217,7 @@
     <GroupBox Grid.Row="1"
               Grid.Column="3"
               Margin="5"
-              Header="Übersetzte XML"
+              Header="{DynamicResource R-Fe2B3802-8Bac-4650-96D8-Dd69Eedd7185}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -285,7 +257,7 @@
                   Height="5"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Center"
-                  Background="DimGray"
+                  Background="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"
                   ResizeDirection="Rows" />
 
     <DataGrid x:Name="TranslationGrid"
@@ -301,11 +273,11 @@
               SelectionMode="Single">
       <DataGrid.Columns>
         <DataGridTextColumn Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Header="#" />
-        <DataGridTextColumn Binding="{Binding Mod.Name}" Header="Mod" />
-        <DataGridTextColumn Binding="{Binding SourceFile.Name}" Header="Datei" />
-        <DataGridTextColumn Binding="{Binding Uuid}" Header="Uid" />
-        <DataGridTextColumn Binding="{Binding Version}" Header="Version" />
-        <DataGridTemplateColumn Width="*" Header="Translated">
+        <DataGridTextColumn Binding="{Binding Mod.Name}" Header="{DynamicResource R-6E19A96F-85D0-4B69-8C9A-7Dcc398292C5}" />
+        <DataGridTextColumn Binding="{Binding SourceFile.Name}" Header="{DynamicResource R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd}" />
+        <DataGridTextColumn Binding="{Binding Uuid}" Header="{DynamicResource R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C}" />
+        <DataGridTextColumn Binding="{Binding Version}" Header="{DynamicResource R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4}" />
+        <DataGridTemplateColumn Width="*" Header="{DynamicResource TranslatedText}">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
               <global:MarkupTextBlock TextWrapping="NoWrap">
@@ -319,7 +291,7 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTemplateColumn Width="*" Header="Origin">
+        <DataGridTemplateColumn Width="*" Header="{DynamicResource OriginText}">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
               <global:MarkupTextBlock TextWrapping="Wrap">
@@ -333,7 +305,7 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTemplateColumn Width="*" Header="Previous">
+        <DataGridTemplateColumn Width="*" Header="{DynamicResource PreviousText}">
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
               <global:MarkupTextBlock TextWrapping="Wrap">
@@ -395,7 +367,7 @@
                   Height="5"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Center"
-                  Background="DimGray"
+                  Background="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"
                   ResizeDirection="Rows" />
 
     <GroupBox x:Name="GroupBoxTranslation"
@@ -403,7 +375,7 @@
               Grid.Column="0"
               Grid.ColumnSpan="4"
               Margin="5"
-              Header="Übersetzter Text"
+              Header="{DynamicResource TranslatedText}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -422,7 +394,7 @@
                     Margin="5,0"
                     Command="Paste"
                     CommandTarget="{Binding ElementName=TextBoxTranslated}"
-                    Content="Kopieren"
+                    Content="{DynamicResource ButtonCopy}"
                     Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
             <Button x:Name="ButtonPasteTranslated"
@@ -430,13 +402,13 @@
                     Margin="5,0"
                     Command="Paste"
                     CommandTarget="{Binding ElementName=TextBoxTranslated}"
-                    Content="Einfügen"
+                    Content="{DynamicResource ButtonPaste}"
                     Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
             <Button x:Name="ButtonApplyTranslated"
                     Height="Auto"
                     Margin="5,0"
                     Click="ButtonApplyTranslated_OnClick"
-                    Content="Übernehmen"
+                    Content="{DynamicResource ButtonApply}"
                     Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
           </StackPanel>
@@ -459,7 +431,7 @@
               Grid.Column="0"
               Grid.ColumnSpan="2"
               Margin="5"
-              Header="Aktueller Text"
+              Header="{DynamicResource OriginText}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -476,7 +448,7 @@
             <Button x:Name="ButtonCopyCurrent"
                     Height="Auto"
                     Click="ButtonCopyCurrent_OnClick"
-                    Content="Kopieren"
+                    Content="{DynamicResource ButtonCopy}"
                     Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
           </StackPanel>
         </DataTemplate>
@@ -499,7 +471,7 @@
               Grid.Column="2"
               Grid.ColumnSpan="2"
               Margin="5"
-              Header="Vorheriger Text"
+              Header="{DynamicResource PreviousText}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
@@ -516,7 +488,7 @@
             <Button x:Name="ButtonCopyPrevious"
                     Height="Auto"
                     Click="ButtonCopyPrevious_OnClick"
-                    Content="Kopieren"
+                    Content="{DynamicResource ButtonCopy}"
                     Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
 

@@ -26,7 +26,7 @@ public partial class MainWindow
     // skin.Source = new Uri(@"\Themes\Dark.xaml", UriKind.Absolute); 
     // App.Current.Resources.MergedDictionaries.Add(skin); 
 
-    this.SetLocals(XmlLanguage.GetLanguage("de"));
+    this.SetLocals(XmlLanguage.GetLanguage("zh"));
 
     this.LoadWindowSettings();
 

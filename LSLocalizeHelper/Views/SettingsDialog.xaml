@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         x:Name="WindowSettings"
-        Title="Einstellungen"
+        Title="{DynamicResource R-3Cf586E1-Ce6F-4243-813D-B9Dab430A94A}"
         Width="730"
         Background="{DynamicResource MaterialDesignPaper}"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
@@ -30,11 +30,11 @@
              HorizontalAlignment="Left"
              VerticalAlignment="Center"
              HorizontalContentAlignment="Right"
-             Content="{DynamicResource LblSettingsModsFolder}" />
+             Content="{DynamicResource R-D767Fc81-2277-429D-9856-35Aaed972C9D}" />
       <TextBox x:Name="TextBoxModsPath"
                Width="500"
                Margin="5,0,5,0"
-               materialDesign:HintAssist.Hint="Arbeitsbereich"
+               materialDesign:HintAssist.Hint="{DynamicResource R-C5267Ada-6391-4F1C-9B76-18E088802059}"
                AcceptsReturn="False"
                Style="{StaticResource MaterialDesignFilledTextBox}" />
       <Button Margin="5,0,0,0"
