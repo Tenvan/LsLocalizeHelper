@@ -47,4 +47,9 @@
   <System:String x:Key="R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C">Uid</System:String>
   <System:String x:Key="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4">Version</System:String>
 
+  <System:String x:Key="R-91E83186-18D2-43B6-Bcbd-1A592E5B6341">"Import erfolgreich durchgeführt."</System:String>
+  <System:String x:Key="R-2417E08C-347F-4D57-925D-Cefdb628Fc7E">"Fehler"</System:String>
+  <System:String x:Key="R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab">"Package ZIP für '{0}' erfolgreich erstellt."</System:String>
+  <System:String x:Key="R-C109D0A4-5995-4Fda-957A-55Bd3F527043">"Fehler der Erstellung des Mods '{0}'\n{1}"</System:String>
+
 </ResourceDictionary>
