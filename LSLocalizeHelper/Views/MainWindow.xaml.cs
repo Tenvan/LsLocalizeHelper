@@ -101,8 +101,9 @@ public partial class MainWindow
     // Reload selected Mods
     foreach (var lastMod in SettingsManager.Settings.LastMods)
     {
-      var item = this.ProjectItems.First(m => m.Name == lastMod);
-      this.ListBoxMods.SelectedItems.Add(item);
+      var item = this.ProjectItems.FirstOrDefault(m => m.Name == lastMod);
+
+      if (item != null) { this.ListBoxMods.SelectedItems.Add(item); }
     }
   }
 

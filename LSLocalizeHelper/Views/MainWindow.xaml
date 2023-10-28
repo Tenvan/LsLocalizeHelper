@@ -26,6 +26,7 @@
         TextElement.FontWeight="Medium"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         WindowStartupLocation="Manual"
+        WindowStyle="SingleBorderWindow"
         mc:Ignorable="d">
   <Window.Resources>
     <ResourceDictionary>
@@ -89,35 +90,28 @@
                ClipToBounds="False"
                Style="{StaticResource MaterialDesignToolBar}">
 
-        <Button x:Name="CmdExit"
-                Click="CmdExit_OnClick"
+        <Button Command="{Binding ApplicationExitCommand}"
                 Content="{materialDesign:PackIcon Kind=ExitToApp}"
                 ToolTip="Programm beenden" />
-        <Button x:Name="CmdShowSettings"
-                Content="{materialDesign:PackIcon Kind=Settings}"
+        <Button Content="{materialDesign:PackIcon Kind=Settings}"
                 Command="{Binding OpenSettingsDialogCommand}"
                 ToolTip="Einstellungen öffnen" />
         <Separator />
-        <Button x:Name="ButtonLoad"
-                Click="ButtonLoad_OnClick"
+        <Button Command="{Binding LoadXmlDataCommand}"
                 Content="{materialDesign:PackIcon Kind=FolderOpen}"
                 ToolTip="Gewählte Xml-Dokumente laden" />
-        <Button x:Name="ButtonSave"
-                Click="ButtonSave_OnClick"
+        <Button Command="{Binding SaveXmlDataCommand}"
                 Content="{materialDesign:PackIcon Kind=ContentSaveAdd}"
                 ToolTip="Übersetzungen speichern" />
         <Separator />
-        <Button x:Name="ButtonImport"
-                Click="ButtonImport_OnClick"
+        <Button Command="{Binding  ImportNewModCommand}"
                 Content="{materialDesign:PackIcon Kind=Import}"
                 ToolTip="PAK Datei in neue Mod importieren" />
-        <Button x:Name="ButtonPackMods"
-                Click="ButtonPackMods_OnClick"
+        <Button Command="{Binding PackModsCommand}"
                 Content="{materialDesign:PackIcon Kind=Package}"
                 ToolTip="Ausgewählte Mods packen und zippen" />
         <Separator />
-        <Button x:Name="ButtonRefresh"
-                Click="ButtonRefresh_OnClick"
+        <Button Command="{Binding RefreshCommand}"
                 Content="{materialDesign:PackIcon Kind=Refresh}"
                 ToolTip="Aktualisieren" />
         <Separator />
@@ -125,12 +119,13 @@
                   Content="Automtische Zwischenablage"
                   IsChecked="True" />
         <Separator />
-        <Label VerticalContentAlignment="Center" Content="Schnellfilter Datagrid:" />
+        <Label VerticalContentAlignment="Center" Content="Schnellfilter:" />
         <TextBox x:Name="TextBoxQuickSearch" Width="200" />
       </ToolBar>
       <ToolBar ClipToBounds="True" Style="{StaticResource MaterialDesignToolBar}">
         <Label VerticalContentAlignment="Center" Content="Sprache:" />
         <ComboBox x:Name="ComboBoxLanguage"
+                  SelectionChanged="ComboBoxLanguage_OnSelectionChanged"
                   HorizontalAlignment="Left"
                   ItemsSource="{Binding LanguageItems}" />
       </ToolBar>
@@ -425,14 +420,16 @@
             <Button x:Name="ButtonCopyTranslated"
                     Height="Auto"
                     Margin="5,0"
-                    Click="ButtonCopyTranslated_OnClick"
+                    Command="Paste"
+                    CommandTarget="{Binding ElementName=TextBoxTranslated}"
                     Content="Kopieren"
                     Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
             <Button x:Name="ButtonPasteTranslated"
                     Height="Auto"
                     Margin="5,0"
-                    Click="ButtonPasteTranslated_OnClick"
+                    Command="Paste"
+                    CommandTarget="{Binding ElementName=TextBoxTranslated}"
                     Content="Einfügen"
                     Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
             <Button x:Name="ButtonApplyTranslated"

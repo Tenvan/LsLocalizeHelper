@@ -16,6 +16,8 @@ public partial class MainWindow
 
   private Bg3ModsService bg3ModsService = new();
 
+  private string ModsPath = SettingsManager.Settings?.ModsPath!;
+
   private XmlFilesService XmlFilesService = new();
 
   #endregion

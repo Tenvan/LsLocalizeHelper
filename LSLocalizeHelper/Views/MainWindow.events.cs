@@ -35,28 +35,6 @@ public partial class MainWindow
     App.SetClipboardText(current?.Text);
   }
 
-  private void ButtonCopyTranslated_OnClick(object sender, RoutedEventArgs e)
-  {
-    App.SetClipboardText(this.CurrentDataRow?.Text);
-  }
-
-  private void ButtonImport_OnClick(object sender, RoutedEventArgs e) { MessageBox.Show("Not Implemented!"); }
-
-  private void ButtonLoad_OnClick(object sender, RoutedEventArgs e) { this.LoadData(); }
-
-  private void ButtonPackMods_OnClick(object sender, RoutedEventArgs e) { this.DoPackMods(); }
-
-  private void ButtonPasteTranslated_OnClick(object sender, RoutedEventArgs e)
-  {
-    this.TextBoxTranslated.Text = Clipboard.GetText();
-  }
-
-  private void ButtonRefresh_OnClick(object sender, RoutedEventArgs e) { this.DoRefresh(); }
-
-  private void ButtonSave_OnClick(object sender, RoutedEventArgs e) { MessageBox.Show("Not Implemented!"); }
-
-  private void CmdExit_OnClick(object sender, RoutedEventArgs e) { this.Close(); }
-
   private void ComboBoxLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
   {
     var selectedItem = this.ComboBoxLanguage.SelectedItem as XmlLanguage;

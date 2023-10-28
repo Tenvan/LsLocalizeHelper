@@ -4,6 +4,8 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
+using Alphaleonis.Win32.Filesystem;
+
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
 
@@ -31,6 +33,22 @@ public partial class MainWindow
 
     SettingsManager.Settings.TranslationHeight = this.RowDefinitionTranslation.Height.Value;
     SettingsManager.Save();
+  }
+
+  private void DoImportMod()
+  {
+    var formImport = new ImportDialog();
+    formImport.Owner = this;
+    var result = formImport.ShowDialog();
+
+    if (result == true)
+    {
+      this.ShowToast("Import erfolgreich durchgeführt.");
+    }
+    else
+    {
+      this.ShowToast("Fehler: " + formImport.Error);
+    }
   }
 
   private void DoOnRowChanged(DataRowModel? row)
