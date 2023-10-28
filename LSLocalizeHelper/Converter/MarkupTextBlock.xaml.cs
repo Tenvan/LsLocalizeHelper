@@ -1,11 +1,9 @@
 using System;
-using System.Security;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Markup;
-using System.Windows.Media;
 
 /// <summary>
 /// The markup text block is a replacement for <see cref="TextBlock"/> 
@@ -57,7 +55,7 @@ public class MarkupTextBlock : TextBlock
   [Localizability(LocalizationCategory.Text)]
   public string MarkupText
   {
-    get { return Inlines.ToString(); }
+    get { return this.Inlines.ToString()!; }
 
     set { SetValue(MarkupTextProperty, value); }
   }

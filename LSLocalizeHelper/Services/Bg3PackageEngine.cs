@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Windows.Forms;
@@ -180,10 +179,7 @@ public class Bg3PackageEngine
       return null;
     }
     catch (Exception ex) { return ex.Message; }
-    finally
-    {
-      this.CleanUp();
-    }
+    finally { this.CleanUp(); }
   }
 
   private void CleanUp() { Directory.Delete(path: this.TempFolder, recursive: true); }
@@ -196,11 +192,6 @@ public class Bg3PackageEngine
       options.Version = PackageVersion.V18;
       options.Compression = CompressionMethod.LZ4;
 
-      // options.FastCompression = false;
-
-      // options.Flags |= PackageFlags.Solid;
-      // options.Flags |= PackageFlags.AllowMemoryMapping;
-      // options.Flags |= PackageFlags.Preload;
       options.Priority = 0;
       var packager = new Packager();
 
@@ -214,18 +205,8 @@ public class Bg3PackageEngine
 
       packager.CreatePackage(packagePath: targetPak, inputPath: this.modPathEngine, options: options);
     }
-    catch (Exception ex)
-    {
-      MessageBox.Show(
-        text: $"Internal error!{Environment.NewLine}{Environment.NewLine}{ex}",
-        caption: "Package Build Failed",
-        buttons: MessageBoxButtons.OK,
-        icon: MessageBoxIcon.Error
-      );
-    }
+    catch (Exception ex) { Console.WriteLine($"Internal error!{Environment.NewLine}{Environment.NewLine}{ex}"); }
   }
-
-  private string modContentPath => Path.Combine(this.modPathEngine, this.modNameEngine);
 
   /// <summary>
   /// Creates the metadata info.json file.

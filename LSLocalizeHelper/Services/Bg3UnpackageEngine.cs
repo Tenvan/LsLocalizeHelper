@@ -1,16 +1,16 @@
 using System;
+using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Xml.Linq;
-
-using Alphaleonis.Win32.Filesystem;
 
 using LSLib.LS;
 using LSLib.LS.Enums;
 
 using LSLocalizeHelper.Helper;
 
-using SearchOption = System.IO.SearchOption;
+using Directory = Alphaleonis.Win32.Filesystem.Directory;
+using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
+using Path = Alphaleonis.Win32.Filesystem.Path;
 
 namespace LSLocalizeHelper.Services;
 
@@ -57,7 +57,7 @@ public class Bg3UnpackageEngine
       this.UncompressPackage();
       this.PrepareMod();
       this.PrepareMeta();
-      Console.WriteLine($"mod {this.ModName} successfully imported ind folder:\n{this.ModFolder}");
+      Console.WriteLine($"mod {this.ModName} successfully imported in folder:\n{this.ModFolder}");
 
       return null;
     }

@@ -12,15 +12,9 @@ namespace LSLocalizeHelper.Services;
 public class XmlFilesService
 {
 
-  #region Constructors
-
-  public XmlFilesService() => this.Items = new List<XmlFileModel>();
-
-  #endregion
-
   #region Properties
 
-  public List<XmlFileModel> Items { get; private set; }
+  public List<XmlFileModel> Items { get; private set; } = new();
 
   public ModModel[] Mods { get; set; }
 

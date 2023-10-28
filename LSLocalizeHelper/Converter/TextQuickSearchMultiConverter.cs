@@ -3,15 +3,7 @@ using System.Globalization;
 using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Media;
-
-using LSLocalizeHelper.Enums;
-using LSLocalizeHelper.Models;
-using LSLocalizeHelper.Services;
 
 namespace LSLocalizeHelper.Converter;
 
