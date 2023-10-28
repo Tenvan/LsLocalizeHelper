@@ -18,10 +18,6 @@ public partial class ImportDialog : Window
 
   #region Properties
 
-  public string ModName => this.TextBoxModName.Text;
-
-  public string PakToImport => this.TextBoxPakFile.Text;
-
   public string? Error { get; set; }
 
   #endregion

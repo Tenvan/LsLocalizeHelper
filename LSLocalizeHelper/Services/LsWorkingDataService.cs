@@ -206,14 +206,22 @@ public static class LsWorkingDataService
               break;
           }
         }
-        catch (Exception ex) { MessageBox.Show($"Error during node processing:\n\nError: {ex.Message}"); }
+        catch (Exception ex)
+        {
+          var message = $"Error during node processing:\n\nError: {ex.Message}";
+          Console.WriteLine(message);
+
+          throw new Exception(message);
+        }
       }
     }
     catch (Exception e)
     {
-      MessageBox.Show(
-        $"Error during loading of {type}-XML:\n\nFile: {xmlFileModel.FullPath.FullName}\n\nError:{e.Message}"
-      );
+      var message
+        = $"Error during loading of {type}-XML:\n\nFile: {xmlFileModel.FullPath.FullName}\n\nError:{e.Message}";
+      Console.WriteLine(message);
+
+      throw new Exception(message);
     }
   }
 

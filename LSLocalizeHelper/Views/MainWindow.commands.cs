@@ -1,11 +1,7 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-
-using DynamicData;
 
 using LSLocalizeHelper.Helper;
 using LSLocalizeHelper.Models;
@@ -111,7 +107,10 @@ public partial class MainWindow
 
   private void Refresh(object? obj) { this.DoRefresh(); }
 
-  private void SaveXmlData(object? obj) { MessageBox.Show("Not Implemented!"); }
+  private void SaveXmlData(object? obj)
+  {
+    MessageBox.Show("R-C109D0A4-5995-4Fda-957A-55Bd3F527043".FromResource());
+  }
 
   private void ShowSettingsDialog(object? _)
   {

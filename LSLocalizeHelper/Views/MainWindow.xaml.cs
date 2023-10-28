@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Markup;
@@ -22,11 +23,9 @@ public partial class MainWindow
 
     this.InitCommands();
 
-    // var skin = new ResourceDictionary(); 
-    // skin.Source = new Uri(@"\Themes\Dark.xaml", UriKind.Absolute); 
-    // App.Current.Resources.MergedDictionaries.Add(skin); 
-
-    this.SetLocals(XmlLanguage.GetLanguage("zh"));
+    // var xmlLanguage = XmlLanguage.GetLanguage("zh");
+    var xmlLanguage = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+    this.SetLocals(xmlLanguage);
 
     this.LoadWindowSettings();
 
@@ -58,8 +57,6 @@ public partial class MainWindow
   #endregion
 
   #region Methods
-
-  public string CalculateRowStatus(DataRowModel row) { return "calculated"; }
 
   protected void BeginUpdating() { this.IsUpdating = true; }
 

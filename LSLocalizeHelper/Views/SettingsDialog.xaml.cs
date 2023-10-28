@@ -1,8 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
 
-using LSLocalizeHelper.Helper;
 using LSLocalizeHelper.Services;
 
 namespace LSLocalizeHelper.Views;

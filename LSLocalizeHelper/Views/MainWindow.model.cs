@@ -16,8 +16,6 @@ public partial class MainWindow
 
   private Bg3ModsService bg3ModsService = new();
 
-  private string ModsPath = SettingsManager.Settings?.ModsPath!;
-
   private XmlFilesService XmlFilesService = new();
 
   #endregion
@@ -31,8 +29,6 @@ public partial class MainWindow
   public ObservableCollection<XmlFileModel> OriginPreviousFileItems { get; set; } = new();
 
   public ObservableCollection<ModModel> ProjectItems { get; set; } = new();
-
-  public bool RefreshMode { get; set; } = false;
 
   public ObservableCollection<XmlFileModel> TranslatedFileItems { get; set; } = new();
 

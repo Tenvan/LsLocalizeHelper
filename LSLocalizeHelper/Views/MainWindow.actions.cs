@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
-using Alphaleonis.Win32.Filesystem;
-
+using LSLocalizeHelper.Helper;
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
 
@@ -43,11 +41,11 @@ public partial class MainWindow
 
     if (result == true)
     {
-      this.ShowToast("Import erfolgreich durchgeführt.");
+      this.ShowToast( "R-91E83186-18D2-43B6-Bcbd-1A592E5B6341".FromResource());
     }
     else
     {
-      this.ShowToast("Fehler: " + formImport.Error);
+      this.ShowToast($"{"Fehler".FromResource()}: {formImport.Error}");
     }
   }
 
@@ -60,7 +58,7 @@ public partial class MainWindow
     try
     {
       if (this.CheckBoxAutoClipboard.IsChecked == true
-          && !string.IsNullOrEmpty(row.Text)) { App.SetClipboardText(row.Text); }
+          && !string.IsNullOrEmpty(row?.Text)) { App.SetClipboardText(row.Text); }
     }
     catch (Exception ex) { Console.WriteLine(ex.Message); }
   }
@@ -74,12 +72,12 @@ public partial class MainWindow
 
       if (result == null)
       {
-        var message = $"Package ZIP für '{modModel.Name}' erfolgreich erstellt.";
+        var message = string.Format("R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab".FromResource(), modModel.Name);
         this.ShowToast(message: message, duration: 3);
       }
       else
       {
-        var message = $"Fehler der Erstellung des Mods '{modModel.Name}'\n{result}";
+        var message = string.Format("R-C109D0A4-5995-4Fda-957A-55Bd3F527043".FromResource(), modModel.Name, result);
         this.ShowToast(message: message, duration: 3);
       }
     }
