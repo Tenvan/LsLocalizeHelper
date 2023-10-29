@@ -14,7 +14,7 @@ public partial class MainWindow
 
   #region Fields
 
-  private Bg3ModsService bg3ModsService = new();
+  private LsModsService lsModsService = new();
 
   private XmlFilesService XmlFilesService = new();
 

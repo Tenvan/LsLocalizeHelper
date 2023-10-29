@@ -43,7 +43,7 @@ public partial class ImportDialog : Window
   {
     try
     {
-      var packer = new Bg3UnpackageEngine(
+      var packer = new LsUnpackageEngine(
         modsPath: SettingsManager.Settings.ModsPath,
         pakPath: this.TextBoxPakFile.Text,
         modName: this.TextBoxModName.Text

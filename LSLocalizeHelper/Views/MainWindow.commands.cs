@@ -30,7 +30,16 @@ public partial class MainWindow
   [RelayCommand]
   private void ImportNewMod() { this.DoImportMod(); }
 
-  private void LoadData()
+  private void LoadMods()
+  {
+    this.lsModsService.LoadMods();
+    this.ProjectItems.Clear();
+
+    foreach (var modModel in this.lsModsService.Items) { this.ProjectItems.Add(modModel); }
+  }
+
+  [RelayCommand]
+  private void LoadXmlData()
   {
     LsWorkingDataService.Clear();
 
@@ -51,17 +60,6 @@ public partial class MainWindow
 
     this.TranslationGrid.ItemsSource = LsWorkingDataService.TranslatedItems;
   }
-
-  private void LoadMods()
-  {
-    this.bg3ModsService.LoadMods();
-    this.ProjectItems.Clear();
-
-    foreach (var modModel in this.bg3ModsService.Items) { this.ProjectItems.Add(modModel); }
-  }
-
-  [RelayCommand]
-  private void LoadXmlData() { this.LoadData(); }
 
   private void LoadXmlFiles()
   {
@@ -89,7 +87,7 @@ public partial class MainWindow
   private void Refresh() { this.DoRefresh(); }
 
   [RelayCommand]
-  private void SaveXmlData() { MessageBox.Show("R-C109D0A4-5995-4Fda-957A-55Bd3F527043".FromResource()); }
+  private void SaveXmlData() { this.ShowToast("Not implemented yet!"); }
 
   [RelayCommand]
   private void ShowSettingsDialog()

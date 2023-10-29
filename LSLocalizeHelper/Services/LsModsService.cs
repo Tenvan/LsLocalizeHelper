@@ -7,12 +7,11 @@ using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
 
 namespace LSLocalizeHelper.Services;
 
-public class Bg3ModsService
+public class LsModsService
 {
 
   public void LoadMods()
   {
-    // this.comboBoxMods.Items.Clear();
     var settingsModsPath = SettingsManager.Settings?.ModsPath;
 
     if (string.IsNullOrWhiteSpace(settingsModsPath))

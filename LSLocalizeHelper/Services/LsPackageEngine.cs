@@ -20,7 +20,7 @@ using SearchOption = System.IO.SearchOption;
 
 namespace LSLocalizeHelper.Services;
 
-public class Bg3PackageEngine
+public class LsPackageEngine
 {
 
   #region Static Methods
@@ -104,7 +104,7 @@ public class Bg3PackageEngine
       };
     }
 
-    var metaList = Bg3PackageEngine.GetMetalsxList(pathList);
+    var metaList = LsPackageEngine.GetMetalsxList(pathList);
 
     return metaList;
   }
@@ -149,7 +149,7 @@ public class Bg3PackageEngine
 
   #region Constructors
 
-  public Bg3PackageEngine(string modPathEngine, string modNameEngine)
+  public LsPackageEngine(string modPathEngine, string modNameEngine)
   {
     this.modPathEngine = modPathEngine;
     this.modNameEngine = modNameEngine;
@@ -230,7 +230,7 @@ public class Bg3PackageEngine
     };
 
     var created = DateTime.Now;
-    var metadata = Bg3PackageEngine.ReadMeta(meta: metaFile, created: created);
+    var metadata = LsPackageEngine.ReadMeta(meta: metaFile, created: created);
 
     info.Mods.Add(metadata);
 

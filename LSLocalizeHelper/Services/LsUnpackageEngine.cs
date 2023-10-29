@@ -14,12 +14,12 @@ using Path = Alphaleonis.Win32.Filesystem.Path;
 
 namespace LSLocalizeHelper.Services;
 
-public class Bg3UnpackageEngine
+public class LsUnpackageEngine
 {
 
   #region Constructors
 
-  public Bg3UnpackageEngine(string modsPath, string pakPath, string modName)
+  public LsUnpackageEngine(string modsPath, string pakPath, string modName)
   {
     this.ModsPath = modsPath;
     this.PakPath = pakPath;
@@ -183,10 +183,13 @@ public class Bg3UnpackageEngine
   {
     try
     {
-      var options = new PackageCreationOptions();
-      options.Version = PackageVersion.V18;
-      options.Compression = CompressionMethod.LZ4;
-      options.Priority = 0;
+      var options = new PackageCreationOptions
+      {
+        Version = PackageVersion.V18,
+        Compression = CompressionMethod.LZ4,
+        Priority = 0,
+      };
+
       var packager = new Packager();
 
       packager.UncompressPackage(packagePath: this.PakPath, outputPath: this.TempFolder);

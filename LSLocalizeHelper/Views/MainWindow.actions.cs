@@ -35,17 +35,27 @@ public partial class MainWindow
 
   private void DoImportMod()
   {
-    var formImport = new ImportDialog();
-    formImport.Owner = this;
+    var formImport = new ImportDialog
+    {
+      Owner = this,
+    };
+
     var result = formImport.ShowDialog();
 
-    if (result == true)
+    switch (result)
     {
-      this.ShowToast( "R-91E83186-18D2-43B6-Bcbd-1A592E5B6341".FromResource());
-    }
-    else
-    {
-      this.ShowToast($"{"R-2417E08C-347F-4D57-925D-Cefdb628Fc7E".FromResource()}: {formImport.Error}");
+      case false when formImport.Error == null:
+        return;
+
+      case true:
+        this.ShowToast("R-91E83186-18D2-43B6-Bcbd-1A592E5B6341".FromResource());
+
+        break;
+
+      default:
+        this.ShowToast($"{"R-2417E08C-347F-4D57-925D-Cefdb628Fc7E".FromResource()}: {formImport.Error}");
+
+        break;
     }
   }
 
@@ -67,7 +77,7 @@ public partial class MainWindow
   {
     foreach (ModModel modModel in this.ListBoxMods.SelectedItems)
     {
-      var modEngine = new Bg3PackageEngine(modModel.Folder.FullName, modModel.Name!);
+      var modEngine = new LsPackageEngine(modModel.Folder.FullName, modModel.Name!);
       var result = modEngine.BuildPackage();
 
       if (result == null)
