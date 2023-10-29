@@ -1,9 +1,9 @@
 using System;
+using System.Globalization;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Markup;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
@@ -36,7 +36,7 @@ public partial class MainWindow
 
   private void ComboBoxLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
   {
-    var selectedItem = this.ComboBoxLanguage.SelectedItem as XmlLanguage;
+    var selectedItem = this.ComboBoxLanguage.SelectedItem as CultureInfo;
     this.SetLocals(selectedItem);
   }
 

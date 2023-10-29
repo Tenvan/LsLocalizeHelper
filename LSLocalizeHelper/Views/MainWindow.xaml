@@ -273,11 +273,42 @@
               SelectionMode="Single">
       <DataGrid.Columns>
         <DataGridTextColumn Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Header="#" />
-        <DataGridTextColumn Binding="{Binding Mod.Name}" Header="{DynamicResource R-6E19A96F-85D0-4B69-8C9A-7Dcc398292C5}" />
-        <DataGridTextColumn Binding="{Binding SourceFile.Name}" Header="{DynamicResource R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd}" />
-        <DataGridTextColumn Binding="{Binding Uuid}" Header="{DynamicResource R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C}" />
-        <DataGridTextColumn Binding="{Binding Version}" Header="{DynamicResource R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4}" />
-        <DataGridTemplateColumn Width="*" Header="{DynamicResource TranslatedText}">
+        <DataGridTextColumn Binding="{Binding Mod.Name}">
+          <DataGridTextColumn.Header>
+            <TextBlock>
+              <TextBlock.Text>
+                <DynamicResource ResourceKey="R-6E19A96F-85D0-4B69-8C9A-7Dcc398292C5" />
+              </TextBlock.Text>
+            </TextBlock>
+          </DataGridTextColumn.Header>
+        </DataGridTextColumn>
+        <DataGridTextColumn Binding="{Binding SourceFile.Name}">
+          <DataGridTextColumn.Header>
+            <TextBlock Text="{DynamicResource R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd}" />
+          </DataGridTextColumn.Header>
+        </DataGridTextColumn>
+        <DataGridTextColumn Binding="{Binding Uuid}">
+          <DataGridTextColumn.Header>
+            <TextBlock Text="{DynamicResource R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C}" />
+          </DataGridTextColumn.Header>
+        </DataGridTextColumn>
+        <DataGridTextColumn Binding="{Binding Version}">
+          <DataGridTextColumn.Header>
+            <TextBlock>
+              <TextBlock.Text>
+                <DynamicResource ResourceKey="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4" />
+              </TextBlock.Text>
+            </TextBlock>
+          </DataGridTextColumn.Header>
+        </DataGridTextColumn>
+        <DataGridTemplateColumn Width="*">
+          <DataGridTemplateColumn.Header>
+            <TextBlock>
+              <TextBlock.Text>
+                <DynamicResource ResourceKey="TranslatedText" />
+              </TextBlock.Text>
+            </TextBlock>
+          </DataGridTemplateColumn.Header>
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
               <global:MarkupTextBlock TextWrapping="NoWrap">
@@ -291,7 +322,14 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTemplateColumn Width="*" Header="{DynamicResource OriginText}">
+        <DataGridTemplateColumn Width="*">
+          <DataGridTemplateColumn.Header>
+            <TextBlock>
+              <TextBlock.Text>
+                <DynamicResource ResourceKey="OriginText" />
+              </TextBlock.Text>
+            </TextBlock>
+          </DataGridTemplateColumn.Header>
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
               <global:MarkupTextBlock TextWrapping="Wrap">
@@ -305,7 +343,14 @@
             </DataTemplate>
           </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
-        <DataGridTemplateColumn Width="*" Header="{DynamicResource PreviousText}">
+        <DataGridTemplateColumn Width="*">
+          <DataGridTemplateColumn.Header>
+            <TextBlock>
+              <TextBlock.Text>
+                <DynamicResource ResourceKey="PreviousText" />
+              </TextBlock.Text>
+            </TextBlock>
+          </DataGridTemplateColumn.Header>
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
               <global:MarkupTextBlock TextWrapping="Wrap">

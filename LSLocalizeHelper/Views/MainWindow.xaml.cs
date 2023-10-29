@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
+
+using ReactiveUI;
 
 namespace LSLocalizeHelper.Views;
 
@@ -23,9 +26,7 @@ public partial class MainWindow
 
     this.InitCommands();
 
-    // var xmlLanguage = XmlLanguage.GetLanguage("zh");
-    var xmlLanguage = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
-    this.SetLocals(xmlLanguage);
+    this.SetLocals(CultureInfo.CurrentCulture);
 
     this.LoadWindowSettings();
 
@@ -130,32 +131,36 @@ public partial class MainWindow
     }
   }
 
-  private void SetLocals(XmlLanguage? locals)
+  private void SetLocals(CultureInfo culture)
   {
     if (this.LanguageItems.Count == 0)
     {
-      this.LanguageItems.Add(XmlLanguage.GetLanguage("de"));
-      this.LanguageItems.Add(XmlLanguage.GetLanguage("en"));
-      this.LanguageItems.Add(XmlLanguage.GetLanguage("zh"));
+      this.LanguageItems.Add(new CultureInfo("de-DE"));
+      this.LanguageItems.Add(new CultureInfo("en-US"));
+      this.LanguageItems.Add(new CultureInfo("zh-Hans"));
+      this.LanguageItems.Add(new CultureInfo("zh-Hant"));
     }
 
-    this.Language = locals;
-    var lower = locals.IetfLanguageTag;
+    // this.Language = culture;
+    var lower = culture.IetfLanguageTag;
 
     var oldDict = Application.Current.Resources.MergedDictionaries.FirstOrDefault(
       d => d.Source != null
            && d.Source.OriginalString.ToLower()
-               .Contains($"locals.{lower}")
+               .Contains($"locals.{lower.ToLower()}")
     );
 
     if (oldDict != null) { Application.Current.Resources.MergedDictionaries.Remove(oldDict); }
 
     var newDict = new ResourceDictionary
     {
-      Source = new Uri(uriString: $"locals/locals.{locals}.xaml", uriKind: UriKind.Relative),
+      Source = new Uri(uriString: $"locals/locals.{culture}.xaml", uriKind: UriKind.Relative),
     };
 
     Application.Current.Resources.MergedDictionaries.Add(newDict);
+
+    Thread.CurrentThread.CurrentCulture = culture;
+    Thread.CurrentThread.CurrentUICulture = culture;
   }
 
   #endregion
