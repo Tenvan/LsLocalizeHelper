@@ -1,7 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
+
+using CommunityToolkit.Mvvm.Input;
 
 using LSLocalizeHelper.Helper;
 using LSLocalizeHelper.Models;
@@ -19,38 +20,15 @@ public partial class MainWindow
 
   public ObservableCollection<DataRowModel?> DataGridItems { get; } = LsWorkingDataService.TranslatedItems;
 
-  public ICommand ApplicationExitCommand { get; set; }
-
-  public ICommand ImportNewModCommand { get; set; }
-
-  public ICommand LoadXmlDataCommand { get; set; }
-
-  public ICommand OpenSettingsDialogCommand { get; set; }
-
-  public ICommand PackModsCommand { get; set; }
-
-  public ICommand RefreshCommand { get; set; }
-
-  public ICommand SaveXmlDataCommand { get; set; }
-
   #endregion
 
   #region Methods
 
-  private void ApplicatinExit(object? obj) { this.Close(); }
+  [RelayCommand]
+  private void ApplicationExit() { this.Close(); }
 
-  private void ImportNewMod(object? obj) { this.DoImportMod(); }
-
-  private void InitCommands()
-  {
-    this.ApplicationExitCommand = new AnotherCommandImplementation(this.ApplicatinExit);
-    this.ImportNewModCommand = new AnotherCommandImplementation(this.ImportNewMod);
-    this.LoadXmlDataCommand = new AnotherCommandImplementation(this.LoadXmlData);
-    this.OpenSettingsDialogCommand = new AnotherCommandImplementation(this.ShowSettingsDialog);
-    this.PackModsCommand = new AnotherCommandImplementation(this.PackMods);
-    this.RefreshCommand = new AnotherCommandImplementation(this.Refresh);
-    this.SaveXmlDataCommand = new AnotherCommandImplementation(this.SaveXmlData);
-  }
+  [RelayCommand]
+  private void ImportNewMod() { this.DoImportMod(); }
 
   private void LoadData()
   {
@@ -82,7 +60,8 @@ public partial class MainWindow
     foreach (var modModel in this.bg3ModsService.Items) { this.ProjectItems.Add(modModel); }
   }
 
-  private void LoadXmlData(object? obj) { this.LoadData(); }
+  [RelayCommand]
+  private void LoadXmlData() { this.LoadData(); }
 
   private void LoadXmlFiles()
   {
@@ -103,16 +82,17 @@ public partial class MainWindow
     }
   }
 
-  private void PackMods(object? obj) { this.DoPackMods(); }
+  [RelayCommand]
+  private void PackMods() { this.DoPackMods(); }
 
-  private void Refresh(object? obj) { this.DoRefresh(); }
+  [RelayCommand]
+  private void Refresh() { this.DoRefresh(); }
 
-  private void SaveXmlData(object? obj)
-  {
-    MessageBox.Show("R-C109D0A4-5995-4Fda-957A-55Bd3F527043".FromResource());
-  }
+  [RelayCommand]
+  private void SaveXmlData() { MessageBox.Show("R-C109D0A4-5995-4Fda-957A-55Bd3F527043".FromResource()); }
 
-  private void ShowSettingsDialog(object? _)
+  [RelayCommand]
+  private void ShowSettingsDialog()
   {
     var settingsDialog = new SettingsDialog();
     settingsDialog.Owner = this;

@@ -45,7 +45,7 @@ public partial class MainWindow
     }
     else
     {
-      this.ShowToast($"{"Fehler".FromResource()}: {formImport.Error}");
+      this.ShowToast($"{"R-2417E08C-347F-4D57-925D-Cefdb628Fc7E".FromResource()}: {formImport.Error}");
     }
   }
 

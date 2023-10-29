@@ -6,7 +6,7 @@
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="locals/locals.de.xaml" />
+        <ResourceDictionary Source="locals/locals.de-DE.xaml" />
         <!-- This is the current way to setup your app's initial theme -->
         <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Orange" SecondaryColor="Yellow" />
 

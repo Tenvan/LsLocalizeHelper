@@ -1,21 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
-using System.Windows.Markup;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
-
-using ReactiveUI;
 
 namespace LSLocalizeHelper.Views;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow
+public partial class MainWindow : Window, INotifyPropertyChanged
 {
 
   #region Constructors
@@ -23,8 +23,6 @@ public partial class MainWindow
   public MainWindow()
   {
     this.InitializeComponent();
-
-    this.InitCommands();
 
     this.SetLocals(CultureInfo.CurrentCulture);
 
@@ -62,6 +60,21 @@ public partial class MainWindow
   protected void BeginUpdating() { this.IsUpdating = true; }
 
   protected void EndUpdating() { this.IsUpdating = false; }
+
+  protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+  {
+    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+  }
+
+  protected virtual bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+  {
+    if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+
+    field = value;
+    this.OnPropertyChanged(propertyName);
+
+    return true;
+  }
 
   private void ButtonApplyTranslated_OnClick(object sender, RoutedEventArgs e)
   {
@@ -162,6 +175,12 @@ public partial class MainWindow
     Thread.CurrentThread.CurrentCulture = culture;
     Thread.CurrentThread.CurrentUICulture = culture;
   }
+
+  #endregion
+
+  #region All Other Members
+
+  public event PropertyChangedEventHandler? PropertyChanged;
 
   #endregion
 

@@ -13,41 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Classes\**" />
-    <EmbeddedResource Remove="Classes\**" />
-    <None Remove="Classes\**" />
-    <Page Remove="Classes\**" />
-    <Page Update="Views\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <XamlRuntime>Wpf</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SettingsDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <XamlRuntime>Wpf</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Remove="Services\FileEngine.cs" />
-    <Page Update="locals\locals.de.xaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Page>
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="FileTemplates\meta.lsx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Remove="Resources.cn-CN.xaml" />
-    <Page Remove="Resources.de-DE.xaml" />
-    <Page Remove="Resources.en-US.xaml" />
     <EmbeddedResource Include="FileTemplates\meta.lsx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Remove="Themes\Dark.xaml" />
-    <Page Remove="Themes\Light.xaml" />
-    <Page Remove="locals\Resources.zh-CN.xaml" />
   </ItemGroup>
 
   <ItemGroup>

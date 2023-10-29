@@ -67,7 +67,7 @@
                 Content="{materialDesign:PackIcon Kind=ExitToApp}"
                 ToolTip="{DynamicResource R-Bc06Ec85-2434-4Aa6-93D6-971C94181391}" />
         <Button Content="{materialDesign:PackIcon Kind=Settings}"
-                Command="{Binding OpenSettingsDialogCommand}"
+                Command="{Binding ShowSettingsDialogCommand}"
                 ToolTip="{DynamicResource OpenSettings}" />
         <Separator />
         <Button Command="{Binding LoadXmlDataCommand}"
