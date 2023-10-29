@@ -75,19 +75,28 @@ public partial class MainWindow
 
   private void DoPackMods()
   {
-    foreach (ModModel modModel in this.ListBoxMods.SelectedItems)
+    foreach (var modModel in this.GetSelectedMods())
     {
-      var modEngine = new LsPackageEngine(modModel.Folder.FullName, modModel.Name!);
+      var modEngine = new LsPackageEngine(modPathEngine: modModel.Folder.FullName, modNameEngine: modModel.Name!);
       var result = modEngine.BuildPackage();
 
       if (result == null)
       {
-        var message = string.Format("R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab".FromResource(), modModel.Name);
+        var message = string.Format(
+          format: "R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab".FromResource(),
+          arg0: modModel.Name
+        );
+
         this.ShowToast(message: message, duration: 3);
       }
       else
       {
-        var message = string.Format("R-C109D0A4-5995-4Fda-957A-55Bd3F527043".FromResource(), modModel.Name, result);
+        var message = string.Format(
+          format: "R-C109D0A4-5995-4Fda-957A-55Bd3F527043".FromResource(),
+          arg0: modModel.Name,
+          arg1: result
+        );
+
         this.ShowToast(message: message, duration: 3);
       }
     }
@@ -108,18 +117,14 @@ public partial class MainWindow
       this.BeginUpdating();
       this.LoadMods();
       this.SetListBoxModsSelections();
-
-      this.LoadXmlFiles();
-      this.SetListBoxCurrentFileSelections();
-      this.SetListBoxPreviousFileSelections();
-      this.SetListBoxTranslatedFileSelections();
+      this.ReLoadXmlFiles();
     }
     finally { this.EndUpdating(); }
   }
 
   private void SaveListBoxMods()
   {
-    var selectedValue = this.ListBoxMods.SelectedItems.Cast<ModModel>()
+    var selectedValue = this.GetSelectedMods()
                             .Select(model => model.Name)
                             .ToArray();
 
@@ -129,14 +134,8 @@ public partial class MainWindow
 
   private void SaveListBoxOriginCurrentFile()
   {
-    var selectedValue = this.ListBoxOriginCurrentFile.SelectedItems.Cast<XmlFileModel>()
-                            .Select(
-                               model => new SelectionModel()
-                               {
-                                 Name = model.Name,
-                                 ModName = model.Mod.Name,
-                               }
-                             )
+    var selectedValue = this.GetSelectedOriginCurrents()
+                            .Select(xmlFileModel => new SelectionModel(modName: xmlFileModel.Mod.Name, name: xmlFileModel.Name))
                             .ToArray();
 
     SettingsManager.Settings!.LastOriginsCurrent = selectedValue;
@@ -145,14 +144,8 @@ public partial class MainWindow
 
   private void SaveListBoxOriginPreviousFile()
   {
-    var selectedValue = this.ListBoxOriginPreviousFile.SelectedItems.Cast<XmlFileModel>()
-                            .Select(
-                               model => new SelectionModel()
-                               {
-                                 Name = model.Name,
-                                 ModName = model.Mod.Name,
-                               }
-                             )
+    var selectedValue = this.GetSelectedOriginPrevious()
+                            .Select(xmlFileModel => new SelectionModel(modName: xmlFileModel.Mod.Name, name: xmlFileModel.Name))
                             .ToArray();
 
     SettingsManager.Settings!.LastOriginsPrevious = selectedValue;
@@ -161,14 +154,8 @@ public partial class MainWindow
 
   private void SaveListBoxTranslatedFile()
   {
-    var selectedValue = this.ListBoxTranslatedFile.SelectedItems.Cast<XmlFileModel>()
-                            .Select(
-                               model => new SelectionModel()
-                               {
-                                 Name = model.Name!,
-                                 ModName = model.Mod.Name!,
-                               }
-                             )
+    var selectedValue = this.GetSelectedTranslated()
+                            .Select(xmlFileModel => new SelectionModel(modName: xmlFileModel.Mod.Name, name: xmlFileModel.Name!))
                             .ToArray();
 
     SettingsManager.Settings!.LastOriginsTranslated = selectedValue;

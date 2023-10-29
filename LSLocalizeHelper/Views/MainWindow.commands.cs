@@ -1,10 +1,9 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 
 using CommunityToolkit.Mvvm.Input;
 
-using LSLocalizeHelper.Helper;
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
 
@@ -35,7 +34,7 @@ public partial class MainWindow
     this.lsModsService.LoadMods();
     this.ProjectItems.Clear();
 
-    foreach (var modModel in this.lsModsService.Items) { this.ProjectItems.Add(modModel); }
+    foreach (var modModel in this.lsModsService.Items) { this.ProjectItems.Add(new ModModelListBoxItem(modModel)); }
   }
 
   [RelayCommand]
@@ -43,14 +42,9 @@ public partial class MainWindow
   {
     LsWorkingDataService.Clear();
 
-    var translatedFiles = this.ListBoxTranslatedFile.SelectedItems.Cast<XmlFileModel>()
-                              .ToArray();
-
-    var currentFiles = this.ListBoxOriginCurrentFile.SelectedItems.Cast<XmlFileModel>()
-                           .ToArray();
-
-    var previousFiles = this.ListBoxOriginPreviousFile.SelectedItems.Cast<XmlFileModel>()
-                            .ToArray();
+    var translatedFiles = this.GetSelectedTranslated();
+    var currentFiles = this.GetSelectedOriginCurrents();
+    var previousFiles = this.GetSelectedOriginPrevious();
 
     LsWorkingDataService.Load(
       translatedFiles: translatedFiles,
@@ -67,16 +61,26 @@ public partial class MainWindow
     this.OriginCurrentFileItems.Clear();
     this.TranslatedFileItems.Clear();
 
-    var selectedMods = this.ListBoxMods.SelectedItems.Cast<ModModel>()
-                           .ToArray();
+    var selectedMods = this.GetSelectedMods().ToArray();
 
-    this.XmlFilesService.Load(selectedMods);
+    this.xmlFilesService.Load(selectedMods);
 
-    foreach (var xmlFileModel in this.XmlFilesService.Items)
+    foreach (var xmlFileModel in this.xmlFilesService.Items)
     {
-      this.OriginPreviousFileItems.Add(xmlFileModel);
-      this.OriginCurrentFileItems.Add(xmlFileModel);
-      this.TranslatedFileItems.Add(xmlFileModel);
+      if (xmlFileModel.Name.ToLower()
+                      .StartsWith(@"english\"))
+      {
+        this.OriginPreviousFileItems.Add(new XmlFileListBoxItem(xmlFileModel));
+      }
+
+      if (xmlFileModel.Name.ToLower()
+                      .StartsWith(@"english\"))
+      {
+        this.OriginCurrentFileItems.Add(new XmlFileListBoxItem(xmlFileModel));
+      }
+
+      if (!xmlFileModel.Name.ToLower()
+                       .StartsWith(@"english\")) { this.TranslatedFileItems.Add(new XmlFileListBoxItem(xmlFileModel)); }
     }
   }
 
@@ -86,8 +90,40 @@ public partial class MainWindow
   [RelayCommand]
   private void Refresh() { this.DoRefresh(); }
 
+  private void ReLoadXmlFiles()
+  {
+    this.LoadXmlFiles();
+
+    this.SetListBoxOriginCurrentFileSelections();
+    this.SetListBoxOriginPreviousFileSelections();
+    this.SetListBoxTranslatedFileSelections();
+  }
+
   [RelayCommand]
-  private void SaveXmlData() { this.ShowToast("Not implemented yet!"); }
+  private void SaveXmlData()
+  {
+    var mods = this.GetSelectedMods();
+
+    foreach (var mod in mods)
+    {
+      var message = $"Save Mod: {mod.Name}";
+      Console.WriteLine(message);
+
+      // this.ShowToast(message);
+
+      var modFiles = this.GetSelectedTranslated()
+                         .Where(t => t.Mod.Name == mod.Name);
+
+      foreach (var xmlFileModel in modFiles)
+      {
+        var translatedItems = LsWorkingDataService.TranslatedItems.Where(t => t?.SourceFile == xmlFileModel);
+        message = $"Save File: {xmlFileModel.Name} Items: {translatedItems.Count()}";
+        Console.WriteLine(message);
+
+        // this.ShowToast(message);
+      }
+    }
+  }
 
   [RelayCommand]
   private void ShowSettingsDialog()

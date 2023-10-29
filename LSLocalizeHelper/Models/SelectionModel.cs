@@ -1,4 +1,4 @@
-namespace LSLocalizeHelper.Views;
+namespace LSLocalizeHelper.Models;
 
 public class SelectionModel
 {
@@ -8,6 +8,16 @@ public class SelectionModel
   public string ModName;
 
   public string Name;
+
+  #endregion
+
+  #region Constructors
+
+  public SelectionModel(string modName, string name)
+  {
+    this.ModName = modName;
+    this.Name = name;
+  }
 
   #endregion
 

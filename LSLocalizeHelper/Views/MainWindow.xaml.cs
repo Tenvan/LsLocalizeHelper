@@ -15,7 +15,8 @@ namespace LSLocalizeHelper.Views;
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window, INotifyPropertyChanged
+public partial class MainWindow : Window,
+                                  INotifyPropertyChanged
 {
 
   #region Constructors
@@ -30,11 +31,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     this.LoadMods();
     this.SetListBoxModsSelections();
-
-    this.LoadXmlFiles();
-    this.SetListBoxCurrentFileSelections();
-    this.SetListBoxPreviousFileSelections();
-    this.SetListBoxTranslatedFileSelections();
+    this.ReLoadXmlFiles();
 
     this.SetEvents();
   }
@@ -63,12 +60,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
   protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
   {
-    this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    this.PropertyChanged?.Invoke(sender: this, e: new PropertyChangedEventArgs(propertyName));
   }
 
   protected virtual bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
   {
-    if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+    if (EqualityComparer<T>.Default.Equals(x: field, y: value)) return false;
 
     field = value;
     this.OnPropertyChanged(propertyName);
@@ -79,7 +76,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
   private void ButtonApplyTranslated_OnClick(object sender, RoutedEventArgs e)
   {
     var newText = this.TextBoxTranslated.Text;
-    LsWorkingDataService.SetTranslatedForUid(this.CurrentDataRow?.Uuid, newText);
+    LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow?.Uuid, newText: newText);
   }
 
   private void LoadWindowSettings()
@@ -89,22 +86,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     this.Top = SettingsManager.Settings.WindowTop;
     this.Left = SettingsManager.Settings.WindowLeft;
     var settingsProjectHeight = (double)SettingsManager.Settings.ProjectHeight;
-    this.RowDefinitionProjects.Height = new GridLength(Math.Max(settingsProjectHeight, 100));
+    this.RowDefinitionProjects.Height = new GridLength(Math.Max(val1: settingsProjectHeight, val2: 100));
     var settingsTranslationHeight = (double)SettingsManager.Settings.TranslationHeight;
-    this.RowDefinitionTranslation.Height = new GridLength(Math.Max(settingsTranslationHeight, 100));
-  }
-
-  private void SetListBoxCurrentFileSelections()
-  {
-    // Reload selected Current Origin files
-    foreach (var lastMod in SettingsManager.Settings.LastOriginsCurrent)
-    {
-      var item = this.OriginCurrentFileItems.FirstOrDefault(
-        xmlFileModel => xmlFileModel.Name == lastMod.Name && xmlFileModel.Mod.Name == lastMod.ModName
-      );
-
-      this.ListBoxOriginCurrentFile.SelectedItems.Add(item);
-    }
+    this.RowDefinitionTranslation.Height = new GridLength(Math.Max(val1: settingsTranslationHeight, val2: 100));
   }
 
   private void SetListBoxModsSelections()
@@ -112,22 +96,33 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     // Reload selected Mods
     foreach (var lastMod in SettingsManager.Settings.LastMods)
     {
-      var item = this.ProjectItems.FirstOrDefault(m => m.Name == lastMod);
-
-      if (item != null) { this.ListBoxMods.SelectedItems.Add(item); }
+      this.SetModSelectionByName(modName: lastMod, selected: true);
     }
   }
 
-  private void SetListBoxPreviousFileSelections()
+  private void SetListBoxOriginCurrentFileSelections()
+  {
+    // Reload selected Current Origin files
+    foreach (var lastMod in SettingsManager.Settings.LastOriginsCurrent)
+    {
+      var fileListBoxItem = this.OriginCurrentFileItems.FirstOrDefault(
+        listBoxItem => listBoxItem.FileModel.Name == lastMod.Name && listBoxItem.FileModel.Mod.Name == lastMod.ModName
+      );
+
+      this.SetOriginCurrentSelection(fileModel: fileListBoxItem, selected: true);
+    }
+  }
+
+  private void SetListBoxOriginPreviousFileSelections()
   {
     // Reload selected Previous Origin files
     foreach (var lastMod in SettingsManager.Settings.LastOriginsPrevious)
     {
       var item = this.OriginPreviousFileItems.FirstOrDefault(
-        xmlFileModel => xmlFileModel.Name == lastMod.Name && xmlFileModel.Mod.Name == lastMod.ModName
+        listBoxItem => listBoxItem.FileModel?.Name == lastMod.Name && listBoxItem.FileModel.Mod.Name == lastMod.ModName
       );
 
-      this.ListBoxOriginPreviousFile.SelectedItems.Add(item);
+      this.SetOriginPreviousSelection(fileModel: item, selected: true);
     }
   }
 
@@ -137,10 +132,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     foreach (var lastMod in SettingsManager.Settings.LastOriginsTranslated)
     {
       var item = this.TranslatedFileItems.FirstOrDefault(
-        xmlFileModel => xmlFileModel.Name == lastMod.Name && xmlFileModel.Mod.Name == lastMod.ModName
+        listBoxItem => listBoxItem.FileModel.Name == lastMod.Name && listBoxItem.FileModel.Mod.Name == lastMod.ModName
       );
 
-      this.ListBoxTranslatedFile.SelectedItems.Add(item);
+      this.SetTranslatedSelection(fileModel: item, selected: true);
     }
   }
 

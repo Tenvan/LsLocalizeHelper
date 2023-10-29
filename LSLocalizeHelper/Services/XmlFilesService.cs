@@ -28,10 +28,7 @@ public class XmlFilesService
 
     this.Items.Clear();
 
-    foreach (var modModel in mods)
-    {
-      this.LoadFiles(modModel);
-    }
+    foreach (var modModel in mods) { this.LoadFiles(modModel); }
   }
 
   private void LoadFiles(ModModel mod)
@@ -41,19 +38,13 @@ public class XmlFilesService
     var localsDir = dirInfo.GetDirectories(searchPattern: "Localization", searchOption: SearchOption.AllDirectories)
                            .FirstOrDefault();
 
-    var modWorkFolder = localsDir?.Parent;
     var metaFiles = dirInfo.GetFiles(searchPattern: "*.xml", searchOption: SearchOption.AllDirectories);
 
     foreach (var metaFile in metaFiles)
     {
       var shortName = Path.GetRelativePath(startPath: localsDir?.FullName, selectedPath: metaFile.FullName);
 
-      var fileModel = new XmlFileModel()
-      {
-        FullPath = metaFile,
-        Name = shortName,
-        Mod = mod,
-      };
+      var fileModel = new XmlFileModel(shortName, metaFile, mod);
 
       this.Items.Add(fileModel);
     }

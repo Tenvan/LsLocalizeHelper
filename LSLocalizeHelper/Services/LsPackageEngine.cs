@@ -62,17 +62,16 @@ public class LsPackageEngine
 
       foreach (XmlNode moduleDescription in moduleDescriptions)
       {
-        var depInfo = new ModuleShortDesc
-        {
-          Name = moduleDescription.SelectSingleNode("attribute[@id='Name']")
-                                  .Attributes["value"].InnerText,
-          Version = moduleDescription.SelectSingleNode("attribute[@id='Version']")
-                                     .Attributes["value"].InnerText,
-          Folder = moduleDescription.SelectSingleNode("attribute[@id='Folder']")
+        var depInfo = new ModuleShortDesc(
+          name: moduleDescription.SelectSingleNode("attribute[@id='Name']")
+                                 .Attributes["value"].InnerText,
+          version: moduleDescription.SelectSingleNode("attribute[@id='Version']")
                                     .Attributes["value"].InnerText,
-          UUID = moduleDescription.SelectSingleNode("attribute[@id='UUID']")
-                                  .Attributes["value"].InnerText,
-        };
+          folder: moduleDescription.SelectSingleNode("attribute[@id='Folder']")
+                                   .Attributes["value"].InnerText,
+          uuid: moduleDescription.SelectSingleNode("attribute[@id='UUID']")
+                                 .Attributes["value"].InnerText
+        );
 
         metadata.Dependencies.Add(depInfo);
       }
@@ -223,18 +222,7 @@ public class LsPackageEngine
     if (metaFiles.Length != 1) { throw new Exception("excaptly one meta.lsx must exists"); }
 
     var metaFile = metaFiles[0].FullName;
-
-    var info = new InfoJson
-    {
-      Mods = new List<MetaLsx>(),
-    };
-
-    var created = DateTime.Now;
-    var metadata = LsPackageEngine.ReadMeta(meta: metaFile, created: created);
-
-    info.Mods.Add(metadata);
-
-    if (info.Mods.Count == 0) { return false; }
+    string md5content;
 
     // calculate md5 hash of .pak(s)
     using (var md5 = MD5.Create())
@@ -264,10 +252,19 @@ public class LsPackageEngine
         pakCount++;
       }
 
-      info.MD5 = BitConverter.ToString(md5.Hash)
-                             .Replace(oldValue: "-", newValue: "")
-                             .ToLower();
+      md5content = BitConverter.ToString(md5.Hash)
+                               .Replace(oldValue: "-", newValue: "")
+                               .ToLower();
     }
+
+    var info = new InfoJson(new List<MetaLsx>(), md5content);
+
+    var created = DateTime.Now;
+    var metadata = LsPackageEngine.ReadMeta(meta: metaFile, created: created);
+
+    info.Mods.Add(metadata);
+
+    if (info.Mods.Count == 0) { return false; }
 
     var json = JsonConvert.SerializeObject(info);
     File.WriteAllText(path: this.TempFolder + @"\info.json", contents: json);

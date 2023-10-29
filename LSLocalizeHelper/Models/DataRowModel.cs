@@ -9,7 +9,33 @@ namespace LSLocalizeHelper.Models;
 public class DataRowModel : INotifyPropertyChanged
 {
 
+  #region Fields
+
   private string text;
+
+  #endregion
+
+  #region Constructors
+
+  public DataRowModel(string text,
+                      DatSetFlag flag,
+                      ModModel mod,
+                      XmlFileModel sourceFile,
+                      TranslationStatus status,
+                      string uuid,
+                      string version
+  )
+  {
+    this.text = text;
+    this.Flag = flag;
+    this.Mod = mod;
+    this.SourceFile = sourceFile;
+    this.Status = status;
+    this.Uuid = uuid;
+    this.Version = version;
+  }
+
+  #endregion
 
   #region Properties
 
@@ -17,9 +43,9 @@ public class DataRowModel : INotifyPropertyChanged
 
   public ModModel Mod { get; set; }
 
-  public string Origin { get; set; }
+  public string? Origin { get; set; }
 
-  public string Previous { get; set; }
+  public string? Previous { get; set; }
 
   public XmlFileModel SourceFile { get; set; }
 
@@ -44,7 +70,7 @@ public class DataRowModel : INotifyPropertyChanged
 
   #endregion
 
-  public event PropertyChangedEventHandler? PropertyChanged;
+  #region Methods
 
   protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
   {
@@ -56,9 +82,17 @@ public class DataRowModel : INotifyPropertyChanged
     if (EqualityComparer<T>.Default.Equals(field, value)) return false;
 
     field = value;
-    OnPropertyChanged(propertyName);
+    this.OnPropertyChanged(propertyName);
 
     return true;
   }
+
+  #endregion
+
+  #region All Other Members
+
+  public event PropertyChangedEventHandler? PropertyChanged;
+
+  #endregion
 
 }

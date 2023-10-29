@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using System.Xml;
 
 using LSLocalizeHelper.Enums;
@@ -84,11 +83,6 @@ public static class LsWorkingDataService
     LsWorkingDataService.CurrentFiles = currentFiles;
     LsWorkingDataService.PreviousFiles = previousFiles;
 
-    foreach (var xmlFileModel in translatedFiles)
-    {
-      LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Translated);
-    }
-
     foreach (var xmlFileModel in currentFiles)
     {
       LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Current);
@@ -99,6 +93,11 @@ public static class LsWorkingDataService
       LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Previous);
     }
 
+    foreach (var xmlFileModel in translatedFiles)
+    {
+      LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Translated);
+    }
+
     LsWorkingDataService.AddOriginTexts();
     LsWorkingDataService.AddNewOriginTexts();
   }
@@ -107,11 +106,7 @@ public static class LsWorkingDataService
   {
     var dataRow = GetTranslatedForUid(uid);
 
-    if (dataRow != null)
-    {
-      dataRow.Text = newText;
-
-    }
+    if (dataRow != null) { dataRow.Text = newText; }
   }
 
   private static void AddNewOriginTexts()
@@ -120,15 +115,15 @@ public static class LsWorkingDataService
     {
       if (LsWorkingDataService.TranslatedItems.FirstOrDefault(t => t.Uuid == originModel.Uuid) != null) { continue; }
 
-      var rowModel = new DataRowModel()
-      {
-        Uuid = originModel.Uuid,
-        Version = originModel.Version,
-        Text = originModel.Text,
-        Mod = originModel.Mod,
-        SourceFile = originModel.SourceFile,
-        Flag = DatSetFlag.NewSet,
-      };
+      var rowModel = new DataRowModel(
+        uuid: originModel.Uuid,
+        version: originModel.Version,
+        text: originModel.Text,
+        mod: originModel.Mod,
+        sourceFile: originModel.SourceFile,
+        flag: DatSetFlag.NewSet,
+        status: TranslationStatus.OriginStatus
+      );
 
       var matchToTranslatedFile = LsWorkingDataService.MatchToTranslatedFile(rowModel);
 
@@ -147,13 +142,14 @@ public static class LsWorkingDataService
     }
   }
 
-  private static OriginModel BuildOriginModel(XmlElement node) =>
-    new()
-    {
-      Uuid = node.Attributes["contentuid"]?.InnerText,
-      Version = node.Attributes["version"]?.InnerText,
-      Text = node.InnerText,
-    };
+  private static OriginModel BuildOriginModel(XmlElement node, XmlFileModel source) =>
+    new OriginModel(
+      source.Mod,
+      source,
+      node.Attributes["contentuid"]?.InnerText,
+      node.Attributes["version"]?.InnerText,
+      node.InnerText
+    );
 
   private static void LoadFiles(XmlFileModel xmlFileModel, FileTypes type)
   {
@@ -171,7 +167,10 @@ public static class LsWorkingDataService
       {
         try
         {
-          var newRow = LsWorkingDataService.BuildOriginModel(node);
+          var newRow = LsWorkingDataService.BuildOriginModel(node, xmlFileModel);
+
+          if (string.IsNullOrEmpty(newRow.Uuid)) { continue; }
+
           newRow.Mod = xmlFileModel.Mod;
           newRow.SourceFile = xmlFileModel;
 
@@ -192,15 +191,15 @@ public static class LsWorkingDataService
             case FileTypes.Translated:
 
               LsWorkingDataService.TranslatedItems.Add(
-                new DataRowModel()
-                {
-                  Uuid = newRow.Uuid,
-                  Version = newRow.Version,
-                  Text = newRow.Text,
-                  Mod = xmlFileModel.Mod,
-                  SourceFile = xmlFileModel,
-                  Flag = DatSetFlag.ExistingSet,
-                }
+                new DataRowModel(
+                  newRow.Text,
+                  DatSetFlag.ExistingSet,
+                  xmlFileModel.Mod,
+                  xmlFileModel,
+                  TranslationStatus.TranslatedStatus,
+                  newRow.Uuid,
+                  newRow.Version
+                )
               );
 
               break;
@@ -219,6 +218,7 @@ public static class LsWorkingDataService
     {
       var message
         = $"Error during loading of {type}-XML:\n\nFile: {xmlFileModel.FullPath.FullName}\n\nError:{e.Message}";
+
       Console.WriteLine(message);
 
       throw new Exception(message);

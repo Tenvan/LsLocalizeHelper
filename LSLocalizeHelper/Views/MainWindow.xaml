@@ -66,8 +66,8 @@
         <Button Command="{Binding ApplicationExitCommand}"
                 Content="{materialDesign:PackIcon Kind=ExitToApp}"
                 ToolTip="{DynamicResource R-Bc06Ec85-2434-4Aa6-93D6-971C94181391}" />
-        <Button Content="{materialDesign:PackIcon Kind=Settings}"
-                Command="{Binding ShowSettingsDialogCommand}"
+        <Button Command="{Binding ShowSettingsDialogCommand}"
+                Content="{materialDesign:PackIcon Kind=Settings}"
                 ToolTip="{DynamicResource OpenSettings}" />
         <Separator />
         <Button Command="{Binding LoadXmlDataCommand}"
@@ -77,7 +77,7 @@
                 Content="{materialDesign:PackIcon Kind=ContentSaveAdd}"
                 ToolTip="{DynamicResource R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3}" />
         <Separator />
-        <Button Command="{Binding  ImportNewModCommand}"
+        <Button Command="{Binding ImportNewModCommand}"
                 Content="{materialDesign:PackIcon Kind=Import}"
                 ToolTip="{DynamicResource R-0246F297-E448-4D0B-945A-32F0C73F98C7}" />
         <Button Command="{Binding PackModsCommand}"
@@ -97,9 +97,9 @@
         <Separator />
         <Label VerticalContentAlignment="Center" Content="{DynamicResource R-Ba4B59F8-8D60-4E6A-89B6-4B374Fcfe0B0}" />
         <ComboBox x:Name="ComboBoxLanguage"
-                  SelectionChanged="ComboBoxLanguage_OnSelectionChanged"
                   HorizontalAlignment="Left"
-                  ItemsSource="{Binding LanguageItems}" />
+                  ItemsSource="{Binding LanguageItems}"
+                  SelectionChanged="ComboBoxLanguage_OnSelectionChanged" />
       </ToolBar>
 
     </ToolBarTray>
@@ -133,7 +133,11 @@
         <ListBox.ItemTemplate>
           <DataTemplate>
             <StackPanel Orientation="Horizontal">
-              <TextBlock Text="{Binding Name}" />
+              <CheckBox Margin="5,0"
+                        Checked="ListBoxMods_OnChecked"
+                        IsChecked="{Binding IsChecked}"
+                        Unchecked="ListBoxMods_OnChecked" />
+              <TextBlock Text="{Binding Mod.Name}" />
             </StackPanel>
           </DataTemplate>
         </ListBox.ItemTemplate>
@@ -168,14 +172,30 @@
         <ListBox.ItemTemplate>
           <DataTemplate>
             <StackPanel Orientation="Horizontal">
-              <TextBlock Text="{Binding Mod.Name}" />
+              <CheckBox Margin="5,0"
+                        Checked="ListBoxOriginCurrent_OnChecked"
+                        IsChecked="{Binding IsChecked}"
+                        Unchecked="ListBoxOriginCurrent_OnChecked" />
+              <TextBlock Text="{Binding FileModel.Mod.Name}" />
               <TextBlock Text=": " />
-              <TextBlock Text="{Binding Name}" />
+              <TextBlock Text="{Binding FileModel.Name}" />
             </StackPanel>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
     </GroupBox>
+
+    <materialDesign:Snackbar x:Name="MainSnackbar"
+                             Grid.Row="1"
+                             Grid.Column="1"
+                             Grid.ColumnSpan="2"
+                             Margin="0,20,0,0"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Top"
+                             HorizontalContentAlignment="Left"
+                             ActionButtonPlacement="Inline"
+                             ActionButtonStyle="{StaticResource MaterialDesignOutlinedButton}"
+                             MessageQueue="{materialDesign:MessageQueue}" />
 
     <GroupBox Grid.Row="1"
               Grid.Column="2"
@@ -205,9 +225,13 @@
         <ListBox.ItemTemplate>
           <DataTemplate>
             <StackPanel Orientation="Horizontal">
-              <TextBlock Text="{Binding Mod.Name}" />
+              <CheckBox Margin="5,0"
+                        Checked="ListBoxOriginPrevious_OnChecked"
+                        IsChecked="{Binding IsChecked}"
+                        Unchecked="ListBoxOriginPrevious_OnChecked" />
+              <TextBlock Text="{Binding FileModel.Mod.Name}" />
               <TextBlock Text=": " />
-              <TextBlock Text="{Binding Name}" />
+              <TextBlock Text="{Binding FileModel.Name}" />
             </StackPanel>
           </DataTemplate>
         </ListBox.ItemTemplate>
@@ -238,13 +262,17 @@
                Grid.Row="1"
                Grid.Column="3"
                ItemsSource="{Binding TranslatedFileItems}"
-               SelectionMode="Extended">
+               SelectionMode="Single">
         <ListBox.ItemTemplate>
           <DataTemplate>
             <StackPanel Orientation="Horizontal">
-              <TextBlock Text="{Binding Mod.Name}" />
+              <CheckBox Margin="5,0"
+                        Checked="ListBoxTranslated_OnChecked"
+                        IsChecked="{Binding IsChecked}"
+                        Unchecked="ListBoxTranslated_OnChecked" />
+              <TextBlock Text="{Binding FileModel.Mod.Name}" />
               <TextBlock Text=": " />
-              <TextBlock Text="{Binding Name}" />
+              <TextBlock Text="{Binding FileModel.Name}" />
             </StackPanel>
           </DataTemplate>
         </ListBox.ItemTemplate>
@@ -368,28 +396,23 @@
       <DataGrid.RowStyle>
         <Style TargetType="DataGridRow">
           <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
-                         Value="{x:Static enums:TranslationStatus.DeletedStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.DeletedStatus}">
               <Setter Property="Background" Value="Brown" />
               <Setter Property="Foreground" Value="White" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
-                         Value="{x:Static enums:TranslationStatus.NewStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.NewStatus}">
               <Setter Property="Background" Value="Blue" />
               <Setter Property="Foreground" Value="White" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
-                         Value="{x:Static enums:TranslationStatus.OriginStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.OriginStatus}">
               <Setter Property="Foreground" Value="Orange" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
-                         Value="{x:Static enums:TranslationStatus.TranslatedStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.TranslatedStatus}">
               <Setter Property="Foreground" Value="LightGreen" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
-                         Value="{x:Static enums:TranslationStatus.UpdatedStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.UpdatedStatus}">
               <Setter Property="Foreground" Value="Blue" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
@@ -553,18 +576,6 @@
         </global:MarkupTextBlock.MarkupText>
       </global:MarkupTextBlock>
     </GroupBox>
-
-    <materialDesign:Snackbar x:Name="MainSnackbar"
-                             Grid.Row="1"
-                             Grid.Column="1"
-                             Grid.ColumnSpan="2"
-                             Margin="0,20,0,0"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Top"
-                             HorizontalContentAlignment="Left"
-                             ActionButtonPlacement="Inline"
-                             ActionButtonStyle="{StaticResource MaterialDesignOutlinedButton}"
-                             MessageQueue="{materialDesign:MessageQueue}" />
 
   </Grid>
 

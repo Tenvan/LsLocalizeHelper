@@ -67,16 +67,10 @@ public class LsUnpackageEngine
 
       return ex.Message;
     }
-    finally
-    {
-      this.CleanUp();
-    }
+    finally { this.CleanUp(); }
   }
 
-  private void CleanUp()
-  {
-    Directory.Delete(path: this.TempFolder, recursive: true);
-  }
+  private void CleanUp() { Directory.Delete(path: this.TempFolder, recursive: true); }
 
   private void GenerateMetaLsx(string metaPath,
                                string author,
@@ -85,10 +79,7 @@ public class LsUnpackageEngine
   )
   {
     if (string.IsNullOrEmpty(author)
-        || string.IsNullOrEmpty(description))
-    {
-      return;
-    }
+        || string.IsNullOrEmpty(description)) { return; }
 
     var xmlText = FileHelper.LoadFileTemplate("meta.lsx");
     var xml = XDocument.Parse(xmlText);

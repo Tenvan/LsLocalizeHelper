@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -53,33 +54,30 @@ public partial class MainWindow
         .Subscribe(this.DoOnRowChanged);
 
     this.ListBoxMods.Events()
-        .SelectionChanged.Where(args => !this.IsUpdating)
+        .SelectionChanged.Where(args => !this.IsUpdating && false)
         .Select(e => e)
         .Subscribe(
            args =>
            {
              this.SaveListBoxMods();
              this.BeginUpdating();
-             this.LoadXmlFiles();
-             this.SetListBoxCurrentFileSelections();
-             this.SetListBoxPreviousFileSelections();
-             this.SetListBoxTranslatedFileSelections();
+             this.ReLoadXmlFiles();
              this.EndUpdating();
            }
          );
 
     this.ListBoxTranslatedFile.Events()
-        .SelectionChanged.Where(args => !this.IsUpdating)
+        .SelectionChanged.Where(args => !this.IsUpdating && false)
         .Select(e => e)
         .Subscribe(args => this.SaveListBoxTranslatedFile());
 
     this.ListBoxOriginCurrentFile.Events()
-        .SelectionChanged.Where(args => !this.IsUpdating)
+        .SelectionChanged.Where(args => !this.IsUpdating && false)
         .Select(e => e)
         .Subscribe(args => this.SaveListBoxOriginCurrentFile());
 
     this.ListBoxOriginPreviousFile.Events()
-        .SelectionChanged.Where(args => !this.IsUpdating)
+        .SelectionChanged.Where(args => !this.IsUpdating && false)
         .Select(e => e)
         .Subscribe(args => this.SaveListBoxOriginPreviousFile());
 
@@ -139,5 +137,63 @@ public partial class MainWindow
   }
 
   #endregion
+
+  private void ListBoxMods_OnChecked(object sender, RoutedEventArgs e)
+  {
+    this.SaveListBoxMods();
+    this.ReLoadXmlFiles();
+  }
+
+  private void ListBoxOriginCurrent_OnChecked(object sender, RoutedEventArgs e)
+  {
+    var listBox = sender as CheckBox;
+    var data = listBox?.DataContext;
+
+    if (data is not XmlFileListBoxItem listBoxItem) { return; }
+
+    // clear previous selections for this mod
+    var listBoxItemsOfMod = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
+                                .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
+
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
+
+    this.SaveListBoxOriginCurrentFile();
+    this.ReLoadXmlFiles();
+  }
+
+  private void ListBoxOriginPrevious_OnChecked(object sender, RoutedEventArgs e)
+  {
+    var listBox = sender as CheckBox;
+    var data = listBox?.DataContext;
+
+    if (data is not XmlFileListBoxItem listBoxItem) { return; }
+
+    // clear previous selections for this mod
+    var listBoxItemsOfMod = this.ListBoxOriginPreviousFile.Items.Cast<XmlFileListBoxItem>()
+                                .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
+
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
+
+    this.SaveListBoxOriginPreviousFile();
+    this.ReLoadXmlFiles();
+  }
+
+  private void ListBoxTranslated_OnChecked(object sender, RoutedEventArgs e)
+  {
+    var listBox = sender as CheckBox;
+    var data = listBox?.DataContext;
+
+    if (data is not XmlFileListBoxItem listBoxItem) { return; }
+
+    // clear previous selections for this mod
+    var listBoxItemsOfMod = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
+                                .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
+
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
+
+    this.SaveListBoxTranslatedFile();
+
+    this.ReLoadXmlFiles();
+  }
 
 }
