@@ -30,8 +30,6 @@
         mc:Ignorable="d">
   <Window.Resources>
     <ResourceDictionary>
-      <converter:OriginStatusConverter x:Key="OriginStatusConverter" />
-      <converter:OriginStatusMultiConverter x:Key="OriginStatusMultiConverter" />
       <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
     </ResourceDictionary>
   </Window.Resources>
@@ -300,12 +298,6 @@
               ItemsSource="{Binding DataGridItems}"
               SelectionMode="Single">
       <DataGrid.Columns>
-        <DataGridTextColumn Binding="{Binding Status}" Header="#" />
-        <DataGridTextColumn Binding="{Binding Flag}">
-          <DataGridTextColumn.Header>
-            <TextBlock Text="Flag" />
-          </DataGridTextColumn.Header>
-        </DataGridTextColumn>
         <DataGridTextColumn Binding="{Binding Mod.Name}">
           <DataGridTextColumn.Header>
             <TextBlock>
