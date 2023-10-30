@@ -26,6 +26,8 @@ public partial class MainWindow
 
   #region Properties
 
+  public bool IsModified { get; set; } = false;
+
   public ObservableCollection<CultureInfo> LanguageItems { get; set; } = new();
 
   public ObservableCollection<XmlFileListBoxItem> OriginCurrentFileItems { get; set; } = new();

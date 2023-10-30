@@ -47,9 +47,16 @@
       <RowDefinition x:Name="RowDefinitionTranslation"
                      Height="150"
                      ToolTip="RowTranslation" />
-      <RowDefinition Height="150" ToolTip="RowOrigins" />
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="100*" />
+      <ColumnDefinition Width="100*" />
+      <ColumnDefinition Width="100*" />
+      <ColumnDefinition Width="100*" />
+      <ColumnDefinition Width="100*" />
+      <ColumnDefinition Width="100*" />
+      <ColumnDefinition Width="100*" />
+      <ColumnDefinition Width="100*" />
       <ColumnDefinition Width="100*" />
       <ColumnDefinition Width="100*" />
       <ColumnDefinition Width="100*" />
@@ -58,7 +65,7 @@
 
     <ToolBarTray Grid.Row="0"
                  Grid.Column="0"
-                 Grid.ColumnSpan="4">
+                 Grid.ColumnSpan="12">
       <ToolBar Width="Auto"
                ClipToBounds="False"
                Style="{StaticResource MaterialDesignToolBar}">
@@ -107,6 +114,7 @@
     <GroupBox x:Name="GroupBoxProjects"
               Grid.Row="1"
               Grid.Column="0"
+              Grid.ColumnSpan="3"
               Margin="5"
               Header="{DynamicResource R-92C669E1-2208-46D9-Ab54-07C7E8C45283}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
@@ -145,7 +153,8 @@
     </GroupBox>
 
     <GroupBox Grid.Row="1"
-              Grid.Column="1"
+              Grid.Column="3"
+              Grid.ColumnSpan="3"
               Margin="5"
               Header="{DynamicResource R-5E3E7030-4C59-4322-A108-157Afeb42Fad}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
@@ -187,8 +196,8 @@
 
     <materialDesign:Snackbar x:Name="MainSnackbar"
                              Grid.Row="1"
-                             Grid.Column="1"
-                             Grid.ColumnSpan="2"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="6"
                              Margin="0,20,0,0"
                              HorizontalAlignment="Center"
                              VerticalAlignment="Top"
@@ -198,7 +207,8 @@
                              MessageQueue="{materialDesign:MessageQueue}" />
 
     <GroupBox Grid.Row="1"
-              Grid.Column="2"
+              Grid.Column="6"
+              Grid.ColumnSpan="3"
               Margin="5"
               Header="{DynamicResource R-6Cc7Af69-B89E-497E-A5C7-3B158D5Fbd1A}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
@@ -239,7 +249,8 @@
     </GroupBox>
 
     <GroupBox Grid.Row="1"
-              Grid.Column="3"
+              Grid.Column="9"
+              Grid.ColumnSpan="3"
               Margin="5"
               Header="{DynamicResource R-Fe2B3802-8Bac-4650-96D8-Dd69Eedd7185}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
@@ -280,8 +291,8 @@
     </GroupBox>
 
     <GridSplitter Grid.Row="2"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
+                  Grid.Column="2"
+                  Grid.ColumnSpan="8"
                   Height="5"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Center"
@@ -291,7 +302,7 @@
     <DataGrid x:Name="TranslationGrid"
               Grid.Row="3"
               Grid.Column="0"
-              Grid.ColumnSpan="4"
+              Grid.ColumnSpan="12"
               Margin="0,0,0,40"
               materialDesign:DataGridAssist.CellPadding="3"
               materialDesign:DataGridAssist.ColumnHeaderPadding="5"
@@ -396,23 +407,28 @@
       <DataGrid.RowStyle>
         <Style TargetType="DataGridRow">
           <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.DeletedStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.DeletedStatus}">
               <Setter Property="Background" Value="Brown" />
               <Setter Property="Foreground" Value="White" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.NewStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.NewStatus}">
               <Setter Property="Background" Value="Blue" />
               <Setter Property="Foreground" Value="White" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.OriginStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.OriginStatus}">
               <Setter Property="Foreground" Value="Orange" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.TranslatedStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.TranslatedStatus}">
               <Setter Property="Foreground" Value="LightGreen" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Value="{x:Static enums:TranslationStatus.UpdatedStatus}">
+            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
+                         Value="{x:Static enums:TranslationStatus.UpdatedStatus}">
               <Setter Property="Foreground" Value="Blue" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
@@ -423,15 +439,15 @@
 
     <StackPanel Grid.Row="3"
                 Grid.Column="0"
-                Grid.ColumnSpan="4"
+                Grid.ColumnSpan="12"
                 Height="40"
                 VerticalAlignment="Bottom">
       <TextBlock Height="40" Text="Status:" />
     </StackPanel>
 
     <GridSplitter Grid.Row="4"
-                  Grid.Column="1"
-                  Grid.ColumnSpan="2"
+                  Grid.Column="2"
+                  Grid.ColumnSpan="8"
                   Height="5"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Center"
@@ -441,7 +457,7 @@
     <GroupBox x:Name="GroupBoxTranslation"
               Grid.Row="5"
               Grid.Column="0"
-              Grid.ColumnSpan="4"
+              Grid.ColumnSpan="6"
               Margin="5"
               Header="{DynamicResource TranslatedText}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
@@ -484,9 +500,6 @@
       </GroupBox.HeaderTemplate>
 
       <TextBox x:Name="TextBoxTranslated"
-               Grid.Row="5"
-               Grid.Column="0"
-               Grid.ColumnSpan="4"
                AcceptsReturn="True"
                AcceptsTab="True"
                ScrollViewer.HorizontalScrollBarVisibility="Auto"
@@ -495,9 +508,9 @@
     </GroupBox>
 
     <GroupBox x:Name="GroupBoxOrigins"
-              Grid.Row="6"
-              Grid.Column="0"
-              Grid.ColumnSpan="2"
+              Grid.Row="5"
+              Grid.Column="6"
+              Grid.ColumnSpan="3"
               Margin="5"
               Header="{DynamicResource OriginText}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
@@ -535,9 +548,9 @@
 
     </GroupBox>
 
-    <GroupBox Grid.Row="6"
-              Grid.Column="2"
-              Grid.ColumnSpan="2"
+    <GroupBox Grid.Row="5"
+              Grid.Column="9"
+              Grid.ColumnSpan="3"
               Margin="5"
               Header="{DynamicResource PreviousText}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
