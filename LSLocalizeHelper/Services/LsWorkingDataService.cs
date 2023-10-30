@@ -41,8 +41,8 @@ public static class LsWorkingDataService
   public static ObservableCollection<DataRowModel> FilterData(string filterText)
   {
     var regex = new Regex(
-      filterText,
-      RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOptions.Compiled
+      pattern: filterText,
+      options: RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOptions.Compiled
     );
 
     var dataRowModels = LsWorkingDataService.TranslatedItems.Where(
@@ -79,21 +79,24 @@ public static class LsWorkingDataService
                           IEnumerable<XmlFileModel> previousFiles
   )
   {
-    LsWorkingDataService.TranslatedFiles = translatedFiles;
-    LsWorkingDataService.CurrentFiles = currentFiles;
-    LsWorkingDataService.PreviousFiles = previousFiles;
+    var translatedFilesList = translatedFiles.ToList();
+    LsWorkingDataService.TranslatedFiles = translatedFilesList;
+    var currentFilesList = currentFiles.ToList();
+    LsWorkingDataService.CurrentFiles = currentFilesList;
+    var previousFilesList = previousFiles.ToList();
+    LsWorkingDataService.PreviousFiles = previousFilesList;
 
-    foreach (var xmlFileModel in currentFiles)
+    foreach (var xmlFileModel in currentFilesList)
     {
       LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Current);
     }
 
-    foreach (var xmlFileModel in previousFiles)
+    foreach (var xmlFileModel in previousFilesList)
     {
       LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Previous);
     }
 
-    foreach (var xmlFileModel in translatedFiles)
+    foreach (var xmlFileModel in translatedFilesList)
     {
       LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Translated);
     }
@@ -143,12 +146,12 @@ public static class LsWorkingDataService
   }
 
   private static OriginModel BuildOriginModel(XmlElement node, XmlFileModel source) =>
-    new OriginModel(
-      source.Mod,
-      source,
-      node.Attributes["contentuid"]?.InnerText,
-      node.Attributes["version"]?.InnerText,
-      node.InnerText
+    new(
+      mod: source.Mod,
+      sourceFile: source,
+      text: node.InnerText,
+      uuid: node.Attributes["contentuid"]?.InnerText ?? string.Empty,
+      version: node.Attributes["version"]?.InnerText ?? string.Empty
     );
 
   private static void LoadFiles(XmlFileModel xmlFileModel, FileTypes type)
@@ -167,7 +170,7 @@ public static class LsWorkingDataService
       {
         try
         {
-          var newRow = LsWorkingDataService.BuildOriginModel(node, xmlFileModel);
+          var newRow = LsWorkingDataService.BuildOriginModel(node: node, source: xmlFileModel);
 
           if (string.IsNullOrEmpty(newRow.Uuid)) { continue; }
 
@@ -192,13 +195,13 @@ public static class LsWorkingDataService
 
               LsWorkingDataService.TranslatedItems.Add(
                 new DataRowModel(
-                  newRow.Text,
-                  DatSetFlag.ExistingSet,
-                  xmlFileModel.Mod,
-                  xmlFileModel,
-                  TranslationStatus.TranslatedStatus,
-                  newRow.Uuid,
-                  newRow.Version
+                  text: newRow.Text,
+                  flag: DatSetFlag.ExistingSet,
+                  mod: xmlFileModel.Mod,
+                  sourceFile: xmlFileModel,
+                  status: TranslationStatus.TranslatedStatus,
+                  uuid: newRow.Uuid,
+                  version: newRow.Version
                 )
               );
 
