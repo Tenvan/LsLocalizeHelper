@@ -31,11 +31,12 @@
   <Window.Resources>
     <ResourceDictionary>
       <converter:OriginStatusConverter x:Key="OriginStatusConverter" />
+      <converter:OriginStatusMultiConverter x:Key="OriginStatusMultiConverter" />
       <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
     </ResourceDictionary>
   </Window.Resources>
 
-  <Grid Margin="10,10,10,10" ShowGridLines="False">
+  <Grid Margin="0,0,0,0" ShowGridLines="False">
     <Grid.RowDefinitions>
       <RowDefinition Height="50" ToolTip="RowToolbar" />
       <RowDefinition x:Name="RowDefinitionProjects"
@@ -194,18 +195,6 @@
       </ListBox>
     </GroupBox>
 
-    <materialDesign:Snackbar x:Name="MainSnackbar"
-                             Grid.Row="1"
-                             Grid.Column="3"
-                             Grid.ColumnSpan="6"
-                             Margin="0,20,0,0"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Top"
-                             HorizontalContentAlignment="Left"
-                             ActionButtonPlacement="Inline"
-                             ActionButtonStyle="{StaticResource MaterialDesignOutlinedButton}"
-                             MessageQueue="{materialDesign:MessageQueue}" />
-
     <GroupBox Grid.Row="1"
               Grid.Column="6"
               Grid.ColumnSpan="3"
@@ -311,7 +300,12 @@
               ItemsSource="{Binding DataGridItems}"
               SelectionMode="Single">
       <DataGrid.Columns>
-        <DataGridTextColumn Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}" Header="#" />
+        <DataGridTextColumn Binding="{Binding Status}" Header="#" />
+        <DataGridTextColumn Binding="{Binding Flag}">
+          <DataGridTextColumn.Header>
+            <TextBlock Text="Flag" />
+          </DataGridTextColumn.Header>
+        </DataGridTextColumn>
         <DataGridTextColumn Binding="{Binding Mod.Name}">
           <DataGridTextColumn.Header>
             <TextBlock>
@@ -350,7 +344,7 @@
           </DataGridTemplateColumn.Header>
           <DataGridTemplateColumn.CellTemplate>
             <DataTemplate>
-              <global:MarkupTextBlock TextWrapping="NoWrap">
+              <global:MarkupTextBlock TextWrapping="WrapWithOverflow">
                 <global:MarkupTextBlock.MarkupText>
                   <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
                     <Binding Path="Text" />
@@ -407,28 +401,33 @@
       <DataGrid.RowStyle>
         <Style TargetType="DataGridRow">
           <Style.Triggers>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
-                         Value="{x:Static enums:TranslationStatus.DeletedStatus}">
+            <DataTrigger Binding="{Binding Status}"
+                         Value="{x:Static enums:TranslationStatus.Deleted}">
               <Setter Property="Background" Value="Brown" />
               <Setter Property="Foreground" Value="White" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
-                         Value="{x:Static enums:TranslationStatus.NewStatus}">
-              <Setter Property="Background" Value="Blue" />
+            <DataTrigger Binding="{Binding Status}"
+                         Value="{x:Static enums:TranslationStatus.NewAndOrigin}">
+              <Setter Property="Background" Value="DarkBlue" />
               <Setter Property="Foreground" Value="White" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
-                         Value="{x:Static enums:TranslationStatus.OriginStatus}">
+            <DataTrigger Binding="{Binding Status}"
+                         Value="{x:Static enums:TranslationStatus.NewAndTranslated}">
+              <Setter Property="Background" Value="DarkGreen" />
+              <Setter Property="Foreground" Value="White" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}"
+                         Value="{x:Static enums:TranslationStatus.Origin}">
               <Setter Property="Foreground" Value="Orange" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
-                         Value="{x:Static enums:TranslationStatus.TranslatedStatus}">
+            <DataTrigger Binding="{Binding Status}"
+                         Value="{x:Static enums:TranslationStatus.Translated}">
               <Setter Property="Foreground" Value="LightGreen" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=., Converter={StaticResource OriginStatusConverter}}"
-                         Value="{x:Static enums:TranslationStatus.UpdatedStatus}">
+            <DataTrigger Binding="{Binding Status}"
+                         Value="{x:Static enums:TranslationStatus.Updated}">
               <Setter Property="Foreground" Value="Blue" />
               <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
             </DataTrigger>
@@ -441,6 +440,7 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="12"
                 Height="40"
+                Orientation="Horizontal"
                 VerticalAlignment="Bottom">
       <TextBlock Height="40" Text="Status:" />
     </StackPanel>
@@ -457,8 +457,8 @@
     <GroupBox x:Name="GroupBoxTranslation"
               Grid.Row="5"
               Grid.Column="0"
-              Grid.ColumnSpan="6"
-              Margin="5"
+              Grid.ColumnSpan="4"
+              Margin="2, 2, 5, 2"
               Header="{DynamicResource TranslatedText}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
@@ -507,11 +507,10 @@
 
     </GroupBox>
 
-    <GroupBox x:Name="GroupBoxOrigins"
-              Grid.Row="5"
-              Grid.Column="6"
-              Grid.ColumnSpan="3"
-              Margin="5"
+    <GroupBox Grid.Row="5"
+              Grid.Column="4"
+              Grid.ColumnSpan="4"
+              Margin="0, 2, 0, 2"
               Header="{DynamicResource OriginText}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
@@ -549,9 +548,9 @@
     </GroupBox>
 
     <GroupBox Grid.Row="5"
-              Grid.Column="9"
-              Grid.ColumnSpan="3"
-              Margin="5"
+              Grid.Column="8"
+              Grid.ColumnSpan="4"
+              Margin="5, 2, 2, 2"
               Header="{DynamicResource PreviousText}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
@@ -589,6 +588,19 @@
         </global:MarkupTextBlock.MarkupText>
       </global:MarkupTextBlock>
     </GroupBox>
+
+    <materialDesign:Snackbar x:Name="MainSnackbar"
+                             Grid.Row="1"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="6"
+                             Margin="0,20,0,0"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Top"
+                             HorizontalContentAlignment="Left"
+                             ActionButtonPlacement="SeparateLine"
+                             ActionButtonStyle="{StaticResource MaterialDesignOutlinedButton}"
+                             MessageQueue="{materialDesign:MessageQueue}">
+    </materialDesign:Snackbar>
 
   </Grid>
 

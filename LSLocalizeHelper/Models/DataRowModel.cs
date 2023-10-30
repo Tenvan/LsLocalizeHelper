@@ -11,7 +11,11 @@ public class DataRowModel : INotifyPropertyChanged
 
   #region Fields
 
+  private TranslationStatus status_;
+
   private string text;
+
+  private TranslationStatus status;
 
   #endregion
 
@@ -49,7 +53,7 @@ public class DataRowModel : INotifyPropertyChanged
 
   public XmlFileModel SourceFile { get; set; }
 
-  public TranslationStatus Status { get; set; }
+  public TranslationStatus Status { get => this.status; set => this.SetField(ref this.status, value); }
 
   public string Text
   {

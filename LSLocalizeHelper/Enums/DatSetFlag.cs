@@ -2,9 +2,10 @@ namespace LSLocalizeHelper.Enums;
 
 public enum DatSetFlag
 {
-
+  ExistingSet,
+  
   NewSet,
 
-  ExistingSet,
+  DeletedSet,
 
 }

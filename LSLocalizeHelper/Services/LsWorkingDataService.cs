@@ -109,7 +109,23 @@ public static class LsWorkingDataService
   {
     var dataRow = GetTranslatedForUid(uid);
 
-    if (dataRow != null) { dataRow.Text = newText; }
+    if (dataRow != null)
+    {
+      dataRow.Text = newText;
+
+      if (dataRow.Text.Equals(dataRow.Origin))
+      {
+        dataRow.Status = dataRow.Flag == DatSetFlag.NewSet
+                           ? TranslationStatus.NewAndOrigin
+                           : TranslationStatus.Origin;
+      }
+      else
+      {
+        dataRow.Status = dataRow.Flag == DatSetFlag.NewSet
+                           ? TranslationStatus.NewAndTranslated
+                           : TranslationStatus.Translated;
+      }
+    }
   }
 
   private static void AddNewOriginTexts()
@@ -121,12 +137,15 @@ public static class LsWorkingDataService
       var rowModel = new DataRowModel(
         uuid: originModel.Uuid,
         version: originModel.Version,
-        text: originModel.Text,
+        text: string.Empty,
         mod: originModel.Mod,
         sourceFile: originModel.SourceFile,
         flag: DatSetFlag.NewSet,
-        status: TranslationStatus.OriginStatus
-      );
+        status: TranslationStatus.NewAndOrigin
+      )
+      {
+        Origin = originModel.Text,
+      };
 
       var matchToTranslatedFile = LsWorkingDataService.MatchToTranslatedFile(rowModel);
 
@@ -142,6 +161,10 @@ public static class LsWorkingDataService
       var previousUid = LsWorkingDataService.GetPreviousForUid(dataRowModel.Uuid);
       dataRowModel.Origin = currentUid?.Text;
       dataRowModel.Previous = previousUid?.Text;
+
+      dataRowModel.Status = dataRowModel.Text.Equals(dataRowModel.Origin)
+                              ? TranslationStatus.Origin
+                              : TranslationStatus.Translated;
     }
   }
 
@@ -199,7 +222,7 @@ public static class LsWorkingDataService
                   flag: DatSetFlag.ExistingSet,
                   mod: xmlFileModel.Mod,
                   sourceFile: xmlFileModel,
-                  status: TranslationStatus.TranslatedStatus,
+                  status: TranslationStatus.Origin,
                   uuid: newRow.Uuid,
                   version: newRow.Version
                 )
