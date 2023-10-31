@@ -137,7 +137,7 @@ public static class LsWorkingDataService
       var rowModel = new DataRowModel(
         uuid: originModel.Uuid,
         version: originModel.Version,
-        text: string.Empty,
+        text: originModel.Text,
         mod: originModel.Mod,
         sourceFile: originModel.SourceFile,
         flag: DatSetFlag.NewSet,

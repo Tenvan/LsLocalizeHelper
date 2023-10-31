@@ -14,6 +14,13 @@
   <System:String x:Key="OriginText">Aktueller Original Text</System:String>
   <System:String x:Key="PreviousText">Vorheriger Original Text</System:String>
   <System:String x:Key="OpenSettings">Einstellungen öffnen</System:String>
+  
+  <System:String x:Key="Origin">Original</System:String>
+  <System:String x:Key="Translated">Übersetzt</System:String>
+  <System:String x:Key="NewAndOrigin">Neues Original</System:String>
+  <System:String x:Key="NewAndTranslated">Neu Übersetzt</System:String>
+  <System:String x:Key="Deleted">Gelöscht</System:String>
+  <System:String x:Key="Updated">Geändert</System:String>
 
   <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">Modifikationen Arbeitsordner</System:String>
   <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">Arbeitsordner</System:String>

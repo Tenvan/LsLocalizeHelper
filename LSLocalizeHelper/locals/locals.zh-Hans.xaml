@@ -16,6 +16,13 @@
   <System:String x:Key="PreviousText">旧版本的文本框（原版）</System:String>
   <System:String x:Key="OpenSettings">设置</System:String>
 
+  <System:String x:Key="Origin">Origin</System:String>
+  <System:String x:Key="Translated">Translated</System:String>
+  <System:String x:Key="NewAndOrigin">New Origin</System:String>
+  <System:String x:Key="NewAndTranslated">New Translated</System:String>
+  <System:String x:Key="Deleted">Deleted</System:String>
+  <System:String x:Key="Updated">Updated</System:String>
+
   <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">设置工作文件夹路径</System:String>
   <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">工作文件夹</System:String>
 

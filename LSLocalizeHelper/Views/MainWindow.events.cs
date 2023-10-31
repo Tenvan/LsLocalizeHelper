@@ -51,7 +51,16 @@ public partial class MainWindow
                   ? e.AddedItems[0] as DataRowModel
                   : null
          )
-        .Subscribe(this.DoOnRowChanged);
+        .Subscribe(this.CopyToClipboardOnRowChanged);
+
+    this.TranslationGrid.Events()
+        .SelectionChanged
+        .Select(
+           e => e.AddedItems.Count > 0
+                  ? e.AddedItems[0] as DataRowModel
+                  : null
+         )
+        .Subscribe(this.SetTextBoxOnRowChanged);
 
     this.ListBoxMods.Events()
         .SelectionChanged.Where(args => !this.IsUpdating && false)

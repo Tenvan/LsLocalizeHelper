@@ -31,6 +31,7 @@
   <Window.Resources>
     <ResourceDictionary>
       <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
+      <converter:StatusToTextConverter x:Key="StatusToTextConverter" />
     </ResourceDictionary>
   </Window.Resources>
 
@@ -66,7 +67,6 @@
                  Grid.Column="0"
                  Grid.ColumnSpan="12">
       <ToolBar Width="Auto"
-               ClipToBounds="False"
                Style="{StaticResource MaterialDesignToolBar}">
 
         <Button Command="{Binding ApplicationExitCommand}"
@@ -298,6 +298,8 @@
               ItemsSource="{Binding DataGridItems}"
               SelectionMode="Single">
       <DataGrid.Columns>
+        <DataGridTextColumn Binding="{Binding Path=Status}" Header="#1" />
+        <DataGridTextColumn Binding="{Binding Path=Status, Converter={StaticResource StatusToTextConverter}}" Header="#2" />
         <DataGridTextColumn Binding="{Binding Mod.Name}">
           <DataGridTextColumn.Header>
             <TextBlock>

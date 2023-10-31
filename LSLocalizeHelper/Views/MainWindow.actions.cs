@@ -59,11 +59,14 @@ public partial class MainWindow
     }
   }
 
-  private void DoOnRowChanged(DataRowModel? row)
+  private void SetTextBoxOnRowChanged(DataRowModel? row)
+  {
+    this.TextBoxTranslated.Text = row?.Text;
+  }
+
+  private void CopyToClipboardOnRowChanged(DataRowModel? row)
   {
     if (row == null) { return; }
-
-    this.TextBoxTranslated.Text = row?.Text;
 
     try
     {
