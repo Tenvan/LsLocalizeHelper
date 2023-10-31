@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<contentList>
+  <content contentuid="10_111" version="1">Release [111]</content>
+  <content contentuid="10_222" version="1">Release [222]</content>
+  <content contentuid="10_333" version="1">Debug [333]</content>
+  <content contentuid="10_444" version="1">Release [444]</content>
+  <content contentuid="10_555" version="1">Debug [555]</content>
+</contentList>
