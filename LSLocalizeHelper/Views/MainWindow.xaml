@@ -502,9 +502,12 @@
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="100*" />
         <ColumnDefinition Width="100*" />
-        <ColumnDefinition Width="100*" />
       </Grid.ColumnDefinitions>
-      <GroupBox Grid.Column="0" x:Name="GroupBoxTranslation"
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="GroupBoxTranslation"
                 Margin="2,2,5,2"
                 Header="{DynamicResource TranslatedText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
@@ -552,7 +555,7 @@
 
       </GroupBox>
 
-      <GroupBox Grid.Column="1" Margin="0,2,0,2"
+      <GroupBox Grid.Column="0" Grid.Row="1" Margin="0,2,0,2"
                 Header="{DynamicResource OriginText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
         <GroupBox.HeaderTemplate>
@@ -589,7 +592,7 @@
 
       </GroupBox>
 
-      <GroupBox Grid.Column="2" Margin="5,2,2,2"
+      <GroupBox Grid.Column="1" Grid.Row="1" Margin="5,2,2,2"
                 Header="{DynamicResource PreviousText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
         <GroupBox.HeaderTemplate>

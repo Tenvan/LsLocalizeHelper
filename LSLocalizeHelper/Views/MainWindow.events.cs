@@ -23,6 +23,8 @@ public partial class MainWindow
 
   #region Methods
 
+  private void ButtonApplyTranslated_OnClick(object sender, RoutedEventArgs e) { this.DoApplyTranslatedText(); }
+
   private void ButtonCopyCurrent_OnClick(object sender, RoutedEventArgs e)
   {
     var translatedUid = this.CurrentDataRow?.Uuid;
@@ -45,6 +47,7 @@ public partial class MainWindow
   private void ButtonPasteTranslated_OnClick(object sender, RoutedEventArgs e)
   {
     this.TextBoxTranslated.Text = App.GetClipboardText();
+    this.DoApplyTranslatedText();
   }
 
   private void ComboBoxLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -61,6 +61,16 @@ public partial class MainWindow
     return result;
   }
 
+  private void DoApplyTranslatedText()
+  {
+    var newText = this.TextBoxTranslated.Text;
+
+    if (!LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow?.Uuid, newText: newText)) { return; }
+
+    this.BarModel.Modified = true;
+    this.RefreshStatusBar();
+  }
+
   private void DoGroupBoxProjectsOnSizeChanged(SizeChangedEventArgs e)
   {
     if (!e.HeightChanged) { return; }
