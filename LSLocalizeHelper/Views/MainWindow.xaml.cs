@@ -76,8 +76,11 @@ public partial class MainWindow : Window,
   private void ButtonApplyTranslated_OnClick(object sender, RoutedEventArgs e)
   {
     var newText = this.TextBoxTranslated.Text;
-    LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow?.Uuid, newText: newText);
-    this.IsModified = true;
+
+    if (LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow?.Uuid, newText: newText))
+    {
+      this.IsModified = true;
+    }
   }
 
   private void LoadWindowSettings()

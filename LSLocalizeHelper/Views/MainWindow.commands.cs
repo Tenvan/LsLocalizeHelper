@@ -38,22 +38,7 @@ public partial class MainWindow
   }
 
   [RelayCommand]
-  private void LoadXmlData()
-  {
-    LsWorkingDataService.Clear();
-
-    var translatedFiles = this.GetSelectedTranslated();
-    var currentFiles = this.GetSelectedOriginCurrents();
-    var previousFiles = this.GetSelectedOriginPrevious();
-
-    LsWorkingDataService.Load(
-      translatedFiles: translatedFiles,
-      currentFiles: currentFiles,
-      previousFiles: previousFiles
-    );
-
-    this.TranslationGrid.ItemsSource = LsWorkingDataService.TranslatedItems;
-  }
+  private void LoadXmlData() { this.DoLoadData(); }
 
   [RelayCommand]
   private void LoadXmlFiles()
@@ -62,7 +47,8 @@ public partial class MainWindow
     this.OriginCurrentFileItems.Clear();
     this.TranslatedFileItems.Clear();
 
-    var selectedMods = this.GetSelectedMods().ToArray();
+    var selectedMods = this.GetSelectedMods()
+                           .ToArray();
 
     this.xmlFilesService.Load(selectedMods);
 
@@ -103,29 +89,8 @@ public partial class MainWindow
   [RelayCommand]
   private void SaveXmlData()
   {
-    var mods = this.GetSelectedMods();
-
-    foreach (var mod in mods)
-    {
-      var message = $"Save Mod: {mod.Name}";
-      Console.WriteLine(message);
-
-      // this.ShowToast(message);
-
-      var modFiles = this.GetSelectedTranslated()
-                         .Where(t => t.Mod.Name == mod.Name);
-
-      foreach (var xmlFileModel in modFiles)
-      {
-        var translatedItems = LsWorkingDataService.TranslatedItems.Where(t => t?.SourceFile == xmlFileModel);
-        message = $"Save File: {xmlFileModel.Name} Items: {translatedItems.Count()}";
-        Console.WriteLine(message);
-
-        // this.ShowToast(message);
-      }
-    }
-
-    this.IsModified = false;
+    this.DoSaveData();
+    this.DoLoadData();
   }
 
   [RelayCommand]

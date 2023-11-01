@@ -83,7 +83,7 @@
                 IsEnabled="{Binding IsNotModified}"
                 ToolTip="{DynamicResource R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5}" />
         <Button Command="{Binding SaveXmlDataCommand}"
-                IsEnabled="{Binding IsModified}"
+                IsEnabled="{Binding HasDataLoaded}"
                 Content="{materialDesign:PackIcon Kind=ContentSaveAdd}"
                 ToolTip="{DynamicResource R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3}" />
         <Separator />
@@ -198,18 +198,6 @@
       </ListBox>
     </GroupBox>
 
-    <materialDesign:Snackbar x:Name="MainSnackbar"
-                             Grid.Row="1"
-                             Grid.Column="3"
-                             Grid.ColumnSpan="6"
-                             Margin="0,20,0,0"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Top"
-                             HorizontalContentAlignment="Left"
-                             ActionButtonPlacement="SeparateLine"
-                             ActionButtonStyle="{StaticResource MaterialDesignOutlinedButton}"
-                             MessageQueue="{materialDesign:MessageQueue}" />
-
     <GroupBox Grid.Row="1"
               Grid.Column="6"
               Grid.ColumnSpan="3"
@@ -316,7 +304,8 @@
               SelectionMode="Single">
       <DataGrid.Columns>
         <DataGridTextColumn Binding="{Binding Path=Status}" Header="#1" />
-        <DataGridTextColumn Binding="{Binding Path=Status, Converter={StaticResource StatusToTextConverter}}" Header="#2" />
+        <DataGridTextColumn Binding="{Binding Path=Status, Converter={StaticResource StatusToTextConverter}}"
+                            Header="#2" />
         <DataGridTextColumn Binding="{Binding Mod.Name}">
           <DataGridTextColumn.Header>
             <TextBlock>
@@ -447,7 +436,8 @@
                 VerticalAlignment="Stretch"
                 Background="DarkGray"
                 Orientation="Horizontal">
-      <TextBlock VerticalAlignment="Center" Text="Status:" />
+      <TextBlock VerticalAlignment="Center" Text="{Binding HasCurrentRow}" />
+      <TextBlock VerticalAlignment="Center" Text="  Status:" />
       <TextBlock Margin="2"
                  Padding="2"
                  VerticalAlignment="Center"
@@ -500,8 +490,7 @@
             <Button x:Name="ButtonCopyTranslated"
                     Height="Auto"
                     Margin="5,0"
-                    Command="Paste"
-                    CommandTarget="{Binding ElementName=TextBoxTranslated}"
+                    Click="ButtonCopyTranslated_OnExecuted"
                     Content="{DynamicResource ButtonCopy}"
                     Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
@@ -612,6 +601,18 @@
         </global:MarkupTextBlock.MarkupText>
       </global:MarkupTextBlock>
     </GroupBox>
+
+    <materialDesign:Snackbar x:Name="MainSnackbar"
+                             Grid.Row="1"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="6"
+                             Margin="0,20,0,0"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Top"
+                             HorizontalContentAlignment="Left"
+                             ActionButtonPlacement="SeparateLine"
+                             ActionButtonStyle="{StaticResource MaterialDesignOutlinedButton}"
+                             MessageQueue="{materialDesign:MessageQueue}" />
 
   </Grid>
 

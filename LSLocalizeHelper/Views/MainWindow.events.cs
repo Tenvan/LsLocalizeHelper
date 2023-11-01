@@ -11,6 +11,8 @@ using LSLocalizeHelper.Services;
 
 using ReactiveUI;
 
+using Clipboard = System.Windows.Forms.Clipboard;
+
 namespace LSLocalizeHelper.Views;
 
 /// <summary>
@@ -41,6 +43,69 @@ public partial class MainWindow
     this.SetLocals(selectedItem);
   }
 
+  private void ButtonCopyTranslated_OnExecuted(object sender, RoutedEventArgs routedEventArgs)
+  {
+    if (!string.IsNullOrEmpty(this.TextBoxTranslated.Text)) { App.SetClipboardText(this.TextBoxTranslated.Text); }
+  }
+
+  private void ListBoxMods_OnChecked(object sender, RoutedEventArgs e)
+  {
+    this.SaveListBoxMods();
+    this.ReLoadXmlFiles();
+  }
+
+  private void ListBoxOriginCurrent_OnChecked(object sender, RoutedEventArgs e)
+  {
+    var listBox = sender as CheckBox;
+    var data = listBox?.DataContext;
+
+    if (data is not XmlFileListBoxItem listBoxItem) { return; }
+
+    // clear previous selections for this mod
+    var listBoxItemsOfMod = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
+                                .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
+
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
+
+    this.SaveListBoxOriginCurrentFile();
+    this.ReLoadXmlFiles();
+  }
+
+  private void ListBoxOriginPrevious_OnChecked(object sender, RoutedEventArgs e)
+  {
+    var listBox = sender as CheckBox;
+    var data = listBox?.DataContext;
+
+    if (data is not XmlFileListBoxItem listBoxItem) { return; }
+
+    // clear previous selections for this mod
+    var listBoxItemsOfMod = this.ListBoxOriginPreviousFile.Items.Cast<XmlFileListBoxItem>()
+                                .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
+
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
+
+    this.SaveListBoxOriginPreviousFile();
+    this.ReLoadXmlFiles();
+  }
+
+  private void ListBoxTranslated_OnChecked(object sender, RoutedEventArgs e)
+  {
+    var listBox = sender as CheckBox;
+    var data = listBox?.DataContext;
+
+    if (data is not XmlFileListBoxItem listBoxItem) { return; }
+
+    // clear previous selections for this mod
+    var listBoxItemsOfMod = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
+                                .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
+
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
+
+    this.SaveListBoxTranslatedFile();
+
+    this.ReLoadXmlFiles();
+  }
+
   private void SetEvents()
   {
     this.TranslationGrid.Events()
@@ -54,8 +119,7 @@ public partial class MainWindow
         .Subscribe(this.CopyToClipboardOnRowChanged);
 
     this.TranslationGrid.Events()
-        .SelectionChanged
-        .Select(
+        .SelectionChanged.Select(
            e => e.AddedItems.Count > 0
                   ? e.AddedItems[0] as DataRowModel
                   : null
@@ -146,63 +210,5 @@ public partial class MainWindow
   }
 
   #endregion
-
-  private void ListBoxMods_OnChecked(object sender, RoutedEventArgs e)
-  {
-    this.SaveListBoxMods();
-    this.ReLoadXmlFiles();
-  }
-
-  private void ListBoxOriginCurrent_OnChecked(object sender, RoutedEventArgs e)
-  {
-    var listBox = sender as CheckBox;
-    var data = listBox?.DataContext;
-
-    if (data is not XmlFileListBoxItem listBoxItem) { return; }
-
-    // clear previous selections for this mod
-    var listBoxItemsOfMod = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
-                                .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
-
-    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
-
-    this.SaveListBoxOriginCurrentFile();
-    this.ReLoadXmlFiles();
-  }
-
-  private void ListBoxOriginPrevious_OnChecked(object sender, RoutedEventArgs e)
-  {
-    var listBox = sender as CheckBox;
-    var data = listBox?.DataContext;
-
-    if (data is not XmlFileListBoxItem listBoxItem) { return; }
-
-    // clear previous selections for this mod
-    var listBoxItemsOfMod = this.ListBoxOriginPreviousFile.Items.Cast<XmlFileListBoxItem>()
-                                .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
-
-    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
-
-    this.SaveListBoxOriginPreviousFile();
-    this.ReLoadXmlFiles();
-  }
-
-  private void ListBoxTranslated_OnChecked(object sender, RoutedEventArgs e)
-  {
-    var listBox = sender as CheckBox;
-    var data = listBox?.DataContext;
-
-    if (data is not XmlFileListBoxItem listBoxItem) { return; }
-
-    // clear previous selections for this mod
-    var listBoxItemsOfMod = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
-                                .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
-
-    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
-
-    this.SaveListBoxTranslatedFile();
-
-    this.ReLoadXmlFiles();
-  }
 
 }

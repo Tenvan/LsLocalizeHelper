@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <EmbeddedResource Include="FileTemplates\meta.lsx" />
+    <None Remove="FileTemplates\local.xml" />
+    <EmbeddedResource Include="FileTemplates\local.xml" />
   </ItemGroup>
 
   <ItemGroup>

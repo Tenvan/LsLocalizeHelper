@@ -2,11 +2,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
+
+using Clipboard = System.Windows.Forms.Clipboard;
 
 namespace LSLocalizeHelper.Views;
 
@@ -22,15 +26,43 @@ public partial class MainWindow
 
   private readonly XmlFilesService xmlFilesService = new();
 
-  private bool isModified = false;
+  private bool hasCurrentRow;
 
-  private string modifiedText = "Saved";
+  private bool hasDataLoaded;
+
+  private bool isModified;
 
   private bool isNotModified = true;
+
+  private string modifiedText = "Saved";
 
   #endregion
 
   #region Properties
+
+  public bool HasCurrentRow
+  {
+    get => this.hasCurrentRow;
+
+    set
+    {
+      this.SetProperty(ref this.hasCurrentRow, value);
+      this.OnPropertyChanged();
+    }
+  }
+
+  public bool HasDataLoaded
+  {
+    get => this.hasDataLoaded;
+
+    set
+    {
+      if (value == this.hasDataLoaded) { return; }
+
+      this.hasDataLoaded = value;
+      this.OnPropertyChanged();
+    }
+  }
 
   public bool IsModified
   {
@@ -54,8 +86,6 @@ public partial class MainWindow
 
     set
     {
-      if (value == this.isNotModified) { return; }
-
       this.isNotModified = value;
       this.OnPropertyChanged();
     }
