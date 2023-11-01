@@ -23,6 +23,10 @@
   <System:String x:Key="Deleted">Deleted</System:String>
   <System:String x:Key="Updated">Updated</System:String>
 
+  <System:String x:Key="Changed">Changed</System:String>
+  <System:String x:Key="Unchanged">Unchanged</System:String>
+  <System:String x:Key="Status">Status</System:String>
+
   <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">Modifications working folder</System:String>
   <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">Work folder</System:String>
 
@@ -53,12 +57,20 @@
   <System:String x:Key="R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd">File</System:String>
   <System:String x:Key="R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C">Uid</System:String>
   <System:String x:Key="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4">Version</System:String>
-  <System:String x:Key="R-91E83186-18D2-43B6-Bcbd-1A592E5B6341">"Import completed successfully."</System:String>
-  <System:String x:Key="R-2417E08C-347F-4D57-925D-Cefdb628Fc7E">"Error"</System:String>
-  <System:String x:Key="R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab">"Package ZIP for '{0}' created successfully."</System:String>
-  <System:String x:Key="R-C109D0A4-5995-4Fda-957A-55Bd3F527043">"Error creating mod '{0}'\n{1}"</System:String>
+  <System:String x:Key="R-91E83186-18D2-43B6-Bcbd-1A592E5B6341">Import completed successfully.</System:String>
+  <System:String x:Key="R-2417E08C-347F-4D57-925D-Cefdb628Fc7E">Error</System:String>
+  <System:String x:Key="R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab">Package ZIP for '{0}' created successfully.</System:String>
+  <System:String x:Key="R-C109D0A4-5995-4Fda-957A-55Bd3F527043">Error creating mod '{0}'\n{1}</System:String>
   
-  <System:String x:Key="R-A97Cc11F-608E-46C9-9903-Eb5562C5Ba85">"Successfully saved"</System:String>
-  <System:String x:Key="R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade">"Error occurred while saving"</System:String>
+  <System:String x:Key="R-A97Cc11F-608E-46C9-9903-Eb5562C5Ba85">Successfully saved</System:String>
+  <System:String x:Key="R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade">Error occurred while saving</System:String>
+
+  <System:String x:Key="R-C8D8F14A-Dc4B-4Cab-8F34-0F8B93B43Ebc">Editing status:</System:String>
+  <System:String x:Key="R-6433Ac43-8420-4Cfa-8D04-21C1A7Cbd28F">Number texts</System:String>
+  <System:String x:Key="R-64096B00-73C8-407C-A961-D4Bd779Da5C6">Total:</System:String>
+  <System:String x:Key="R-Eff58155-Ba8F-4F77-88D0-F3F863Fc1Cd5">Origin:</System:String>
+  <System:String x:Key="R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D">Translated:</System:String>
+  <System:String x:Key="R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8">Deleted:</System:String>
+  <System:String x:Key="R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa">New:</System:String>
 
 </ResourceDictionary>
