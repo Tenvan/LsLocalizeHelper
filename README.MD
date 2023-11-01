@@ -57,10 +57,6 @@ Here is an example of my wokspace folder:
 Previews of the next version completely refactored with Wpf.
 
 
-![screen5.png](images/screen5.png)
+![screen1.png](images/screen1.png)
 
-![screen6.png](images/screen6.png)
-
-![screen7.png](images/screen7.png)
-
-![screen8.png](images/screen8.png)
+![screen2.png](images/screen2.png)
