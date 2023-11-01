@@ -122,7 +122,11 @@ public partial class MainWindow
       this.SetListBoxModsSelections();
       this.ReLoadXmlFiles();
     }
-    finally { this.EndUpdating(); }
+    finally
+    {
+      this.EndUpdating();
+      this.IsModified = false;
+    }
   }
 
   private void SaveListBoxMods()

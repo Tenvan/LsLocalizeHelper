@@ -55,6 +55,7 @@ public partial class MainWindow
     this.TranslationGrid.ItemsSource = LsWorkingDataService.TranslatedItems;
   }
 
+  [RelayCommand]
   private void LoadXmlFiles()
   {
     this.OriginPreviousFileItems.Clear();
@@ -123,6 +124,8 @@ public partial class MainWindow
         // this.ShowToast(message);
       }
     }
+
+    this.IsModified = false;
   }
 
   [RelayCommand]
@@ -131,6 +134,8 @@ public partial class MainWindow
     var settingsDialog = new SettingsDialog();
     settingsDialog.Owner = this;
     settingsDialog.ShowDialog();
+    this.LoadMods();
+    this.ReLoadXmlFiles();
   }
 
   #endregion

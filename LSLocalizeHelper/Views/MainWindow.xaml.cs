@@ -77,6 +77,7 @@ public partial class MainWindow : Window,
   {
     var newText = this.TextBoxTranslated.Text;
     LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow?.Uuid, newText: newText);
+    this.IsModified = true;
   }
 
   private void LoadWindowSettings()

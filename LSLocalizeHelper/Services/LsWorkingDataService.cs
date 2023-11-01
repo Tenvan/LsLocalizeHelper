@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -109,22 +110,21 @@ public static class LsWorkingDataService
   {
     var dataRow = GetTranslatedForUid(uid);
 
-    if (dataRow != null)
-    {
-      dataRow.Text = newText;
+    if (dataRow == null) { return; }
 
-      if (dataRow.Text.Equals(dataRow.Origin))
-      {
-        dataRow.Status = dataRow.Flag == DatSetFlag.NewSet
-                           ? TranslationStatus.NewAndOrigin
-                           : TranslationStatus.Origin;
-      }
-      else
-      {
-        dataRow.Status = dataRow.Flag == DatSetFlag.NewSet
-                           ? TranslationStatus.NewAndTranslated
-                           : TranslationStatus.Translated;
-      }
+    dataRow.Text = newText;
+
+    if (dataRow.Text.Equals(dataRow.Origin))
+    {
+      dataRow.Status = dataRow.Flag == DatSetFlag.NewSet
+                         ? TranslationStatus.NewAndOrigin
+                         : TranslationStatus.Origin;
+    }
+    else
+    {
+      dataRow.Status = dataRow.Flag == DatSetFlag.NewSet
+                         ? TranslationStatus.NewAndTranslated
+                         : TranslationStatus.Translated;
     }
   }
 
@@ -158,6 +158,14 @@ public static class LsWorkingDataService
     foreach (var dataRowModel in LsWorkingDataService.TranslatedItems)
     {
       var currentUid = LsWorkingDataService.GetCurrentForUid(dataRowModel.Uuid);
+
+      if (currentUid == null)
+      {
+        dataRowModel.Status = TranslationStatus.Deleted;
+
+        continue;
+      }
+
       var previousUid = LsWorkingDataService.GetPreviousForUid(dataRowModel.Uuid);
       dataRowModel.Origin = currentUid?.Text;
       dataRowModel.Previous = previousUid?.Text;

@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
@@ -22,13 +22,48 @@ public partial class MainWindow
 
   private readonly XmlFilesService xmlFilesService = new();
 
+  private bool isModified = false;
+
+  private string modifiedText = "Saved";
+
+  private bool isNotModified = true;
+
   #endregion
 
   #region Properties
 
-  public bool IsModified { get; set; } = false;
+  public bool IsModified
+  {
+    get => this.isModified;
+
+    set
+    {
+      this.isModified = value;
+      this.IsNotModified = !value;
+      this.OnPropertyChanged();
+
+      this.ModifiedText = value
+                            ? "Modified"
+                            : "Saved";
+    }
+  }
+
+  public bool IsNotModified
+  {
+    get => this.isNotModified;
+
+    set
+    {
+      if (value == this.isNotModified) { return; }
+
+      this.isNotModified = value;
+      this.OnPropertyChanged();
+    }
+  }
 
   public ObservableCollection<CultureInfo> LanguageItems { get; set; } = new();
+
+  public string ModifiedText { get => this.modifiedText; set => this.SetProperty(ref this.modifiedText, value); }
 
   public ObservableCollection<XmlFileListBoxItem> OriginCurrentFileItems { get; set; } = new();
 
