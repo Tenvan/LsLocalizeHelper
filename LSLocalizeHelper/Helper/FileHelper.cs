@@ -187,7 +187,6 @@ public static class FileHelper
         }
         catch (Exception ex)
         {
-          // GeneralHelper.WriteToConsole(Properties.Resources.FailedToConvertResource, extension, file.Replace(Directory.GetCurrentDirectory(), string.Empty), ex.Message.Replace(Directory.GetCurrentDirectory(), string.Empty));
           throw new Exception(ex.Message);
         }
       }
@@ -202,7 +201,6 @@ public static class FileHelper
         }
         catch (Exception ex)
         {
-          // GeneralHelper.WriteToConsole(Properties.Resources.FailedToConvertResource, extension, file.Replace(Directory.GetCurrentDirectory(), string.Empty), ex.Message.Replace(Directory.GetCurrentDirectory(), string.Empty));
           throw new Exception(ex.Message);
         }
       }
@@ -287,7 +285,6 @@ public static class FileHelper
       }
       catch (Exception ex)
       {
-        // GeneralHelper.WriteToConsole(Properties.Resources.FailedToReadDirectory, directory);
         throw new Exception(ex.Message);
       }
     }
@@ -395,7 +392,6 @@ public static class FileHelper
       }
       catch (Exception ex)
       {
-        // GeneralHelper.WriteToConsole(ex.Message);
         throw new Exception(ex.Message);
       }
     }

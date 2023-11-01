@@ -99,9 +99,9 @@ public class MarkupTextBlock : TextBlock
       markupTextBlock.Inlines.Clear();
       markupTextBlock.Inlines.Add(inline);
     }
-    catch (Exception e)
+    catch (Exception ex)
     {
-      Console.WriteLine(e);
+      // ignored
     }
   }
 

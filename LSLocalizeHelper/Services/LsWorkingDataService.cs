@@ -106,11 +106,11 @@ public static class LsWorkingDataService
     LsWorkingDataService.AddNewOriginTexts();
   }
 
-  public static void SetTranslatedForUid(string uid, string newText)
+  public static bool SetTranslatedForUid(string uid, string newText)
   {
     var dataRow = GetTranslatedForUid(uid);
 
-    if (dataRow == null) { return; }
+    if (dataRow == null) { return false; }
 
     dataRow.Text = newText;
 
@@ -126,6 +126,8 @@ public static class LsWorkingDataService
                          ? TranslationStatus.NewAndTranslated
                          : TranslationStatus.Translated;
     }
+
+    return true;
   }
 
   private static void AddNewOriginTexts()
@@ -248,10 +250,10 @@ public static class LsWorkingDataService
         }
       }
     }
-    catch (Exception e)
+    catch (Exception ex)
     {
       var message
-        = $"Error during loading of {type}-XML:\n\nFile: {xmlFileModel.FullPath.FullName}\n\nError:{e.Message}";
+        = $"Error during loading of {type}-XML:\n\nFile: {xmlFileModel.FullPath.FullName}\n\nError:{ex.Message}";
 
       Console.WriteLine(message);
 
