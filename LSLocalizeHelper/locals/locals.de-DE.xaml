@@ -45,7 +45,6 @@
   <System:String x:Key="R-9B8Dbcb5-C187-409F-A672-A4Ec2A8E80E1">Schnellfilter</System:String>
   <System:String x:Key="R-Ba4B59F8-8D60-4E6A-89B6-4B374Fcfe0B0">Sprache</System:String>
   <System:String x:Key="R-92C669E1-2208-46D9-Ab54-07C7E8C45283">Projekt auswählen</System:String>
-
   <System:String x:Key="R-5E3E7030-4C59-4322-A108-157Afeb42Fad">Aktuelle Original XML</System:String>
   <System:String x:Key="R-6Cc7Af69-B89E-497E-A5C7-3B158D5Fbd1A">Vorherige Original XML</System:String>
   <System:String x:Key="R-Fe2B3802-8Bac-4650-96D8-Dd69Eedd7185">Übersetzte XML</System:String>
@@ -53,10 +52,12 @@
   <System:String x:Key="R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd">Datei</System:String>
   <System:String x:Key="R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C">Uid</System:String>
   <System:String x:Key="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4">Version</System:String>
-
   <System:String x:Key="R-91E83186-18D2-43B6-Bcbd-1A592E5B6341">"Import erfolgreich durchgeführt."</System:String>
   <System:String x:Key="R-2417E08C-347F-4D57-925D-Cefdb628Fc7E">"Fehler"</System:String>
   <System:String x:Key="R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab">"Package ZIP für '{0}' erfolgreich erstellt."</System:String>
   <System:String x:Key="R-C109D0A4-5995-4Fda-957A-55Bd3F527043">"Fehler der Erstellung des Mods '{0}'\n{1}"</System:String>
+  
+  <System:String x:Key="R-A97Cc11F-608E-46C9-9903-Eb5562C5Ba85">"Erfolgreich gespeichert"</System:String>
+  <System:String x:Key="R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade">"Fehler beim Speichern aufgetreten"</System:String>
 
 </ResourceDictionary>

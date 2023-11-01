@@ -4,7 +4,6 @@
 
  <System:String x:Key="ButtonYes">是</System:String>
   <System:String x:Key="ButtonNo">否</System:String>
-
   <System:String x:Key="ButtonAbort">取消</System:String>
   <System:String x:Key="ButtonApply">确认</System:String>
 
@@ -53,10 +52,12 @@
   <System:String x:Key="R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd">文件</System:String>
   <System:String x:Key="R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C">Uid</System:String>
   <System:String x:Key="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4">版本</System:String>
-
   <System:String x:Key="R-91E83186-18D2-43B6-Bcbd-1A592E5B6341">"导入成功."</System:String>
   <System:String x:Key="R-2417E08C-347F-4D57-925D-Cefdb628Fc7E">"错误"</System:String>
   <System:String x:Key="R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab">"成功创建了名为'{0}'的 模组ZIP压缩包"</System:String>
   <System:String x:Key="R-C109D0A4-5995-4Fda-957A-55Bd3F527043">"创建模组'{0}'时出错\n{1}"</System:String>
+  
+  <System:String x:Key="R-A97Cc11F-608E-46C9-9903-Eb5562C5Ba85">"成功保存"</System:String>
+  <System:String x:Key="R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade">"保存过程中发生错误"</System:String>
 
 </ResourceDictionary>

@@ -4,15 +4,11 @@
 
   <System:String x:Key="ButtonYes">是</System:String>
   <System:String x:Key="ButtonNo">否</System:String>
-
-
   <System:String x:Key="ButtonAbort">取消</System:String>
   <System:String x:Key="ButtonApply">確認</System:String>
 
-
   <System:String x:Key="ButtonCopy">複製</System:String>
   <System:String x:Key="ButtonPaste">粘貼</System:String>
-
 
   <System:String x:Key="TranslatedText">翻譯文本框</System:String>
   <System:String x:Key="OriginText">新版本的文本框（原版）</System:String>
@@ -29,19 +25,15 @@
   <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">設置工作檔夾路徑</System:String>
   <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">工作檔夾</System:String>
 
-
   <System:String x:Key="R-3Cf586E1-Ce6F-4243-813D-B9Dab430A94A">設置</System:String>
   <System:String x:Key="R-2Ec27278-4B56-4E97-B301-Ed5A55D4775A">導入新的模組。</System:String>
   <System:String x:Key="R-2De6Da9A-Ac18-475B-Ab80-F7Dd58793C74">PAK檔路徑</System:String>
   <System:String x:Key="R-1C413D19-59A0-4Ada-9F1D-67626108618B">新模組的名稱</System:String>
 
-
   <System:String x:Key="R-47916Bb7-62C2-4222-Ad3A-3E4A6F2Dd326">導入</System:String>
   <System:String x:Key="R-0A685E01-6672-48C9-Aeff-D82F68346E99">導入對話框</System:String>
 
-
   <System:String x:Key="R-9B9E1Bbb-Dc9D-475F-8977-5Dc8C60288F5">LarianStudio本地化助手（博德之門3）</System:String>
-
 
   <System:String x:Key="R-Bc06Ec85-2434-4Aa6-93D6-971C94181391">退出程式</System:String>
   <System:String x:Key="R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5">加載選定的XML文檔</System:String>
@@ -60,10 +52,12 @@
   <System:String x:Key="R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd">檔</System:String>
   <System:String x:Key="R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C">Uid</System:String>
   <System:String x:Key="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4">版本</System:String>
-
-
   <System:String x:Key="R-91E83186-18D2-43B6-Bcbd-1A592E5B6341">"導入成功."</System:String>
   <System:String x:Key="R-2417E08C-347F-4D57-925D-Cefdb628Fc7E">"錯誤"</System:String>
   <System:String x:Key="R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab">"成功創建了名為'{0}'的 模組ZIP壓縮包"</System:String>
   <System:String x:Key="R-C109D0A4-5995-4Fda-957A-55Bd3F527043">"創建模組'{0}'時出錯\n{1}"</System:String>
+  
+  <System:String x:Key="R-A97Cc11F-608E-46C9-9903-Eb5562C5Ba85">"保存成功"</System:String>
+  <System:String x:Key="R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade">"儲存時發生錯誤"</System:String>
+  
 </ResourceDictionary>
