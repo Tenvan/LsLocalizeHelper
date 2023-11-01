@@ -201,8 +201,9 @@ public class LsPackageEngine
                                  ) => Console.WriteLine(status);
 
       var targetPak = Path.Combine(this.TempFolder, this.modNameEngine + ".pak");
-
-      packager.CreatePackage(packagePath: targetPak, inputPath: this.modPathEngine, options: options);
+      var workFolder = Path.Combine(this.modPathEngine, "Work");
+      
+      packager.CreatePackage(packagePath: targetPak, inputPath: workFolder, options: options);
     }
     catch (Exception ex) { Console.WriteLine($"Internal error!{Environment.NewLine}{Environment.NewLine}{ex}"); }
   }
