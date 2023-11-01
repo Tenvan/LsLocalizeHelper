@@ -434,22 +434,23 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="12"
                 VerticalAlignment="Stretch"
-                Background="DarkGray"
+                Background="{DynamicResource Black300}"
                 Orientation="Horizontal">
-      <TextBlock VerticalAlignment="Center" Text="{Binding HasCurrentRow}" />
-      <TextBlock VerticalAlignment="Center" Text="  Status:" />
-      <TextBlock Margin="2"
-                 Padding="2"
+
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{DynamicResource R-C8D8F14A-Dc4B-4Cab-8F34-0F8B93B43Ebc}" />
+      <TextBlock Margin="5, 0"
+                 Padding="8"
                  VerticalAlignment="Center"
-                 Text="{Binding ModifiedText}">
+                 Text="{Binding BarModel.ModifiedText}">
         <TextBlock.Style>
           <Style TargetType="TextBlock">
             <Style.Triggers>
-              <DataTrigger Binding="{Binding IsModified}" Value="True">
+              <DataTrigger Binding="{Binding BarModel.Modified}" Value="True">
                 <Setter Property="Background" Value="Brown" />
                 <Setter Property="Foreground" Value="White" />
               </DataTrigger>
-              <DataTrigger Binding="{Binding IsModified}" Value="False">
+              <DataTrigger Binding="{Binding BarModel.Modified}" Value="False">
                 <Setter Property="Background" Value="DarkGreen" />
                 <Setter Property="Foreground" Value="White" />
               </DataTrigger>
@@ -457,6 +458,37 @@
           </Style>
         </TextBlock.Style>
       </TextBlock>
+
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{DynamicResource R-6433Ac43-8420-4Cfa-8D04-21C1A7Cbd28F}" />
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{DynamicResource R-64096B00-73C8-407C-A961-D4Bd779Da5C6}" />
+
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{DynamicResource R-64096B00-73C8-407C-A961-D4Bd779Da5C6}" />
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{Binding BarModel.Count}" />
+
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{DynamicResource R-Eff58155-Ba8F-4F77-88D0-F3F863Fc1Cd5}" />
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{Binding BarModel.CountOrigins}" />
+
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{DynamicResource R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D}" />
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{Binding BarModel.CountTranslated}" />
+
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{DynamicResource R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8}" />
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{Binding BarModel.CountDeleted}" />
+
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{DynamicResource R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa}" />
+      <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                 Text="{Binding BarModel.CountNew}" />
+
     </StackPanel>
 
     <GridSplitter Grid.Row="5"
@@ -497,8 +529,7 @@
             <Button x:Name="ButtonPasteTranslated"
                     Height="Auto"
                     Margin="5,0"
-                    Command="Paste"
-                    CommandTarget="{Binding ElementName=TextBoxTranslated}"
+                    Click="ButtonPasteTranslated_OnClick"
                     Content="{DynamicResource ButtonPaste}"
                     Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
             <Button x:Name="ButtonApplyTranslated"

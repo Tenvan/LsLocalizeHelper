@@ -37,15 +37,20 @@ public partial class MainWindow
     App.SetClipboardText(current?.Text);
   }
 
+  private void ButtonCopyTranslated_OnExecuted(object sender, RoutedEventArgs routedEventArgs)
+  {
+    if (!string.IsNullOrEmpty(this.TextBoxTranslated.Text)) { App.SetClipboardText(this.TextBoxTranslated.Text); }
+  }
+
+  private void ButtonPasteTranslated_OnClick(object sender, RoutedEventArgs e)
+  {
+    this.TextBoxTranslated.Text = App.GetClipboardText();
+  }
+
   private void ComboBoxLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
   {
     var selectedItem = this.ComboBoxLanguage.SelectedItem as CultureInfo;
     this.SetLocals(selectedItem);
-  }
-
-  private void ButtonCopyTranslated_OnExecuted(object sender, RoutedEventArgs routedEventArgs)
-  {
-    if (!string.IsNullOrEmpty(this.TextBoxTranslated.Text)) { App.SetClipboardText(this.TextBoxTranslated.Text); }
   }
 
   private void ListBoxMods_OnChecked(object sender, RoutedEventArgs e)

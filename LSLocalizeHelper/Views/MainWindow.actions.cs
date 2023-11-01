@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Xml;
 using System.Xml.Linq;
 
 using Alphaleonis.Win32.Filesystem;
@@ -121,6 +119,8 @@ public partial class MainWindow
 
     this.TranslationGrid.ItemsSource = LsWorkingDataService.TranslatedItems;
     this.HasDataLoaded = true;
+    this.BarModel.Loaded = true;
+    this.RefreshStatusBar();
   }
 
   private void DoPackMods()
@@ -172,7 +172,7 @@ public partial class MainWindow
     finally
     {
       this.EndUpdating();
-      this.IsModified = false;
+      this.BarModel.Modified = false;
     }
   }
 
@@ -208,13 +208,28 @@ public partial class MainWindow
       }
 
       this.ShowToast("R-A97Cc11F-608E-46C9-9903-Eb5562C5Ba85".FromResource());
-      this.IsModified = false;
+      this.BarModel.Modified = false;
     }
     catch (Exception ex)
     {
       Console.WriteLine(ex);
       this.ShowToast("R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade".FromResource() + ":\n" + ex.Message);
     }
+  }
+
+  private void RefreshStatusBar()
+  {
+    this.BarModel.Count = LsWorkingDataService.TranslatedItems.Count;
+    this.BarModel.CountDeleted = LsWorkingDataService.TranslatedItems.Count(t => t.Status == TranslationStatus.Deleted);
+
+    this.BarModel.CountTranslated
+      = LsWorkingDataService.TranslatedItems.Count(t => t.Status == TranslationStatus.Translated);
+
+    this.BarModel.CountOrigins = LsWorkingDataService.TranslatedItems.Count(t => t.Status == TranslationStatus.Origin);
+
+    this.BarModel.CountNew = LsWorkingDataService.TranslatedItems.Count(
+      t => t.Status == TranslationStatus.NewAndTranslated || t.Status == TranslationStatus.NewAndOrigin
+    );
   }
 
   private void SaveListBoxMods()

@@ -77,10 +77,10 @@ public partial class MainWindow : Window,
   {
     var newText = this.TextBoxTranslated.Text;
 
-    if (LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow?.Uuid, newText: newText))
-    {
-      this.IsModified = true;
-    }
+    if (!LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow?.Uuid, newText: newText)) { return; }
+
+    this.BarModel.Modified = true;
+    this.RefreshStatusBar();
   }
 
   private void LoadWindowSettings()

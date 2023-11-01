@@ -2,15 +2,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-
-using CommunityToolkit.Mvvm.ComponentModel;
 
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
-
-using Clipboard = System.Windows.Forms.Clipboard;
 
 namespace LSLocalizeHelper.Views;
 
@@ -30,15 +24,11 @@ public partial class MainWindow
 
   private bool hasDataLoaded;
 
-  private bool isModified;
-
-  private bool isNotModified = true;
-
-  private string modifiedText = "Saved";
-
   #endregion
 
   #region Properties
+
+  public StatusBarModel BarModel { get; set; } = new();
 
   public bool HasCurrentRow
   {
@@ -64,36 +54,7 @@ public partial class MainWindow
     }
   }
 
-  public bool IsModified
-  {
-    get => this.isModified;
-
-    set
-    {
-      this.isModified = value;
-      this.IsNotModified = !value;
-      this.OnPropertyChanged();
-
-      this.ModifiedText = value
-                            ? "Modified"
-                            : "Saved";
-    }
-  }
-
-  public bool IsNotModified
-  {
-    get => this.isNotModified;
-
-    set
-    {
-      this.isNotModified = value;
-      this.OnPropertyChanged();
-    }
-  }
-
   public ObservableCollection<CultureInfo> LanguageItems { get; set; } = new();
-
-  public string ModifiedText { get => this.modifiedText; set => this.SetProperty(ref this.modifiedText, value); }
 
   public ObservableCollection<XmlFileListBoxItem> OriginCurrentFileItems { get; set; } = new();
 
