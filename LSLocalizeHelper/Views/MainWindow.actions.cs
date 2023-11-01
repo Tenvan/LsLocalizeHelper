@@ -7,6 +7,8 @@ using System.Xml.Linq;
 
 using Alphaleonis.Win32.Filesystem;
 
+using LSLib.LS;
+
 using LSLocalizeHelper.Enums;
 using LSLocalizeHelper.Helper;
 using LSLocalizeHelper.Models;
@@ -214,6 +216,8 @@ public partial class MainWindow
           var doc = this.CreateDocFromItems(translatedItems);
           doc.Save(tempFileName);
           File.Move(sourcePath: tempFileName, destinationPath: fileName, moveOptions: MoveOptions.ReplaceExisting);
+
+          this.SaveLoca(xmlFileModel);
         }
       }
 
@@ -295,6 +299,14 @@ public partial class MainWindow
 
     SettingsManager.Settings!.LastOriginsTranslated = selectedValue;
     SettingsManager.Save();
+  }
+
+  private void SaveLoca(XmlFileModel xmlFile)
+  {
+    var resource = LocaUtils.Load(xmlFile.FullPath.FullName);
+    var locaOutputPath = Path.ChangeExtension(path: xmlFile.FullPath.FullName, extension: "loca");
+    var format = LocaUtils.ExtensionToFileFormat(locaOutputPath);
+    LocaUtils.Save(resource: resource, outputPath: locaOutputPath, format: format);
   }
 
   private void SetTextBoxOnRowChanged(DataRowModel? row)
