@@ -37,17 +37,12 @@
 
   <Grid Margin="0,0,0,0" ShowGridLines="False">
     <Grid.RowDefinitions>
-      <RowDefinition Height="50" ToolTip="RowToolbar" />
-      <RowDefinition x:Name="RowDefinitionProjects"
-                     Height="200"
-                     ToolTip="Files" />
-      <RowDefinition Height="5" ToolTip="SplitterGridTop" />
-      <RowDefinition Height="*" ToolTip="Grid" />
-      <RowDefinition Height="40" ToolTip="StatusLine" />
-      <RowDefinition Height="5" ToolTip="SplitterGridBottom" />
-      <RowDefinition x:Name="RowDefinitionTranslation"
-                     Height="150"
-                     ToolTip="RowTranslation" />
+      <RowDefinition Height="50" />
+      <RowDefinition x:Name="RowDefinitionProjects" Height="200" />
+      <RowDefinition Height="5" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="5" />
+      <RowDefinition x:Name="RowDefinitionTranslation" Height="150" />
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="100*" />
@@ -71,16 +66,16 @@
 
         <Button Command="{Binding ApplicationExitCommand}"
                 Content="{materialDesign:PackIcon Kind=ExitToApp}"
-                IsEnabled="{Binding IsNotModified}"
+                IsEnabled="{Binding BarModel.NotModified}"
                 ToolTip="{DynamicResource R-Bc06Ec85-2434-4Aa6-93D6-971C94181391}" />
         <Button Command="{Binding ShowSettingsDialogCommand}"
-                IsEnabled="{Binding IsNotModified}"
+                IsEnabled="{Binding BarModel.NotModified}"
                 Content="{materialDesign:PackIcon Kind=Settings}"
                 ToolTip="{DynamicResource OpenSettings}" />
         <Separator />
         <Button Command="{Binding LoadXmlDataCommand}"
                 Content="{materialDesign:PackIcon Kind=FolderOpen}"
-                IsEnabled="{Binding IsNotModified}"
+                IsEnabled="{Binding BarModel.NotModified}"
                 ToolTip="{DynamicResource R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5}" />
         <Button Command="{Binding SaveXmlDataCommand}"
                 IsEnabled="{Binding HasDataLoaded}"
@@ -89,7 +84,7 @@
         <Separator />
         <Button Command="{Binding ImportNewModCommand}"
                 Content="{materialDesign:PackIcon Kind=Import}"
-                IsEnabled="{Binding IsNotModified}"
+                IsEnabled="{Binding BarModel.NotModified}"
                 ToolTip="{DynamicResource R-0246F297-E448-4D0B-945A-32F0C73F98C7}" />
         <Button Command="{Binding PackModsCommand}"
                 Content="{materialDesign:PackIcon Kind=Package}"
@@ -291,347 +286,348 @@
                   Background="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"
                   ResizeDirection="Rows" />
 
-    <DataGrid x:Name="TranslationGrid"
-              Grid.Row="3"
-              Grid.Column="0"
-              Grid.ColumnSpan="12"
-              Margin="0,0,0,40"
-              materialDesign:DataGridAssist.CellPadding="3"
-              materialDesign:DataGridAssist.ColumnHeaderPadding="5"
-              AutoGenerateColumns="False"
-              IsReadOnly="True"
-              ItemsSource="{Binding DataGridItems}"
-              SelectionMode="Single">
-      <DataGrid.Columns>
-        <DataGridTextColumn Binding="{Binding Path=Status}" Header="#1" />
-        <DataGridTextColumn Binding="{Binding Path=Status, Converter={StaticResource StatusToTextConverter}}"
-                            Header="#2" />
-        <DataGridTextColumn Binding="{Binding Mod.Name}">
-          <DataGridTextColumn.Header>
-            <TextBlock>
-              <TextBlock.Text>
-                <DynamicResource ResourceKey="R-6E19A96F-85D0-4B69-8C9A-7Dcc398292C5" />
-              </TextBlock.Text>
-            </TextBlock>
-          </DataGridTextColumn.Header>
-        </DataGridTextColumn>
-        <DataGridTextColumn Binding="{Binding SourceFile.Name}">
-          <DataGridTextColumn.Header>
-            <TextBlock Text="{DynamicResource R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd}" />
-          </DataGridTextColumn.Header>
-        </DataGridTextColumn>
-        <DataGridTextColumn Binding="{Binding Uuid}">
-          <DataGridTextColumn.Header>
-            <TextBlock Text="{DynamicResource R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C}" />
-          </DataGridTextColumn.Header>
-        </DataGridTextColumn>
-        <DataGridTextColumn Binding="{Binding Version}">
-          <DataGridTextColumn.Header>
-            <TextBlock>
-              <TextBlock.Text>
-                <DynamicResource ResourceKey="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4" />
-              </TextBlock.Text>
-            </TextBlock>
-          </DataGridTextColumn.Header>
-        </DataGridTextColumn>
-        <DataGridTemplateColumn Width="*">
-          <DataGridTemplateColumn.Header>
-            <TextBlock>
-              <TextBlock.Text>
-                <DynamicResource ResourceKey="TranslatedText" />
-              </TextBlock.Text>
-            </TextBlock>
-          </DataGridTemplateColumn.Header>
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate>
-              <global:MarkupTextBlock TextWrapping="WrapWithOverflow">
-                <global:MarkupTextBlock.MarkupText>
-                  <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
-                    <Binding Path="Text" />
-                    <Binding ElementName="TextBoxQuickSearch" Path="Text" />
-                  </MultiBinding>
-                </global:MarkupTextBlock.MarkupText>
-              </global:MarkupTextBlock>
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-        <DataGridTemplateColumn Width="*">
-          <DataGridTemplateColumn.Header>
-            <TextBlock>
-              <TextBlock.Text>
-                <DynamicResource ResourceKey="OriginText" />
-              </TextBlock.Text>
-            </TextBlock>
-          </DataGridTemplateColumn.Header>
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate>
-              <global:MarkupTextBlock TextWrapping="Wrap">
-                <global:MarkupTextBlock.MarkupText>
-                  <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
-                    <Binding Path="Origin" />
-                    <Binding ElementName="TextBoxQuickSearch" Path="Text" />
-                  </MultiBinding>
-                </global:MarkupTextBlock.MarkupText>
-              </global:MarkupTextBlock>
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-        <DataGridTemplateColumn Width="*">
-          <DataGridTemplateColumn.Header>
-            <TextBlock>
-              <TextBlock.Text>
-                <DynamicResource ResourceKey="PreviousText" />
-              </TextBlock.Text>
-            </TextBlock>
-          </DataGridTemplateColumn.Header>
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate>
-              <global:MarkupTextBlock TextWrapping="Wrap">
-                <global:MarkupTextBlock.MarkupText>
-                  <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
-                    <Binding Path="Previous" />
-                    <Binding ElementName="TextBoxQuickSearch" Path="Text" />
-                  </MultiBinding>
-                </global:MarkupTextBlock.MarkupText>
-              </global:MarkupTextBlock>
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-      </DataGrid.Columns>
-      <DataGrid.RowStyle>
-        <Style TargetType="DataGridRow">
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Deleted}">
-              <Setter Property="Background" Value="Brown" />
-              <Setter Property="Foreground" Value="White" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.NewAndOrigin}">
-              <Setter Property="Background" Value="DarkBlue" />
-              <Setter Property="Foreground" Value="White" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.NewAndTranslated}">
-              <Setter Property="Background" Value="DarkGreen" />
-              <Setter Property="Foreground" Value="White" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Origin}">
-              <Setter Property="Foreground" Value="Orange" />
-              <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Translated}">
-              <Setter Property="Foreground" Value="LightGreen" />
-              <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Updated}">
-              <Setter Property="Foreground" Value="Blue" />
-              <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </DataGrid.RowStyle>
-    </DataGrid>
+    <Grid Grid.Row="3"
+          Grid.Column="0"
+          Grid.ColumnSpan="12">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="40" />
+      </Grid.RowDefinitions>
 
-    <StackPanel Grid.Row="4"
-                Grid.Column="0"
-                Grid.ColumnSpan="12"
-                VerticalAlignment="Stretch"
-                Background="{DynamicResource Black300}"
-                Orientation="Horizontal">
+      <DataGrid Grid.Row="0" x:Name="TranslationGrid"
 
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{DynamicResource R-C8D8F14A-Dc4B-4Cab-8F34-0F8B93B43Ebc}" />
-      <TextBlock Margin="5, 0"
-                 Padding="8"
-                 VerticalAlignment="Center"
-                 Text="{Binding BarModel.ModifiedText}">
-        <TextBlock.Style>
-          <Style TargetType="TextBlock">
+                Margin="0,0,0,40"
+                materialDesign:DataGridAssist.CellPadding="3"
+                materialDesign:DataGridAssist.ColumnHeaderPadding="5"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding DataGridItems}"
+                SelectionMode="Single">
+        <DataGrid.Columns>
+          <DataGridTextColumn Binding="{Binding Path=Status, Converter={StaticResource StatusToTextConverter}}"
+                              Header="#" />
+          <DataGridTextColumn Binding="{Binding Mod.Name}">
+            <DataGridTextColumn.Header>
+              <TextBlock>
+                <TextBlock.Text>
+                  <DynamicResource ResourceKey="R-6E19A96F-85D0-4B69-8C9A-7Dcc398292C5" />
+                </TextBlock.Text>
+              </TextBlock>
+            </DataGridTextColumn.Header>
+          </DataGridTextColumn>
+          <DataGridTextColumn Binding="{Binding SourceFile.Name}">
+            <DataGridTextColumn.Header>
+              <TextBlock Text="{DynamicResource R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd}" />
+            </DataGridTextColumn.Header>
+          </DataGridTextColumn>
+          <DataGridTextColumn Binding="{Binding Uuid}">
+            <DataGridTextColumn.Header>
+              <TextBlock Text="{DynamicResource R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C}" />
+            </DataGridTextColumn.Header>
+          </DataGridTextColumn>
+          <DataGridTextColumn Binding="{Binding Version}">
+            <DataGridTextColumn.Header>
+              <TextBlock>
+                <TextBlock.Text>
+                  <DynamicResource ResourceKey="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4" />
+                </TextBlock.Text>
+              </TextBlock>
+            </DataGridTextColumn.Header>
+          </DataGridTextColumn>
+          <DataGridTemplateColumn Width="*">
+            <DataGridTemplateColumn.Header>
+              <TextBlock>
+                <TextBlock.Text>
+                  <DynamicResource ResourceKey="TranslatedText" />
+                </TextBlock.Text>
+              </TextBlock>
+            </DataGridTemplateColumn.Header>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <global:MarkupTextBlock TextWrapping="WrapWithOverflow">
+                  <global:MarkupTextBlock.MarkupText>
+                    <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
+                      <Binding Path="Text" />
+                      <Binding ElementName="TextBoxQuickSearch" Path="Text" />
+                    </MultiBinding>
+                  </global:MarkupTextBlock.MarkupText>
+                </global:MarkupTextBlock>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTemplateColumn Width="*">
+            <DataGridTemplateColumn.Header>
+              <TextBlock>
+                <TextBlock.Text>
+                  <DynamicResource ResourceKey="OriginText" />
+                </TextBlock.Text>
+              </TextBlock>
+            </DataGridTemplateColumn.Header>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <global:MarkupTextBlock TextWrapping="Wrap">
+                  <global:MarkupTextBlock.MarkupText>
+                    <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
+                      <Binding Path="Origin" />
+                      <Binding ElementName="TextBoxQuickSearch" Path="Text" />
+                    </MultiBinding>
+                  </global:MarkupTextBlock.MarkupText>
+                </global:MarkupTextBlock>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTemplateColumn Width="*">
+            <DataGridTemplateColumn.Header>
+              <TextBlock>
+                <TextBlock.Text>
+                  <DynamicResource ResourceKey="PreviousText" />
+                </TextBlock.Text>
+              </TextBlock>
+            </DataGridTemplateColumn.Header>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <global:MarkupTextBlock TextWrapping="Wrap">
+                  <global:MarkupTextBlock.MarkupText>
+                    <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
+                      <Binding Path="Previous" />
+                      <Binding ElementName="TextBoxQuickSearch" Path="Text" />
+                    </MultiBinding>
+                  </global:MarkupTextBlock.MarkupText>
+                </global:MarkupTextBlock>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+        <DataGrid.RowStyle>
+          <Style TargetType="DataGridRow">
             <Style.Triggers>
-              <DataTrigger Binding="{Binding BarModel.Modified}" Value="True">
+              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Deleted}">
                 <Setter Property="Background" Value="Brown" />
                 <Setter Property="Foreground" Value="White" />
               </DataTrigger>
-              <DataTrigger Binding="{Binding BarModel.Modified}" Value="False">
+              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.NewAndOrigin}">
+                <Setter Property="Background" Value="DarkBlue" />
+                <Setter Property="Foreground" Value="White" />
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.NewAndTranslated}">
                 <Setter Property="Background" Value="DarkGreen" />
                 <Setter Property="Foreground" Value="White" />
               </DataTrigger>
+              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Origin}">
+                <Setter Property="Foreground" Value="Orange" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Translated}">
+                <Setter Property="Foreground" Value="LightGreen" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Updated}">
+                <Setter Property="Foreground" Value="Blue" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+              </DataTrigger>
             </Style.Triggers>
           </Style>
-        </TextBlock.Style>
-      </TextBlock>
+        </DataGrid.RowStyle>
+      </DataGrid>
 
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{DynamicResource R-6433Ac43-8420-4Cfa-8D04-21C1A7Cbd28F}" />
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{DynamicResource R-64096B00-73C8-407C-A961-D4Bd779Da5C6}" />
+      <StackPanel Grid.Row="1" VerticalAlignment="Bottom"
+                  Background="{DynamicResource Black300}"
+                  Orientation="Horizontal">
 
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{DynamicResource R-64096B00-73C8-407C-A961-D4Bd779Da5C6}" />
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{Binding BarModel.Count}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{DynamicResource R-C8D8F14A-Dc4B-4Cab-8F34-0F8B93B43Ebc}" />
+        <TextBlock Margin="5, 0"
+                   Padding="8"
+                   VerticalAlignment="Center"
+                   Text="{Binding BarModel.ModifiedText}">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding BarModel.Modified}" Value="True">
+                  <Setter Property="Background" Value="Brown" />
+                  <Setter Property="Foreground" Value="White" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding BarModel.Modified}" Value="False">
+                  <Setter Property="Background" Value="DarkGreen" />
+                  <Setter Property="Foreground" Value="White" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
 
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{DynamicResource R-Eff58155-Ba8F-4F77-88D0-F3F863Fc1Cd5}" />
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{Binding BarModel.CountOrigins}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{DynamicResource R-6433Ac43-8420-4Cfa-8D04-21C1A7Cbd28F}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{DynamicResource R-64096B00-73C8-407C-A961-D4Bd779Da5C6}" />
 
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{DynamicResource R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D}" />
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{Binding BarModel.CountTranslated}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{DynamicResource R-64096B00-73C8-407C-A961-D4Bd779Da5C6}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{Binding BarModel.Count}" />
 
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{DynamicResource R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8}" />
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{Binding BarModel.CountDeleted}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{DynamicResource R-Eff58155-Ba8F-4F77-88D0-F3F863Fc1Cd5}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{Binding BarModel.CountOrigins}" />
 
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{DynamicResource R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa}" />
-      <TextBlock VerticalAlignment="Center" Margin="5, 0"
-                 Text="{Binding BarModel.CountNew}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{DynamicResource R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{Binding BarModel.CountTranslated}" />
 
-    </StackPanel>
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{DynamicResource R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{Binding BarModel.CountDeleted}" />
 
-    <GridSplitter Grid.Row="5"
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{DynamicResource R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa}" />
+        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+                   Text="{Binding BarModel.CountNew}" />
+
+      </StackPanel>
+    </Grid>
+
+    <GridSplitter Grid.Row="4"
                   Grid.Column="2"
                   Grid.ColumnSpan="8"
-                  Height="5"
                   HorizontalAlignment="Stretch"
-                  VerticalAlignment="Center"
                   Background="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"
                   ResizeDirection="Rows" />
 
-    <GroupBox x:Name="GroupBoxTranslation"
-              Grid.Row="6"
-              Grid.Column="0"
-              Grid.ColumnSpan="4"
-              Margin="2,2,5,2"
-              Header="{DynamicResource TranslatedText}"
-              Style="{StaticResource MaterialDesignCardGroupBox}">
-      <GroupBox.HeaderTemplate>
-        <DataTemplate>
-          <StackPanel Height="24" Orientation="Horizontal">
-            <materialDesign:PackIcon Width="20"
-                                     Height="20"
-                                     VerticalAlignment="Center"
-                                     Kind="ReceiptTextEditOutline" />
-            <TextBlock Margin="8,0,20,0"
-                       VerticalAlignment="Center"
-                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-                       Text="{Binding}" />
+    <Grid Grid.Row="5"
+          Grid.Column="0"
+          Grid.ColumnSpan="12">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="100*" />
+        <ColumnDefinition Width="100*" />
+        <ColumnDefinition Width="100*" />
+      </Grid.ColumnDefinitions>
+      <GroupBox Grid.Column="0" x:Name="GroupBoxTranslation"
+                Margin="2,2,5,2"
+                Header="{DynamicResource TranslatedText}"
+                Style="{StaticResource MaterialDesignCardGroupBox}">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Height="24" Orientation="Horizontal">
+              <materialDesign:PackIcon Width="20"
+                                       Height="20"
+                                       VerticalAlignment="Center"
+                                       Kind="ReceiptTextEditOutline" />
+              <TextBlock Margin="8,0,20,0"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
 
-            <Button x:Name="ButtonCopyTranslated"
-                    Height="Auto"
-                    Margin="5,0"
-                    Click="ButtonCopyTranslated_OnExecuted"
-                    Content="{DynamicResource ButtonCopy}"
-                    Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+              <Button x:Name="ButtonCopyTranslated"
+                      Height="Auto"
+                      Margin="5,0"
+                      Click="ButtonCopyTranslated_OnExecuted"
+                      Content="{DynamicResource ButtonCopy}"
+                      Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
-            <Button x:Name="ButtonPasteTranslated"
-                    Height="Auto"
-                    Margin="5,0"
-                    Click="ButtonPasteTranslated_OnClick"
-                    Content="{DynamicResource ButtonPaste}"
-                    Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
-            <Button x:Name="ButtonApplyTranslated"
-                    Height="Auto"
-                    Margin="5,0"
-                    Click="ButtonApplyTranslated_OnClick"
-                    Content="{DynamicResource ButtonApply}"
-                    Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+              <Button x:Name="ButtonPasteTranslated"
+                      Height="Auto"
+                      Margin="5,0"
+                      Click="ButtonPasteTranslated_OnClick"
+                      Content="{DynamicResource ButtonPaste}"
+                      Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+              <Button x:Name="ButtonApplyTranslated"
+                      Height="Auto"
+                      Margin="5,0"
+                      Click="ButtonApplyTranslated_OnClick"
+                      Content="{DynamicResource ButtonApply}"
+                      Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
-          </StackPanel>
-        </DataTemplate>
-      </GroupBox.HeaderTemplate>
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
 
-      <TextBox x:Name="TextBoxTranslated"
-               AcceptsReturn="True"
-               AcceptsTab="True"
-               ScrollViewer.HorizontalScrollBarVisibility="Auto"
-               ScrollViewer.VerticalScrollBarVisibility="Auto" />
+        <TextBox x:Name="TextBoxTranslated"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" />
 
-    </GroupBox>
+      </GroupBox>
 
-    <GroupBox Grid.Row="6"
-              Grid.Column="4"
-              Grid.ColumnSpan="4"
-              Margin="0,2,0,2"
-              Header="{DynamicResource OriginText}"
-              Style="{StaticResource MaterialDesignCardGroupBox}">
-      <GroupBox.HeaderTemplate>
-        <DataTemplate>
-          <StackPanel Height="24" Orientation="Horizontal">
-            <materialDesign:PackIcon Width="20"
-                                     Height="20"
-                                     VerticalAlignment="Center"
-                                     Kind="ReceiptTextCheckOutline" />
-            <TextBlock Margin="8,0,20,0"
-                       VerticalAlignment="Center"
-                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-                       Text="{Binding}" />
+      <GroupBox Grid.Column="1" Margin="0,2,0,2"
+                Header="{DynamicResource OriginText}"
+                Style="{StaticResource MaterialDesignCardGroupBox}">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Height="24" Orientation="Horizontal">
+              <materialDesign:PackIcon Width="20"
+                                       Height="20"
+                                       VerticalAlignment="Center"
+                                       Kind="ReceiptTextCheckOutline" />
+              <TextBlock Margin="8,0,20,0"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
 
-            <Button x:Name="ButtonCopyCurrent"
-                    Height="Auto"
-                    Click="ButtonCopyCurrent_OnClick"
-                    Content="{DynamicResource ButtonCopy}"
-                    Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
-          </StackPanel>
-        </DataTemplate>
-      </GroupBox.HeaderTemplate>
+              <Button x:Name="ButtonCopyCurrent"
+                      Height="Auto"
+                      Click="ButtonCopyCurrent_OnClick"
+                      Content="{DynamicResource ButtonCopy}"
+                      Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
 
-      <global:MarkupTextBlock ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                              TextWrapping="Wrap">
-        <global:MarkupTextBlock.MarkupText>
-          <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
-            <Binding ElementName="TranslationGrid" Path="SelectedItem.Origin" />
-            <Binding ElementName="TextBoxQuickSearch" Path="Text" />
-          </MultiBinding>
-        </global:MarkupTextBlock.MarkupText>
-      </global:MarkupTextBlock>
+        <global:MarkupTextBlock ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                TextWrapping="Wrap">
+          <global:MarkupTextBlock.MarkupText>
+            <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
+              <Binding ElementName="TranslationGrid" Path="SelectedItem.Origin" />
+              <Binding ElementName="TextBoxQuickSearch" Path="Text" />
+            </MultiBinding>
+          </global:MarkupTextBlock.MarkupText>
+        </global:MarkupTextBlock>
 
-    </GroupBox>
+      </GroupBox>
 
-    <GroupBox Grid.Row="6"
-              Grid.Column="8"
-              Grid.ColumnSpan="4"
-              Margin="5,2,2,2"
-              Header="{DynamicResource PreviousText}"
-              Style="{StaticResource MaterialDesignCardGroupBox}">
-      <GroupBox.HeaderTemplate>
-        <DataTemplate>
-          <StackPanel Height="24" Orientation="Horizontal">
-            <materialDesign:PackIcon Width="20"
-                                     Height="20"
-                                     VerticalAlignment="Center"
-                                     Kind="ReceiptTextClock" />
-            <TextBlock Margin="8,0,20,0"
-                       VerticalAlignment="Center"
-                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-                       Text="{Binding}" />
+      <GroupBox Grid.Column="2" Margin="5,2,2,2"
+                Header="{DynamicResource PreviousText}"
+                Style="{StaticResource MaterialDesignCardGroupBox}">
+        <GroupBox.HeaderTemplate>
+          <DataTemplate>
+            <StackPanel Height="24" Orientation="Horizontal">
+              <materialDesign:PackIcon Width="20"
+                                       Height="20"
+                                       VerticalAlignment="Center"
+                                       Kind="ReceiptTextClock" />
+              <TextBlock Margin="8,0,20,0"
+                         VerticalAlignment="Center"
+                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Text="{Binding}" />
 
-            <Button x:Name="ButtonCopyPrevious"
-                    Height="Auto"
-                    Click="ButtonCopyPrevious_OnClick"
-                    Content="{DynamicResource ButtonCopy}"
-                    Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+              <Button x:Name="ButtonCopyPrevious"
+                      Height="Auto"
+                      Click="ButtonCopyPrevious_OnClick"
+                      Content="{DynamicResource ButtonCopy}"
+                      Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
 
 
-          </StackPanel>
-        </DataTemplate>
-      </GroupBox.HeaderTemplate>
-      <global:MarkupTextBlock Height="Auto"
-                              ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                              ScrollViewer.VerticalScrollBarVisibility="Visible"
-                              TextWrapping="Wrap">
+            </StackPanel>
+          </DataTemplate>
+        </GroupBox.HeaderTemplate>
+        <global:MarkupTextBlock Height="Auto"
+                                ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                TextWrapping="Wrap">
 
-        <global:MarkupTextBlock.MarkupText>
-          <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
-            <Binding ElementName="TranslationGrid" Path="SelectedItem.Previous" />
-            <Binding ElementName="TextBoxQuickSearch" Path="Text" />
-          </MultiBinding>
-        </global:MarkupTextBlock.MarkupText>
-      </global:MarkupTextBlock>
-    </GroupBox>
+          <global:MarkupTextBlock.MarkupText>
+            <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
+              <Binding ElementName="TranslationGrid" Path="SelectedItem.Previous" />
+              <Binding ElementName="TextBoxQuickSearch" Path="Text" />
+            </MultiBinding>
+          </global:MarkupTextBlock.MarkupText>
+        </global:MarkupTextBlock>
+      </GroupBox>
+    </Grid>
 
     <materialDesign:Snackbar x:Name="MainSnackbar"
                              Grid.Row="1"
@@ -646,6 +642,5 @@
                              MessageQueue="{materialDesign:MessageQueue}" />
 
   </Grid>
-
 
 </Window>
