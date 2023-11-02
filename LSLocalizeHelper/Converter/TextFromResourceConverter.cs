@@ -7,7 +7,7 @@ using LSLocalizeHelper.Helper;
 
 namespace LSLocalizeHelper.Converter;
 
-public class StatusToTextConverter : IValueConverter
+public class TextFromResourceConverter : IValueConverter
 {
 
   public object Convert(object value,

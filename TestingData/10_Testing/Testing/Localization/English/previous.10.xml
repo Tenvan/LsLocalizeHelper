@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <contentList>
   <content contentuid="10_111" version="1">Debug [11]</content>
-  <content contentuid="10_222" version="1">Debug [22]</content>
+  <content contentuid="10_222" version="1">Debug [22]
+Line 2
+Line 3</content>
   <content contentuid="10_333" version="1">Debug [33]</content>
   <content contentuid="10_444" version="1">Debug [44]</content>
   <content contentuid="10_555" version="1">Debug [55]</content>

@@ -5,7 +5,9 @@ using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
+using LSLocalizeHelper.Enums;
 using LSLocalizeHelper.Models;
 using LSLocalizeHelper.Services;
 
@@ -189,6 +191,22 @@ public partial class MainWindow
       true,
       TimeSpan.FromSeconds(duration)
     );
+  }
+
+  private void TranslationGrid_OnKeyUp(object sender, KeyEventArgs e)
+  {
+    Console.WriteLine("KeyUp: " + e.Key);
+
+    switch (e.Key)
+    {
+      case Key.Delete:
+        var item = this.TranslationGrid.SelectedItem as DataRowModel;
+
+        if (item!.Status == TranslationStatus.Deleted) { LsWorkingDataService.RecalculateStatus(item); }
+        else { item!.Status = TranslationStatus.Deleted; }
+
+        break;
+    }
   }
 
   private void WindowMain_LocationChanged(object sender, EventArgs e)

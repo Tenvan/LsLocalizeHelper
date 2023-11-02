@@ -11,11 +11,11 @@ public class DataRowModel : INotifyPropertyChanged
 
   #region Fields
 
-  private TranslationStatus status_;
-
-  private string text;
+  private TranslationStatus originStatus;
 
   private TranslationStatus status;
+
+  private string text;
 
   #endregion
 
@@ -48,6 +48,19 @@ public class DataRowModel : INotifyPropertyChanged
   public ModModel Mod { get; set; }
 
   public string? Origin { get; set; }
+
+  public TranslationStatus OriginStatus
+  {
+    get => this.originStatus;
+
+    set
+    {
+      if (value == this.originStatus) { return; }
+
+      this.originStatus = value;
+      this.OnPropertyChanged();
+    }
+  }
 
   public string? Previous { get; set; }
 

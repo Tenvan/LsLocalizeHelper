@@ -31,7 +31,7 @@
   <Window.Resources>
     <ResourceDictionary>
       <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
-      <converter:StatusToTextConverter x:Key="StatusToTextConverter" />
+      <converter:TextFromResourceConverter x:Key="TextFromResourceConverter" />
     </ResourceDictionary>
   </Window.Resources>
 
@@ -295,7 +295,7 @@
       </Grid.RowDefinitions>
 
       <DataGrid Grid.Row="0" x:Name="TranslationGrid"
-
+                KeyUp="TranslationGrid_OnKeyUp"
                 Margin="0,0,0,40"
                 materialDesign:DataGridAssist.CellPadding="3"
                 materialDesign:DataGridAssist.ColumnHeaderPadding="5"
@@ -304,8 +304,10 @@
                 ItemsSource="{Binding DataGridItems}"
                 SelectionMode="Single">
         <DataGrid.Columns>
-          <DataGridTextColumn Binding="{Binding Path=Status, Converter={StaticResource StatusToTextConverter}}"
+          <DataGridTextColumn Binding="{Binding Path=Status, Converter={StaticResource TextFromResourceConverter}}"
                               Header="#" />
+          <DataGridTextColumn Binding="{Binding Path=Flag, Converter={StaticResource TextFromResourceConverter}}"
+                              Header="Flag" />
           <DataGridTextColumn Binding="{Binding Mod.Name}">
             <DataGridTextColumn.Header>
               <TextBlock>
@@ -376,6 +378,11 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
+
+          <DataGridTextColumn
+            Binding="{Binding Path=OriginStatus, Converter={StaticResource TextFromResourceConverter}}"
+            Header="#" />
+
           <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.Header>
               <TextBlock>

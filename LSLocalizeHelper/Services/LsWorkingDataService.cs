@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Xml;
 
 using LSLocalizeHelper.Enums;
+using LSLocalizeHelper.Helper;
 using LSLocalizeHelper.Models;
 
 namespace LSLocalizeHelper.Services;
@@ -104,11 +104,36 @@ public static class LsWorkingDataService
 
     LsWorkingDataService.AddOriginTexts();
     LsWorkingDataService.AddNewOriginTexts();
+    LsWorkingDataService.SearchDuplicates();
+  }
+
+  public static void RecalculateStatus(DataRowModel? dataRowModel)
+  {
+    var currentUid = LsWorkingDataService.GetCurrentForUid(dataRowModel!.Uuid);
+    var previousUid = LsWorkingDataService.GetPreviousForUid(dataRowModel.Uuid);
+
+    if (currentUid == null)
+    {
+      dataRowModel.Status = TranslationStatus.Deleted;
+
+      return;
+    }
+
+    dataRowModel.Origin = currentUid?.Text;
+    dataRowModel.Previous = previousUid?.Text;
+
+    dataRowModel.Status = dataRowModel.Text.Equals(dataRowModel.Origin)
+                            ? TranslationStatus.Origin
+                            : TranslationStatus.Translated;
+
+    dataRowModel.OriginStatus = dataRowModel.Origin.Equals(dataRowModel.Previous) || string.IsNullOrEmpty(dataRowModel.Previous)
+                                  ? TranslationStatus.Origin
+                                  : TranslationStatus.Updated;
   }
 
   public static bool SetTranslatedForUid(string uid, string newText)
   {
-    var dataRow = GetTranslatedForUid(uid);
+    var dataRow = LsWorkingDataService.GetTranslatedForUid(uid);
 
     if (dataRow == null) { return false; }
 
@@ -159,22 +184,7 @@ public static class LsWorkingDataService
   {
     foreach (var dataRowModel in LsWorkingDataService.TranslatedItems)
     {
-      var currentUid = LsWorkingDataService.GetCurrentForUid(dataRowModel.Uuid);
-
-      if (currentUid == null)
-      {
-        dataRowModel.Status = TranslationStatus.Deleted;
-
-        continue;
-      }
-
-      var previousUid = LsWorkingDataService.GetPreviousForUid(dataRowModel.Uuid);
-      dataRowModel.Origin = currentUid?.Text;
-      dataRowModel.Previous = previousUid?.Text;
-
-      dataRowModel.Status = dataRowModel.Text.Equals(dataRowModel.Origin)
-                              ? TranslationStatus.Origin
-                              : TranslationStatus.Translated;
+      LsWorkingDataService.RecalculateStatus(dataRowModel);
     }
   }
 
@@ -269,6 +279,21 @@ public static class LsWorkingDataService
     else { rowModel = null; }
 
     return rowModel;
+  }
+
+  private static void SearchDuplicates()
+  {
+    var duplicates = LsWorkingDataService.TranslatedItems.GroupBy(x => (string)x.Uuid)
+                                         .Where(g => g.Count() > 1)
+                                         .Select(g => g.Key)
+                                         .ToList();
+
+    foreach (var duplicate in duplicates)
+    {
+      var items = LsWorkingDataService.TranslatedItems.Where(o => o.Uuid == duplicate);
+
+      foreach (var dataRowModel in items) { dataRowModel!.Flag = DatSetFlag.DuplicateSet; }
+    }
   }
 
   #endregion

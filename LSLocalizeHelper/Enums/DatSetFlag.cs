@@ -8,4 +8,6 @@ public enum DatSetFlag
 
   DeletedSet,
 
+  DuplicateSet,
+
 }
