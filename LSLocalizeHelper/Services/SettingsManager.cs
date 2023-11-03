@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Windows;
 
 using Alphaleonis.Win32.Filesystem;
 
@@ -33,11 +34,22 @@ internal static class SettingsManager
   {
     if (File.Exists(SettingsManager.settingsPath))
     {
-      SettingsManager.Settings
-        = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(SettingsManager.settingsPath));
+
+      try
+      {
+        SettingsManager.Settings
+          = JsonConvert.DeserializeObject<UserSettings>(File.ReadAllText(SettingsManager.settingsPath));
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine(ex);
+        MessageBox.Show($"Error on loading Usersettings:\n{ex.Message}\nConfig file will be deleted");
+        File.Delete(SettingsManager.settingsPath);
+        Application.Current.MainWindow.Close();
+      }
     }
 
-    Debug.WriteLine(JsonConvert.SerializeObject(value: SettingsManager.Settings, formatting: Formatting.Indented));
+    Console.WriteLine(JsonConvert.SerializeObject(value: SettingsManager.Settings, formatting: Formatting.Indented));
   }
 
   public static void Save()
