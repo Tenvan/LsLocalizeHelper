@@ -78,10 +78,12 @@ public class TextQuickSearchMultiConverter : IMultiValueConverter
       }
 
       // Fügen Sie den restlichen Text nach der letzten Übereinstimmung als normalen Run hinzu
-      if (matches.Count > 0
-          && matches[^1].Index + matches[^1].Length < escapedXml.Length)
+      
+      var lastIndex = matches.Count - 1;
+      if (lastIndex >= 0
+          && matches[lastIndex].Index + matches[lastIndex].Length < escapedXml.Length)
       {
-        newText.Append(escapedXml.Substring(matches[^1].Index + matches[^1].Length));
+        newText.Append(escapedXml.Substring(matches[lastIndex].Index + matches[lastIndex].Length));
       }
     }
     catch (Exception ex)

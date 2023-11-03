@@ -4,6 +4,7 @@
     <option name="locations">
       <list>
         <option value="$PROJECT_DIR$/../Bg3LocaHelperPublished" />
+        <option value="$PROJECT_DIR$/../Bg3LocaHelperPublished/net472" />
       </list>
     </option>
   </component>
