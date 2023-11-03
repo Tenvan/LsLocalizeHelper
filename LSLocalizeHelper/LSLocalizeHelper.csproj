@@ -10,6 +10,7 @@
     <FileVersion>3.2.0</FileVersion>
     <NeutralLanguage>de-DE</NeutralLanguage>
     <TargetFrameworks>net7.0-windows;net6.0-windows;net472;net481</TargetFrameworks>
+    <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -28,6 +29,10 @@
     <EmbeddedResource Include="FileTemplates\meta.lsx" />
     <None Remove="FileTemplates\local.xml" />
     <EmbeddedResource Include="FileTemplates\local.xml" />
+    <None Include="..\images\icon2.jpg">
+      <Link>icon2.jpg</Link>
+    </None>
+    <None Remove="Resources\splash.jpg" />
   </ItemGroup>
 
   <ItemGroup>

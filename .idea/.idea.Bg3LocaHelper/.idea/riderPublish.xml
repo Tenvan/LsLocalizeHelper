@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/../Bg3LocaHelperPublished" />
         <option value="$PROJECT_DIR$/../Bg3LocaHelperPublished/net472" />
+        <option value="$PROJECT_DIR$/../Bg3LocaHelperPublished/net7.0" />
       </list>
     </option>
   </component>
