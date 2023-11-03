@@ -6,8 +6,8 @@
     <UseWPF>true</UseWPF>
     <LangVersion>latestmajor</LangVersion>
     <UseWindowsForms>True</UseWindowsForms>
-    <AssemblyVersion>3.1.4</AssemblyVersion>
-    <FileVersion>3.1.4</FileVersion>
+    <AssemblyVersion>3.2.0</AssemblyVersion>
+    <FileVersion>3.2.0</FileVersion>
     <NeutralLanguage>de-DE</NeutralLanguage>
     <TargetFrameworks>net7.0-windows;net6.0-windows;net472;net481</TargetFrameworks>
   </PropertyGroup>
