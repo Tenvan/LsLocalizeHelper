@@ -99,7 +99,7 @@
                   IsChecked="True" />
         <Separator />
         <Label VerticalContentAlignment="Center" Content="{DynamicResource R-9B8Dbcb5-C187-409F-A672-A4Ec2A8E80E1}" />
-        <TextBox x:Name="TextBoxQuickSearch" Width="200" />
+        <TextBox x:Name="TextBoxQuickSearch" Width="200" materialDesign:TextFieldAssist.HasClearButton="True" />
         <Separator />
         <Label VerticalContentAlignment="Center" Content="{DynamicResource R-Ba4B59F8-8D60-4E6A-89B6-4B374Fcfe0B0}" />
         <ComboBox x:Name="ComboBoxLanguage"
@@ -296,7 +296,6 @@
 
       <DataGrid Grid.Row="0" x:Name="TranslationGrid"
                 KeyUp="TranslationGrid_OnKeyUp"
-                Margin="0,0,0,40"
                 materialDesign:DataGridAssist.CellPadding="3"
                 materialDesign:DataGridAssist.ColumnHeaderPadding="5"
                 AutoGenerateColumns="False"
