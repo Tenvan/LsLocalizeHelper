@@ -8,8 +8,8 @@
     <IsTestProject>true</IsTestProject>
     <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481</TargetFrameworks>
     <LangVersion>latestmajor</LangVersion>
-    <AssemblyVersion>3.3.0</AssemblyVersion>
-    <FileVersion>3.3.0</FileVersion>
+    <AssemblyVersion>3.3.1</AssemblyVersion>
+    <FileVersion>3.3.1</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

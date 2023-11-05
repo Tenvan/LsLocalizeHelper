@@ -26,6 +26,14 @@
   <System:String x:Key="Changed">已更改</System:String>
   <System:String x:Key="Unchanged">維持原有</System:String>
   <System:String x:Key="Status">狀態</System:String>
+  
+  <System:String x:Key="Flag">Flag</System:String>
+
+  <System:String x:Key="ExistingSet">Exists</System:String>
+  <System:String x:Key="NewSet">New</System:String>
+  <System:String x:Key="DeletedSet">Deleted</System:String>
+  <System:String x:Key="DuplicateSet">Duplicate</System:String>
+  <System:String x:Key="LsTagError">LSTag Synatx Error</System:String>
 
   <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">設置工作檔夾路徑</System:String>
   <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">工作檔夾</System:String>

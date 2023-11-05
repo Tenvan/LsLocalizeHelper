@@ -26,6 +26,13 @@
   <System:String x:Key="Changed">Changed</System:String>
   <System:String x:Key="Unchanged">Unchanged</System:String>
   <System:String x:Key="Status">Status</System:String>
+  <System:String x:Key="Flag">Flag</System:String>
+
+  <System:String x:Key="ExistingSet">Exists</System:String>
+  <System:String x:Key="NewSet">New</System:String>
+  <System:String x:Key="DeletedSet">Deleted</System:String>
+  <System:String x:Key="DuplicateSet">Duplicate</System:String>
+  <System:String x:Key="LsTagError">LSTag Synatx Error</System:String>
 
   <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">Modifications working folder</System:String>
   <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">Work folder</System:String>

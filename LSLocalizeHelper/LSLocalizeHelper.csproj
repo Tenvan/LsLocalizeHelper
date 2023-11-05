@@ -6,8 +6,8 @@
     <UseWPF>true</UseWPF>
     <LangVersion>latestmajor</LangVersion>
     <UseWindowsForms>True</UseWindowsForms>
-    <AssemblyVersion>3.3.0</AssemblyVersion>
-    <FileVersion>3.3.0</FileVersion>
+    <AssemblyVersion>3.3.1</AssemblyVersion>
+    <FileVersion>3.3.1</FileVersion>
     <NeutralLanguage>de-DE</NeutralLanguage>
     <TargetFrameworks>net7.0-windows;net6.0-windows;net472;net481</TargetFrameworks>
     <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
