@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <contentList>
   <content contentuid="10_000" version="1">Debug [000]</content>
+  <content contentuid="10_000" version="1">Debug [000b]</content>
+  <content contentuid="10_000" version="2">Debug [000c]</content>
   <content contentuid="10_111" version="1">Release &lt;LSTag Toolstip="[111] - [222]" &gt;Tooltip Text 1&lt;/ text LSTag&gt;
 Line 2 [111]</content>
+  <content contentuid="10_111" version="2">Release &lt;LSTag Toolstip="[111] - [222]" &gt;Tooltip Text 1&lt;/ text LSTag&gt;
+Line 2 [111] Release &lt;LSTag Toolstip="[111] - [222]" &gt;Tooltip Text 1&lt;/ text LSTag&gt;
+Line 3 [111]</content>
   <content contentuid="10_222" version="1">Debug  &lt;LSTag Toolstip="[222]" &gt;[222]: Line 1&lt;/LSTag 123&gt;
 Debug [2]: Line 2</content>
   <content contentuid="10_555" version="3">Debug [555]: Line 1
