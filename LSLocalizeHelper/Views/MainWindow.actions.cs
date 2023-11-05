@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Xml.Linq;
 
-using Alphaleonis.Win32.Filesystem;
+using HtmlAgilityPack;
 
 using LSLib.LS;
 
-using LSLocalizeHelper.Enums;
-using LSLocalizeHelper.Helper;
-using LSLocalizeHelper.Models;
-using LSLocalizeHelper.Services;
+using LsLocalizeHelperLib.Enums;
+using LsLocalizeHelperLib.Helper;
+using LsLocalizeHelperLib.Models;
+using LsLocalizeHelperLib.Services;
 
 namespace LSLocalizeHelper.Views;
 
@@ -167,9 +168,20 @@ public partial class MainWindow
   private void DoQuickFilter(TextChangedEventArgs textChangedEventArgs)
   {
     var filterText = this.TextBoxQuickSearch.Text;
-    Console.WriteLine($"QuickSearch: {filterText}");
     var filteredData = LsWorkingDataService.FilterData(filterText);
     this.TranslationGrid.ItemsSource = filteredData;
+
+    this.OriginCurrentFlowDoc = DocumentHelper.HighlightTextToFlowDocument(
+      text: this.CurrentDataRow?.Origin,
+      searchReg: this.TextBoxQuickSearch.Text,
+      highlightColor:  Brushes.CornflowerBlue
+    );
+
+    this.OriginPreviousFlowDoc = DocumentHelper.HighlightTextToFlowDocument(
+      text: this.CurrentDataRow?.Previous,
+      searchReg: this.TextBoxQuickSearch.Text,
+      highlightColor:  Brushes.CornflowerBlue
+    );
   }
 
   private void DoRefresh()
@@ -196,9 +208,6 @@ public partial class MainWindow
     {
       foreach (var mod in mods)
       {
-        var message = $"Save Mod: {mod.Name}";
-        Console.WriteLine(message);
-
         var modFiles = this.GetSelectedTranslated()
                            .Where(t => t.Mod.Name == mod.Name);
 
@@ -209,9 +218,6 @@ public partial class MainWindow
 
           var fileName = xmlFileModel.FullPath.FullName;
           var tempFileName = $"{fileName}.temp.xml";
-
-          message = $"Save File: {fileName} Items: {translatedItems.Count()}";
-          Console.WriteLine(message);
 
           var doc = this.CreateDocFromItems(translatedItems);
           doc.Save(tempFileName);
@@ -226,7 +232,6 @@ public partial class MainWindow
     }
     catch (Exception ex)
     {
-      Console.WriteLine(ex);
       this.ShowToast("R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade".FromResource() + ":\n" + ex.Message);
     }
   }
@@ -313,6 +318,16 @@ public partial class MainWindow
   {
     this.TextBoxTranslated.Text = row?.Text;
     this.HasCurrentRow = row != null;
+
+    this.OriginCurrentFlowDoc = DocumentHelper.HighlightTextToFlowDocument(
+      text: row?.Origin,
+      searchReg: this.TextBoxQuickSearch.Text
+    );
+
+    this.OriginPreviousFlowDoc = DocumentHelper.HighlightTextToFlowDocument(
+      text: row?.Previous,
+      searchReg: this.TextBoxQuickSearch.Text
+    );
   }
 
   #endregion

@@ -1,9 +1,7 @@
 using System.Windows;
 using System.Windows.Forms;
 
-using Alphaleonis.Win32.Filesystem;
-
-using LSLocalizeHelper.Services;
+using LsLocalizeHelperLib.Services;
 
 namespace LSLocalizeHelper.Views;
 
@@ -12,7 +10,7 @@ public partial class ImportDialog : Window
 
   #region Constructors
 
-  public ImportDialog() { InitializeComponent(); }
+  public ImportDialog() { this.InitializeComponent(); }
 
   #endregion
 

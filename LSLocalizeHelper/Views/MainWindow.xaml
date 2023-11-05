@@ -5,9 +5,10 @@
 <Window x:Class="LSLocalizeHelper.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:converter="clr-namespace:LSLocalizeHelper.Converter"
+        xmlns:controls="clr-namespace:LsLocalizeHelperLib.Controls;assembly=LsLocalizeHelperLib"
+        xmlns:converter="clr-namespace:LsLocalizeHelperLib.Converter;assembly=LsLocalizeHelperLib"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:enums="clr-namespace:LSLocalizeHelper.Enums"
+        xmlns:enums="clr-namespace:LsLocalizeHelperLib.Enums;assembly=LsLocalizeHelperLib"
         xmlns:global="clr-namespace:"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -69,8 +70,8 @@
                 IsEnabled="{Binding BarModel.NotModified}"
                 ToolTip="{DynamicResource R-Bc06Ec85-2434-4Aa6-93D6-971C94181391}" />
         <Button Command="{Binding ShowSettingsDialogCommand}"
-                IsEnabled="{Binding BarModel.NotModified}"
                 Content="{materialDesign:PackIcon Kind=Settings}"
+                IsEnabled="{Binding BarModel.NotModified}"
                 ToolTip="{DynamicResource OpenSettings}" />
         <Separator />
         <Button Command="{Binding LoadXmlDataCommand}"
@@ -78,8 +79,8 @@
                 IsEnabled="{Binding BarModel.NotModified}"
                 ToolTip="{DynamicResource R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5}" />
         <Button Command="{Binding SaveXmlDataCommand}"
-                IsEnabled="{Binding HasDataLoaded}"
                 Content="{materialDesign:PackIcon Kind=ContentSaveAdd}"
+                IsEnabled="{Binding HasDataLoaded}"
                 ToolTip="{DynamicResource R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3}" />
         <Separator />
         <Button Command="{Binding ImportNewModCommand}"
@@ -99,7 +100,9 @@
                   IsChecked="True" />
         <Separator />
         <Label VerticalContentAlignment="Center" Content="{DynamicResource R-9B8Dbcb5-C187-409F-A672-A4Ec2A8E80E1}" />
-        <TextBox x:Name="TextBoxQuickSearch" Width="200" materialDesign:TextFieldAssist.HasClearButton="True" />
+        <TextBox x:Name="TextBoxQuickSearch"
+                 Width="200"
+                 materialDesign:TextFieldAssist.HasClearButton="True" />
         <Separator />
         <Label VerticalContentAlignment="Center" Content="{DynamicResource R-Ba4B59F8-8D60-4E6A-89B6-4B374Fcfe0B0}" />
         <ComboBox x:Name="ComboBoxLanguage"
@@ -192,6 +195,18 @@
         </ListBox.ItemTemplate>
       </ListBox>
     </GroupBox>
+
+    <materialDesign:Snackbar x:Name="MainSnackbar"
+                             Grid.Row="1"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="6"
+                             Margin="0,20,0,0"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Top"
+                             HorizontalContentAlignment="Left"
+                             ActionButtonPlacement="SeparateLine"
+                             ActionButtonStyle="{StaticResource MaterialDesignOutlinedButton}"
+                             MessageQueue="{materialDesign:MessageQueue}" />
 
     <GroupBox Grid.Row="1"
               Grid.Column="6"
@@ -294,13 +309,14 @@
         <RowDefinition Height="40" />
       </Grid.RowDefinitions>
 
-      <DataGrid Grid.Row="0" x:Name="TranslationGrid"
-                KeyUp="TranslationGrid_OnKeyUp"
+      <DataGrid x:Name="TranslationGrid"
+                Grid.Row="0"
                 materialDesign:DataGridAssist.CellPadding="3"
                 materialDesign:DataGridAssist.ColumnHeaderPadding="5"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
                 ItemsSource="{Binding DataGridItems}"
+                KeyUp="TranslationGrid_OnKeyUp"
                 SelectionMode="Single">
         <DataGrid.Columns>
           <DataGridTextColumn Binding="{Binding Path=Status, Converter={StaticResource TextFromResourceConverter}}"
@@ -345,14 +361,14 @@
             </DataGridTemplateColumn.Header>
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <global:MarkupTextBlock TextWrapping="WrapWithOverflow">
-                  <global:MarkupTextBlock.MarkupText>
+                <controls:MarkupTextBlock TextWrapping="WrapWithOverflow">
+                  <controls:MarkupTextBlock.MarkupText>
                     <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
                       <Binding Path="Text" />
                       <Binding ElementName="TextBoxQuickSearch" Path="Text" />
                     </MultiBinding>
-                  </global:MarkupTextBlock.MarkupText>
-                </global:MarkupTextBlock>
+                  </controls:MarkupTextBlock.MarkupText>
+                </controls:MarkupTextBlock>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
@@ -366,21 +382,20 @@
             </DataGridTemplateColumn.Header>
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <global:MarkupTextBlock TextWrapping="Wrap">
-                  <global:MarkupTextBlock.MarkupText>
+                <controls:MarkupTextBlock TextWrapping="Wrap">
+                  <controls:MarkupTextBlock.MarkupText>
                     <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
                       <Binding Path="Origin" />
                       <Binding ElementName="TextBoxQuickSearch" Path="Text" />
                     </MultiBinding>
-                  </global:MarkupTextBlock.MarkupText>
-                </global:MarkupTextBlock>
+                  </controls:MarkupTextBlock.MarkupText>
+                </controls:MarkupTextBlock>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
           <DataGridTextColumn
-            Binding="{Binding Path=OriginStatus, Converter={StaticResource TextFromResourceConverter}}"
-            Header="#" />
+            Binding="{Binding Path=OriginStatus, Converter={StaticResource TextFromResourceConverter}}" Header="#" />
 
           <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.Header>
@@ -392,14 +407,14 @@
             </DataGridTemplateColumn.Header>
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <global:MarkupTextBlock TextWrapping="Wrap">
-                  <global:MarkupTextBlock.MarkupText>
+                <controls:MarkupTextBlock TextWrapping="Wrap">
+                  <controls:MarkupTextBlock.MarkupText>
                     <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
                       <Binding Path="Previous" />
                       <Binding ElementName="TextBoxQuickSearch" Path="Text" />
                     </MultiBinding>
-                  </global:MarkupTextBlock.MarkupText>
-                </global:MarkupTextBlock>
+                  </controls:MarkupTextBlock.MarkupText>
+                </controls:MarkupTextBlock>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
@@ -436,13 +451,15 @@
         </DataGrid.RowStyle>
       </DataGrid>
 
-      <StackPanel Grid.Row="1" VerticalAlignment="Bottom"
+      <StackPanel Grid.Row="1"
+                  VerticalAlignment="Bottom"
                   Background="{DynamicResource Black300}"
                   Orientation="Horizontal">
 
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{DynamicResource R-C8D8F14A-Dc4B-4Cab-8F34-0F8B93B43Ebc}" />
-        <TextBlock Margin="5, 0"
+        <TextBlock Margin="5,0"
                    Padding="8"
                    VerticalAlignment="Center"
                    Text="{Binding BarModel.ModifiedText}">
@@ -462,34 +479,46 @@
           </TextBlock.Style>
         </TextBlock>
 
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{DynamicResource R-6433Ac43-8420-4Cfa-8D04-21C1A7Cbd28F}" />
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{DynamicResource R-64096B00-73C8-407C-A961-D4Bd779Da5C6}" />
 
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{DynamicResource R-64096B00-73C8-407C-A961-D4Bd779Da5C6}" />
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{Binding BarModel.Count}" />
 
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{DynamicResource R-Eff58155-Ba8F-4F77-88D0-F3F863Fc1Cd5}" />
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{Binding BarModel.CountOrigins}" />
 
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{DynamicResource R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D}" />
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{Binding BarModel.CountTranslated}" />
 
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{DynamicResource R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8}" />
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{Binding BarModel.CountDeleted}" />
 
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{DynamicResource R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa}" />
-        <TextBlock VerticalAlignment="Center" Margin="5, 0"
+        <TextBlock Margin="5,0"
+                   VerticalAlignment="Center"
                    Text="{Binding BarModel.CountNew}" />
 
       </StackPanel>
@@ -513,7 +542,11 @@
         <RowDefinition Height="*" />
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
-      <GroupBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" x:Name="GroupBoxTranslation"
+      <GroupBox x:Name="GroupBoxTranslation"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Background="{StaticResource MaterialDesignDarkBackground}"
                 Margin="2,2,5,2"
                 Header="{DynamicResource TranslatedText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
@@ -561,7 +594,10 @@
 
       </GroupBox>
 
-      <GroupBox Grid.Column="0" Grid.Row="1" Margin="0,2,0,2"
+      <GroupBox Grid.Row="1"
+                Grid.Column="0"
+                Background="{StaticResource MaterialDesignDarkBackground}"
+                Margin="0,2,0,2"
                 Header="{DynamicResource OriginText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
         <GroupBox.HeaderTemplate>
@@ -573,7 +609,7 @@
                                        Kind="ReceiptTextCheckOutline" />
               <TextBlock Margin="8,0,20,0"
                          VerticalAlignment="Center"
-                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
                          Text="{Binding}" />
 
               <Button x:Name="ButtonCopyCurrent"
@@ -585,20 +621,20 @@
           </DataTemplate>
         </GroupBox.HeaderTemplate>
 
-        <global:MarkupTextBlock ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                TextWrapping="Wrap">
-          <global:MarkupTextBlock.MarkupText>
-            <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
-              <Binding ElementName="TranslationGrid" Path="SelectedItem.Origin" />
-              <Binding ElementName="TextBoxQuickSearch" Path="Text" />
-            </MultiBinding>
-          </global:MarkupTextBlock.MarkupText>
-        </global:MarkupTextBlock>
+        <FlowDocumentScrollViewer Document="{Binding OriginCurrentFlowDoc}">
+          <FlowDocumentScrollViewer.Resources>
+            <Style TargetType="{x:Type FlowDocument}">
+              <Setter Property="FontFamily" Value="{materialDesign:MaterialDesignFont}" />
+            </Style>
+          </FlowDocumentScrollViewer.Resources>
+        </FlowDocumentScrollViewer>
 
       </GroupBox>
 
-      <GroupBox Grid.Column="1" Grid.Row="1" Margin="5,2,2,2"
+      <GroupBox Grid.Row="1"
+                Grid.Column="1"
+                Background="{StaticResource MaterialDesignDarkBackground}"
+                Margin="5,2,2,2"
                 Header="{DynamicResource PreviousText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
         <GroupBox.HeaderTemplate>
@@ -610,7 +646,7 @@
                                        Kind="ReceiptTextClock" />
               <TextBlock Margin="8,0,20,0"
                          VerticalAlignment="Center"
-                         Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                         Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
                          Text="{Binding}" />
 
               <Button x:Name="ButtonCopyPrevious"
@@ -623,32 +659,17 @@
             </StackPanel>
           </DataTemplate>
         </GroupBox.HeaderTemplate>
-        <global:MarkupTextBlock Height="Auto"
-                                ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                                ScrollViewer.VerticalScrollBarVisibility="Visible"
-                                TextWrapping="Wrap">
 
-          <global:MarkupTextBlock.MarkupText>
-            <MultiBinding Converter="{StaticResource TextQuickSearchMultiConverter}">
-              <Binding ElementName="TranslationGrid" Path="SelectedItem.Previous" />
-              <Binding ElementName="TextBoxQuickSearch" Path="Text" />
-            </MultiBinding>
-          </global:MarkupTextBlock.MarkupText>
-        </global:MarkupTextBlock>
+        <FlowDocumentScrollViewer Document="{Binding OriginPreviousFlowDoc}">
+          <FlowDocumentScrollViewer.Resources>
+            <Style TargetType="{x:Type FlowDocument}">
+              <Setter Property="FontFamily" Value="{materialDesign:MaterialDesignFont}" />
+            </Style>
+          </FlowDocumentScrollViewer.Resources>
+        </FlowDocumentScrollViewer>
+
       </GroupBox>
     </Grid>
-
-    <materialDesign:Snackbar x:Name="MainSnackbar"
-                             Grid.Row="1"
-                             Grid.Column="3"
-                             Grid.ColumnSpan="6"
-                             Margin="0,20,0,0"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Top"
-                             HorizontalContentAlignment="Left"
-                             ActionButtonPlacement="SeparateLine"
-                             ActionButtonStyle="{StaticResource MaterialDesignOutlinedButton}"
-                             MessageQueue="{materialDesign:MessageQueue}" />
 
   </Grid>
 

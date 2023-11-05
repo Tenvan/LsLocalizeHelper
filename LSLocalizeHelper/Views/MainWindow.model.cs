@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Windows.Documents;
 
-using LSLocalizeHelper.Models;
-using LSLocalizeHelper.Services;
+using LsLocalizeHelperLib.Models;
+using LsLocalizeHelperLib.Services;
 
 namespace LSLocalizeHelper.Views;
 
@@ -24,6 +25,8 @@ public partial class MainWindow
 
   private bool hasDataLoaded;
 
+  private FlowDocument originPreviousFlowDoc;
+
   #endregion
 
   #region Properties
@@ -36,7 +39,7 @@ public partial class MainWindow
 
     set
     {
-      this.SetProperty(ref this.hasCurrentRow, value);
+      this.SetProperty(field: ref this.hasCurrentRow, value: value);
       this.OnPropertyChanged();
     }
   }
@@ -59,6 +62,19 @@ public partial class MainWindow
   public ObservableCollection<XmlFileListBoxItem> OriginCurrentFileItems { get; set; } = new();
 
   public ObservableCollection<XmlFileListBoxItem> OriginPreviousFileItems { get; set; } = new();
+
+  public FlowDocument OriginPreviousFlowDoc
+  {
+    get => this.originPreviousFlowDoc;
+
+    set
+    {
+      if (Equals(objA: value, objB: this.originPreviousFlowDoc)) { return; }
+
+      this.originPreviousFlowDoc = value;
+      this.OnPropertyChanged();
+    }
+  }
 
   public ObservableCollection<ModModelListBoxItem> ProjectItems { get; set; } = new();
 

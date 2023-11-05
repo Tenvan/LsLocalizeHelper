@@ -1,14 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <contentList>
-  <content contentuid="10_111" version="1">Debug [111] - [222]
+  <content contentuid="10_111" version="1">Debug &lt;LSTag Toolstip="[111] - [222]" &gt;Tooltip Text 1&lt;/LSTag&gt;
 Line 2 [111]</content>
-  <content contentuid="10_222" version="1">Debug [222]</content>
+  <content contentuid="10_222" version="1">Debug [222] Line 1 &lt;LSTag Toolstip="[222]" &gt;Tooltip Text 2&lt;/LSTag&gt; Text
+Debug [222] Line 2 &lt;LSTag Toolstip="[111] - [222]" &gt;Tooltip Text 3&lt;/LSTag&gt; Text
+Debug [222] Line 3</content>
   <content contentuid="10_333" version="2">Debug [33]</content>
   <content contentuid="10_555" version="3">Debug [555]
 Line 2
 Line 3</content>
   <content contentuid="10_666" version="1">Debug [66]</content>
   <content contentuid="10_777" version="1">Debug [77]</content>
-  <content contentuid="10_888" version="1">Debug [88]</content>
+  <content contentuid="10_888" version="1">Debug [88]: Line 1
+Debug [2]: Line 2
+Debug [2]: Line 3
+Debug [2]: Line 4
+Debug [2]: Line 5
+Debug [2]: Line 6
+Debug [2]: Line 7
+Debug [2]: Line 8</content>
   <content contentuid="10_999" version="1">Debug [99]</content>
 </contentList>

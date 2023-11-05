@@ -7,9 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
-using LSLocalizeHelper.Enums;
-using LSLocalizeHelper.Models;
-using LSLocalizeHelper.Services;
+using LsLocalizeHelperLib.Enums;
+using LsLocalizeHelperLib.Models;
+using LsLocalizeHelperLib.Services;
 
 using ReactiveUI;
 
@@ -183,20 +183,18 @@ public partial class MainWindow
   private void ShowToast(string message, int duration = 5)
   {
     this.MainSnackbar.MessageQueue?.Enqueue(
-      message,
-      "OK",
-      (e) => { },
-      null,
-      true,
-      true,
-      TimeSpan.FromSeconds(duration)
+      content: message,
+      actionContent: "OK",
+      actionHandler: (e) => { },
+      actionArgument: null,
+      promote: true,
+      neverConsiderToBeDuplicate: true,
+      durationOverride: TimeSpan.FromSeconds(duration)
     );
   }
 
   private void TranslationGrid_OnKeyUp(object sender, KeyEventArgs e)
   {
-    Console.WriteLine("KeyUp: " + e.Key);
-
     switch (e.Key)
     {
       case Key.Delete:

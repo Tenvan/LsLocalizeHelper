@@ -6,9 +6,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 
-using LSLocalizeHelper.Models;
-using LSLocalizeHelper.Services;
+using LsLocalizeHelperLib.Models;
+using LsLocalizeHelperLib.Services;
 
 namespace LSLocalizeHelper.Views;
 
@@ -18,6 +19,12 @@ namespace LSLocalizeHelper.Views;
 public partial class MainWindow : Window,
                                   INotifyPropertyChanged
 {
+
+  #region Fields
+
+  private FlowDocument originCurrentFlowDoc = new();
+
+  #endregion
 
   #region Constructors
 
@@ -40,6 +47,19 @@ public partial class MainWindow : Window,
 
   #region Properties
 
+  public FlowDocument OriginCurrentFlowDoc
+  {
+    get => this.originCurrentFlowDoc;
+
+    set
+    {
+      if (Equals(objA: value, objB: this.originCurrentFlowDoc)) { return; }
+
+      this.originCurrentFlowDoc = value;
+      this.OnPropertyChanged();
+    }
+  }
+
   private DataRowModel? CurrentDataRow
   {
     get
@@ -54,9 +74,9 @@ public partial class MainWindow : Window,
 
   #region Methods
 
-  protected void BeginUpdating() { this.IsUpdating = true; }
+  private void BeginUpdating() { this.IsUpdating = true; }
 
-  protected void EndUpdating() { this.IsUpdating = false; }
+  private void EndUpdating() { this.IsUpdating = false; }
 
   protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
   {

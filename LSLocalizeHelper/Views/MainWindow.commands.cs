@@ -3,8 +3,8 @@ using System.Linq;
 
 using CommunityToolkit.Mvvm.Input;
 
-using LSLocalizeHelper.Models;
-using LSLocalizeHelper.Services;
+using LsLocalizeHelperLib.Models;
+using LsLocalizeHelperLib.Services;
 
 namespace LSLocalizeHelper.Views;
 

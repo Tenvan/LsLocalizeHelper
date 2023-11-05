@@ -29,29 +29,22 @@
     <EmbeddedResource Include="FileTemplates\meta.lsx" />
     <None Remove="FileTemplates\local.xml" />
     <EmbeddedResource Include="FileTemplates\local.xml" />
-    <None Include="..\images\icon2.jpg">
-      <Link>icon2.jpg</Link>
-    </None>
     <None Remove="Resources\splash.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AlphaFS" Version="2.2.6" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-    <PackageReference Include="FileAssociation" Version="1.0.0" />
-    <PackageReference Include="MaterialDesignThemes" Version="5.0.0-ci368" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="ReactiveUI" Version="19.5.1" />
-    <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
-    <PackageReference Include="ReactiveUI.WPF" Version="19.5.1" />
     <PackageReference Include="Rx.Net.Plus" Version="1.1.15" />
-    <PackageReference Include="zlib.net" Version="1.0.4" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="LSLib">
       <HintPath>..\External\LSLib.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LsLocalizeHelperLib\LsLocalizeHelperLib.csproj" />
   </ItemGroup>
 
 </Project>
