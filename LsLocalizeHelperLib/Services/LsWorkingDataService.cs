@@ -116,7 +116,7 @@ public static class LsWorkingDataService
     {
       if (dataRowModel!.Text.IsValidHtml()) { continue; }
 
-      dataRowModel.Flag = DatSetFlag.LsTagError;
+      if (dataRowModel.Flag != DatSetFlag.DuplicateSet) { dataRowModel.Flag = DatSetFlag.LsTagError; }
     }
   }
 

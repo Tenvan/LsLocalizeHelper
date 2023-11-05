@@ -319,10 +319,107 @@
                 KeyUp="TranslationGrid_OnKeyUp"
                 SelectionMode="Single">
         <DataGrid.Columns>
-          <DataGridTextColumn Binding="{Binding Path=Status, Converter={StaticResource TextFromResourceConverter}}"
-                              Header="#" />
-          <DataGridTextColumn Binding="{Binding Path=Flag, Converter={StaticResource TextFromResourceConverter}}"
-                              Header="Flag" />
+
+          <!-- Column TranslationStatus -->
+          <DataGridTemplateColumn>
+            <DataGridTemplateColumn.Header>
+              <materialDesign:PackIcon Width="20"
+                                       Height="20"
+                                       VerticalAlignment="Center"
+                                       ToolTip="{StaticResource Status}"
+                                       Kind="Origin" />
+            </DataGridTemplateColumn.Header>
+
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Top"
+                            ToolTip="{Binding Status, Converter={StaticResource TextFromResourceConverter}}">
+                  <materialDesign:PackIcon Width="20"
+                                           Height="20"
+                                           Foreground="YellowGreen"
+                                           VerticalAlignment="Center"
+                                           x:Name="StatusIcon"
+                                           Kind="Information" />
+                </StackPanel>
+
+                <DataTemplate.Triggers>
+                  <DataTrigger Binding="{Binding Path=Status}" Value="Translated">
+                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="YellowGreen" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Status}" Value="NewAndTranslated">
+                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="CornflowerBlue" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Status}" Value="Origin">
+                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="DarkOrange" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Status}" Value="NewAndOrigin">
+                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="CornflowerBlue" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Status}" Value="Deleted">
+                    <Setter Property="Kind" Value="DeleteAlert" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="White" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Status}" Value="Updated">
+                    <Setter Property="Kind" Value="ListStatus" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="Yellow" TargetName="StatusIcon" />
+                  </DataTrigger>
+                </DataTemplate.Triggers>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <!-- Column DatSetFlag -->
+          <DataGridTemplateColumn>
+
+            <DataGridTemplateColumn.Header>
+              <materialDesign:PackIcon Width="20"
+                                       Height="20"
+                                       VerticalAlignment="Center"
+                                       ToolTip="{StaticResource Flag}"
+                                       Kind="Flag" />
+            </DataGridTemplateColumn.Header>
+
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Top"
+                            ToolTip="{Binding Flag, Converter={StaticResource TextFromResourceConverter}}">
+                  <materialDesign:PackIcon Width="20"
+                                           Height="20"
+                                           VerticalAlignment="Center"
+                                           Visibility="Hidden"
+                                           x:Name="StatusIcon" />
+                </StackPanel>
+
+                <DataTemplate.Triggers>
+                  <DataTrigger Binding="{Binding Path=Flag}" Value="LsTagError">
+                    <Setter Property="Visibility" Value="Visible" TargetName="StatusIcon" />
+                    <Setter Property="Kind" Value="AlertCircleOutline" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="IndianRed" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Flag}" Value="DuplicateSet">
+                    <Setter Property="Visibility" Value="Visible" TargetName="StatusIcon" />
+                    <Setter Property="Kind" Value="AlertDecagramOutline" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="Red" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Flag}" Value="ExistingSet">
+                    <Setter Property="Visibility" Value="Hidden" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Flag}" Value="NewSet">
+                    <Setter Property="Visibility" Value="Hidden" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Flag}" Value="DeletedSet">
+                    <Setter Property="Visibility" Value="Hidden" TargetName="StatusIcon" />
+                  </DataTrigger>
+                </DataTemplate.Triggers>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <!-- Column mod name -->
           <DataGridTextColumn Binding="{Binding Mod.Name}">
             <DataGridTextColumn.Header>
               <TextBlock>
@@ -332,16 +429,22 @@
               </TextBlock>
             </DataGridTextColumn.Header>
           </DataGridTextColumn>
+          
+          <!-- Column source file name -->
           <DataGridTextColumn Binding="{Binding SourceFile.Name}">
             <DataGridTextColumn.Header>
               <TextBlock Text="{DynamicResource R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd}" />
             </DataGridTextColumn.Header>
           </DataGridTextColumn>
+
+          <!-- Column uuid -->
           <DataGridTextColumn Binding="{Binding Uuid}">
             <DataGridTextColumn.Header>
               <TextBlock Text="{DynamicResource R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C}" />
             </DataGridTextColumn.Header>
           </DataGridTextColumn>
+
+          <!-- Column Version -->
           <DataGridTextColumn Binding="{Binding Version}">
             <DataGridTextColumn.Header>
               <TextBlock>
@@ -351,6 +454,8 @@
               </TextBlock>
             </DataGridTextColumn.Header>
           </DataGridTextColumn>
+
+          <!-- Column translated text -->
           <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.Header>
               <TextBlock>
@@ -372,6 +477,8 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
+          
+          <!-- Column current origin text -->
           <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.Header>
               <TextBlock>
@@ -394,9 +501,59 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTextColumn
-            Binding="{Binding Path=OriginStatus, Converter={StaticResource TextFromResourceConverter}}" Header="#" />
+          <!-- Column origin status -->
+          <DataGridTemplateColumn>
+            <DataGridTemplateColumn.Header>
+              <materialDesign:PackIcon Width="20"
+                                       Height="20"
+                                       VerticalAlignment="Center"
+                                       ToolTip="{StaticResource Status}"
+                                       Kind="Origin" />
+            </DataGridTemplateColumn.Header>
 
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Top"
+                            ToolTip="{Binding OriginStatus, Converter={StaticResource TextFromResourceConverter}}">
+                  <materialDesign:PackIcon Width="20"
+                                           Height="20"
+                                           Foreground="YellowGreen"
+                                           VerticalAlignment="Center"
+                                           x:Name="StatusIcon"
+                                           Kind="Information" />
+                </StackPanel>
+
+                <DataTemplate.Triggers>
+                  <DataTrigger Binding="{Binding Path=OriginStatus}" Value="Translated">
+                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="YellowGreen" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=OriginStatus}" Value="NewAndTranslated">
+                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="CornflowerBlue" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=OriginStatus}" Value="Origin">
+                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="DarkOrange" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=OriginStatus}" Value="NewAndOrigin">
+                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="CornflowerBlue" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=OriginStatus}" Value="Deleted">
+                    <Setter Property="Kind" Value="DeleteAlert" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="White" TargetName="StatusIcon" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=OriginStatus}" Value="Updated">
+                    <Setter Property="Kind" Value="ListStatus" TargetName="StatusIcon" />
+                    <Setter Property="Foreground" Value="Yellow" TargetName="StatusIcon" />
+                  </DataTrigger>
+                </DataTemplate.Triggers>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <!-- Column previous origin text -->
           <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.Header>
               <TextBlock>
@@ -418,6 +575,7 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
+          
         </DataGrid.Columns>
         <DataGrid.RowStyle>
           <Style TargetType="DataGridRow">
