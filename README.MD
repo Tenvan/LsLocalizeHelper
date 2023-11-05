@@ -23,18 +23,38 @@ And can package it up for upload to Nexusmod.... with one tool.
 
 ***The following features are currently available in the app:***
 
-- Importing a mod pak file and converting it to a new translations mod
-- Editing localization files in XML format
-- Comparison of texts with the current and a previous original localization file
-- Incorporating the changes from the original localization files
-- Automatic saving of the translation file - and ONLY this(!) - into loca format
-- Saving the translation mod in zip format (Nexusmod upload compatible)
+- Edit texts of several mods simultaneously
+- Import a modification package (.PAK file) and convert it into a new translation mod.
+- Edit localisation files without XML format in an editor
+- Quick search with filtering of data in the table
+- Compare texts with the current and a previous original localisation file
+- Apply changes from the original localisation file
+- Automatic saving of the translation file - and ONLY this(!) - in loca format
+- Check LSTag tooltips for syntactical correctness
+- Recognise duplicate entries
+- Remove data records (delete button)
+- Export the translation mod in zip format (Nexusmod upload compatible)
+- Localisation of the application (currently: German, English, Chinese traditional/simple)
 
-***Features of the new version:***
-- Localization (Currently: German, English, Chinese)
-- Performance enhancement in rendering
-- Multi mod editing
-- Quicksearch display in table and text fields
+## Screens version 3.0
+Previews of the next version completely refactored with Wpf.
+
+![screen1.png](images/screen1.png)
+
+![screen2.png](images/screen2.png)
+
+![screen3.png](images/screen3.png)
+
+![screen4.png](images/screen4.png)
+
+![screen5.png](images/screen5.png)
+
+![screen6.png](images/screen6.png)
+
+![screen7.png](images/screen7.png)
+
+![screen8.png](images/screen8.png)
+
 
 ## Configuration
 At the first start of the app or in the menu item "Settings" **MUST** be the wokspace:
@@ -53,10 +73,3 @@ Here is an example of my wokspace folder:
 
 ![workspace_structure.png](images/workspace_structure.png)
 
-## Screens version 3.0
-Previews of the next version completely refactored with Wpf.
-
-
-![screen1.png](images/screen1.png)
-
-![screen2.png](images/screen2.png)
