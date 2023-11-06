@@ -10,6 +10,8 @@ public class DataRowModel : INotifyPropertyChanged
 
   #region Fields
 
+  private DatSetFlag flag;
+
   private TranslationStatus originStatus;
 
   private TranslationStatus status;
@@ -42,7 +44,18 @@ public class DataRowModel : INotifyPropertyChanged
 
   #region Properties
 
-  public DatSetFlag Flag { get; set; }
+  public DatSetFlag Flag
+  {
+    get => this.flag;
+
+    set
+    {
+      if (value == this.flag) { return; }
+
+      this.flag = value;
+      this.OnPropertyChanged();
+    }
+  }
 
   public ModModel Mod { get; set; }
 

@@ -145,18 +145,8 @@ public static class LsWorkingDataService
 
     dataRow.Text = newText;
 
-    if (dataRow.Text.Equals(dataRow.Origin))
-    {
-      dataRow.Status = dataRow.Flag == DatSetFlag.NewSet
-                         ? TranslationStatus.NewAndOrigin
-                         : TranslationStatus.Origin;
-    }
-    else
-    {
-      dataRow.Status = dataRow.Flag == DatSetFlag.NewSet
-                         ? TranslationStatus.NewAndTranslated
-                         : TranslationStatus.Translated;
-    }
+    LsWorkingDataService.RecalculateStatus(dataRow);
+    LsWorkingDataService.ValidateLsTagForRow(dataRow);
 
     return true;
   }
@@ -304,14 +294,19 @@ public static class LsWorkingDataService
 
   private static void ValidateLsTags()
   {
-    foreach (var dataRowModel in LsWorkingDataService.TranslatedItems)
-    {
-      if (dataRowModel!.Text.IsValidHtml()) { continue; }
-
-      if (dataRowModel.Flag != DatSetFlag.DuplicateSet) { dataRowModel.Flag = DatSetFlag.LsTagError; }
-    }
+    foreach (var dataRowModel in LsWorkingDataService.TranslatedItems) { LsWorkingDataService.ValidateLsTagForRow(dataRowModel); }
   }
 
+  private static void ValidateLsTagForRow(DataRowModel? dataRowModel)
+  {
+    var isNotDuplicateFlag = dataRowModel?.Flag != DatSetFlag.DuplicateSet;
+    var isHtmlValid = dataRowModel?.Text.IsValidHtml() ?? true;
+
+    if (isNotDuplicateFlag)
+    {
+      dataRowModel!.Flag = isHtmlValid ? DatSetFlag.ExistingSet : DatSetFlag.LsTagError;
+    }
+  }
   #endregion
 
 }
