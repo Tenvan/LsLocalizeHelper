@@ -6,3 +6,5 @@ riderModule.iml
 **/*.user
 /samples/*.xml
 .vs/
+/TestingData/test.pak
+/TestingData/TestModGER

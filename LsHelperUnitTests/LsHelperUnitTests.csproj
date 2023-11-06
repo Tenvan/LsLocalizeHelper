@@ -45,4 +45,9 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="FileTemplates\local.xml" />
+    <EmbeddedResource Include="FileTemplates\meta.lsx" />
+  </ItemGroup>
+
 </Project>

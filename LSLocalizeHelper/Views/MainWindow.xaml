@@ -33,6 +33,8 @@
     <ResourceDictionary>
       <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
       <converter:TextFromResourceConverter x:Key="TextFromResourceConverter" />
+      <Style TargetType="{x:Type ToolTip}">
+      </Style>
     </ResourceDictionary>
   </Window.Resources>
 
@@ -321,7 +323,7 @@
         <DataGrid.Columns>
 
           <!-- Column TranslationStatus -->
-          <DataGridTemplateColumn>
+          <DataGridTemplateColumn SortMemberPath="Status" >
             <DataGridTemplateColumn.Header>
               <materialDesign:PackIcon Width="20"
                                        Height="20"
@@ -373,7 +375,7 @@
           </DataGridTemplateColumn>
 
           <!-- Column DatSetFlag -->
-          <DataGridTemplateColumn>
+          <DataGridTemplateColumn SortMemberPath="Flag" >
 
             <DataGridTemplateColumn.Header>
               <materialDesign:PackIcon Width="20"
@@ -429,7 +431,7 @@
               </TextBlock>
             </DataGridTextColumn.Header>
           </DataGridTextColumn>
-          
+
           <!-- Column source file name -->
           <DataGridTextColumn Binding="{Binding SourceFile.Name}">
             <DataGridTextColumn.Header>
@@ -477,7 +479,7 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
-          
+
           <!-- Column current origin text -->
           <DataGridTemplateColumn Width="*">
             <DataGridTemplateColumn.Header>
@@ -502,7 +504,7 @@
           </DataGridTemplateColumn>
 
           <!-- Column origin status -->
-          <DataGridTemplateColumn>
+          <DataGridTemplateColumn SortMemberPath="OriginStatus">
             <DataGridTemplateColumn.Header>
               <materialDesign:PackIcon Width="20"
                                        Height="20"
@@ -575,7 +577,7 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
-          
+
         </DataGrid.Columns>
         <DataGrid.RowStyle>
           <Style TargetType="DataGridRow">

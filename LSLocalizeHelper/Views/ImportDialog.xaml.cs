@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -47,9 +48,21 @@ public partial class ImportDialog : Window
         modName: this.TextBoxModName.Text
       );
 
-      var result = packer.ImportPackage();
-      this.Error = result;
-      this.DialogResult = string.IsNullOrEmpty(result);
+
+      try
+      {
+        packer.ExtractOriginPackage();
+        packer.CheckEnglishLocalization();
+        packer.ImportNewPackage("German");
+        
+        this.DialogResult = true;
+      }
+      catch (Exception exception)
+      {
+        this.Error = exception.Message;
+        this.DialogResult = false;
+      }
+     
     }
     finally { this.Close(); }
   }

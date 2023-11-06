@@ -39,4 +39,9 @@
       <Compile Remove="Services\FileEngine.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Include="FileTemplates\local.xml" />
+      <EmbeddedResource Include="FileTemplates\meta.lsx" />
+    </ItemGroup>
+
 </Project>

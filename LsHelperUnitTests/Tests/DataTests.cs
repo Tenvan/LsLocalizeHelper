@@ -1,61 +1,12 @@
+using LsLocalizeHelperLib.Enums;
 using LsLocalizeHelperLib.Services;
 
 using Xunit.Abstractions;
 
-using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
-using Path = Alphaleonis.Win32.Filesystem.Path;
-
 namespace LsHelperUnitTests.Tests;
 
-public class DataTests
+public class DataTests : LsHelperTestsBase
 {
-
-  #region Static Methods
-
-  private static XmlFilesService GetFilesService()
-  {
-    var dataDir = DataTests.GetTestDataFolder();
-
-    var modsService = new LsModsService();
-    modsService.LoadMods(dataDir.FullName);
-
-    var xmlFilesService = new XmlFilesService(dataDir.FullName);
-    var modModels = modsService.Items.ToArray();
-
-    xmlFilesService.Load(modModels);
-
-    return xmlFilesService;
-  }
-
-  private static DirectoryInfo GetTestDataFolder()
-  {
-    var dirInfo = new DirectoryInfo(".").Parent.Parent.Parent.Parent;
-    var testDataFolder = Path.Combine(dirInfo.FullName, "TestingData");
-    var test = new DirectoryInfo(testDataFolder);
-
-    return test;
-  }
-
-  private static void LoadTestData()
-  {
-    var xmlFilesService = DataTests.GetFilesService();
-
-    var translated = xmlFilesService.Items.Where(
-                                       f => f.Name.ToLower()
-                                             .StartsWith("german\\")
-                                     )
-                                    .ToArray();
-
-    var origins = xmlFilesService.Items.Where(
-                                    f => f.Name.ToLower()
-                                          .StartsWith("english\\")
-                                  )
-                                 .ToArray();
-
-    LsWorkingDataService.Load(translatedFiles: translated, currentFiles: origins, previousFiles: origins);
-  }
-
-  #endregion
 
   #region Fields
 
@@ -74,7 +25,7 @@ public class DataTests
   [Fact]
   public void ShouldLoadData()
   {
-    DataTests.LoadTestData();
+    this.LoadTestData();
 
     LsWorkingDataService.TranslatedItems.Count()
                         .Should()
@@ -92,11 +43,12 @@ public class DataTests
   [Fact]
   public void ShouldValidateLoadedData()
   {
-    DataTests.LoadTestData();
+    this.LoadTestData();
 
-    LsWorkingDataService.TranslatedItemsWithErrors.Count()
-                        .Should()
-                        .BeGreaterThan(0);
+    var any = LsWorkingDataService.TranslatedItems.Any(t => t.Flag == DatSetFlag.LsTagError);
+
+    any.Should()
+       .BeTrue();
   }
 
   #endregion

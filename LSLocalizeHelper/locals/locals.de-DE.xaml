@@ -79,5 +79,7 @@
   <System:String x:Key="R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D">Übersetzt:</System:String>
   <System:String x:Key="R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8">Gelöscht:</System:String>
   <System:String x:Key="R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa">Neu:</System:String>
+  
+  <System:String x:Key="R-6D51Eefc-7825-40A6-A4C1-69D7D9F4261F">Keine englischen Lokalisierungs Dateien gefunden!</System:String>
 
 </ResourceDictionary>

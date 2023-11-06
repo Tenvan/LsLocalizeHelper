@@ -2,6 +2,8 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Xml;
 
+using DynamicData;
+
 using LsLocalizeHelperLib.Enums;
 using LsLocalizeHelperLib.Helper;
 using LsLocalizeHelperLib.Models;
@@ -13,22 +15,17 @@ public static class LsWorkingDataService
 
   #region Static Properties
 
-  public static IEnumerable<XmlFileModel> CurrentFiles { get; set; }
+  public static ObservableCollection<XmlFileModel> CurrentFiles { get; set; } = new();
 
   public static ObservableCollection<OriginModel> OriginCurrentItems { get; set; } = new();
 
   public static ObservableCollection<OriginModel> OriginPreviousItems { get; set; } = new();
 
-  public static IEnumerable<XmlFileModel> PreviousFiles { get; set; }
+  public static ObservableCollection<XmlFileModel> PreviousFiles { get; set; } = new();
 
-  public static IEnumerable<XmlFileModel> TranslatedFiles { get; set; }
+  public static ObservableCollection<XmlFileModel> TranslatedFiles { get; set; } = new();
 
   public static ObservableCollection<DataRowModel?> TranslatedItems { get; set; } = new();
-
-  public static IEnumerable<DataRowModel?> TranslatedItemsWithErrors
-  {
-    get { return TranslatedItems.Where(i => i.Flag == DatSetFlag.LsTagError); }
-  }
 
   #endregion
 
@@ -82,24 +79,29 @@ public static class LsWorkingDataService
                           IEnumerable<XmlFileModel> previousFiles
   )
   {
-    var translatedFilesList = translatedFiles.ToList();
-    LsWorkingDataService.TranslatedFiles = translatedFilesList;
-    var currentFilesList = currentFiles.ToList();
-    LsWorkingDataService.CurrentFiles = currentFilesList;
-    var previousFilesList = previousFiles.ToList();
-    LsWorkingDataService.PreviousFiles = previousFilesList;
+    LsWorkingDataService.TranslatedFiles.Clear();
+    var xmlFileModels = translatedFiles.ToList();
+    LsWorkingDataService.TranslatedFiles.AddRange(xmlFileModels);
+    
+    LsWorkingDataService.CurrentFiles.Clear();
+    var fileModels = currentFiles.ToList();
+    LsWorkingDataService.CurrentFiles.AddRange(fileModels);
+    
+    LsWorkingDataService.PreviousFiles.Clear();
+    var enumerable = previousFiles.ToList();
+    LsWorkingDataService.PreviousFiles.AddRange(enumerable);
 
-    foreach (var xmlFileModel in currentFilesList)
+    foreach (var xmlFileModel in fileModels)
     {
       LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Current);
     }
 
-    foreach (var xmlFileModel in previousFilesList)
+    foreach (var xmlFileModel in enumerable)
     {
       LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Previous);
     }
 
-    foreach (var xmlFileModel in translatedFilesList)
+    foreach (var xmlFileModel in xmlFileModels)
     {
       LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Translated);
     }
@@ -108,16 +110,6 @@ public static class LsWorkingDataService
     LsWorkingDataService.AddNewOriginTexts();
     LsWorkingDataService.SearchDuplicates();
     LsWorkingDataService.ValidateLsTags();
-  }
-
-  private static void ValidateLsTags()
-  {
-    foreach (var dataRowModel in LsWorkingDataService.TranslatedItems)
-    {
-      if (dataRowModel!.Text.IsValidHtml()) { continue; }
-
-      if (dataRowModel.Flag != DatSetFlag.DuplicateSet) { dataRowModel.Flag = DatSetFlag.LsTagError; }
-    }
   }
 
   public static void RecalculateStatus(DataRowModel? dataRowModel)
@@ -307,6 +299,16 @@ public static class LsWorkingDataService
       var items = LsWorkingDataService.TranslatedItems.Where(o => o.Uuid == duplicate);
 
       foreach (var dataRowModel in items) { dataRowModel!.Flag = DatSetFlag.DuplicateSet; }
+    }
+  }
+
+  private static void ValidateLsTags()
+  {
+    foreach (var dataRowModel in LsWorkingDataService.TranslatedItems)
+    {
+      if (dataRowModel!.Text.IsValidHtml()) { continue; }
+
+      if (dataRowModel.Flag != DatSetFlag.DuplicateSet) { dataRowModel.Flag = DatSetFlag.LsTagError; }
     }
   }
 

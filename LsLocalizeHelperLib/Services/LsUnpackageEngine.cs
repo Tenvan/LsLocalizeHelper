@@ -43,34 +43,31 @@ public class LsUnpackageEngine
 
   #region Methods
 
-  public string? ImportPackage()
+  public void CheckEnglishLocalization()
+  {
+    var englishLocalizationPath = Path.Combine(this.TempFolder, "Localization", "English");
+
+    if (Directory.GetFiles(englishLocalizationPath, "*.xml")
+                 .Length
+        > 0) { return; }
+
+    throw new Exception("R-6D51Eefc-7825-40A6-A4C1-69D7D9F4261F".FromResource());
+  }
+
+  public string? ExtractOriginPackage()
   {
     try
     {
       this.PrepareFolder();
       this.UncompressPackage();
-      this.PrepareMod();
-      this.PrepareMeta();
-      Console.WriteLine($"mod {this.ModName} successfully imported in folder:\n{this.ModFolder}");
+      this.CheckEnglishLocalization();
 
       return null;
     }
-    catch (Exception ex)
-    {
-      Console.WriteLine($"error on import:\n{ex.Message}");
-
-      return ex.Message;
-    }
-    finally { this.CleanUp(); }
+    catch (Exception ex) { return ex.Message; }
   }
 
-  private void CleanUp() { Directory.Delete(path: this.TempFolder, recursive: true); }
-
-  private void GenerateMetaLsx(string metaPath,
-                               string author,
-                               string description,
-                               PackedVersion version
-  )
+  public void GenerateMetaLsx(string author, string description, PackedVersion version)
   {
     if (string.IsNullOrEmpty(author)
         || string.IsNullOrEmpty(description)) { return; }
@@ -110,8 +107,29 @@ public class LsUnpackageEngine
           }
         );
 
-    xml.Save(metaPath);
+    var metaFile = Path.Combine(
+      this.ModWorkFolder,
+      "Mods",
+      this.ModName,
+      "meta.lsx"
+    );
+
+    Directory.CreateDirectory(Path.GetDirectoryName(metaFile));
+
+    xml.Save(metaFile);
   }
+
+  public void ImportNewPackage(string language)
+  {
+    try
+    {
+      this.PrepareMod(language);
+      this.PrepareMeta();
+    }
+    finally { this.CleanUp(); }
+  }
+
+  private void CleanUp() { Directory.Delete(path: this.TempFolder, recursive: true); }
 
   private void PrepareFolder()
   {
@@ -134,34 +152,19 @@ public class LsUnpackageEngine
 
     Directory.CreateDirectory(Path.Combine(this.ModWorkFolder, "Mods", this.ModName));
 
-    var metaFile = Path.Combine(
-      this.ModWorkFolder,
-      "Mods",
-      this.ModName,
-      "meta.lsx"
-    );
-
-    this.GenerateMetaLsx(
-      metaPath: metaFile,
-      author: "Tenvan",
-      description: "new translation",
-      version: version
-    );
+    this.GenerateMetaLsx(author: "Tenvan", description: "new translation", version: version);
   }
 
-  private void PrepareMod()
+  private void PrepareMod(string language)
   {
-    var tempDir = new DirectoryInfo(this.TempFolder);
-    var localsDir = tempDir.GetDirectories(searchPattern: "Localization", searchOption: SearchOption.AllDirectories);
+    var tempDir = new DirectoryInfo(Path.Combine(this.TempFolder, "Localization", "English"));
 
-    foreach (var dir in localsDir)
-    {
-      var localsTargetPath = Path.Combine(this.ModWorkFolder, "Localization");
-      Directory.Copy(sourcePath: dir.FullName, destinationPath: localsTargetPath);
-    }
+    var localsTargetPath = Path.Combine(this.ModWorkFolder, "Localization");
+    Directory.Copy(sourcePath: tempDir.FullName, destinationPath: Path.Combine(localsTargetPath, "English"));
+    Directory.Copy(sourcePath: tempDir.FullName, destinationPath: Path.Combine(localsTargetPath, language));
 
-    var modsDir = Path.Combine(this.ModWorkFolder, "Mods");
-    Directory.CreateDirectory(modsDir);
+    // var modsDir = Path.Combine(this.ModWorkFolder, "Mods");
+    // Directory.CreateDirectory(modsDir);
   }
 
   private void UncompressPackage()
