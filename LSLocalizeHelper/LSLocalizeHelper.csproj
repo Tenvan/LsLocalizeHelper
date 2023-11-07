@@ -6,8 +6,8 @@
     <UseWPF>true</UseWPF>
     <LangVersion>latestmajor</LangVersion>
     <UseWindowsForms>True</UseWindowsForms>
-    <AssemblyVersion>3.3.1</AssemblyVersion>
-    <FileVersion>3.3.1</FileVersion>
+    <AssemblyVersion>3.3.2</AssemblyVersion>
+    <FileVersion>3.3.2</FileVersion>
     <NeutralLanguage>de-DE</NeutralLanguage>
     <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481</TargetFrameworks>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>

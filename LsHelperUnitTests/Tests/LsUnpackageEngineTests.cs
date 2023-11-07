@@ -29,7 +29,7 @@ public class LsUnpackageEngineTests : LsHelperTestsBase
   [Fact]
   public void ShouldContainEnglishLocalizationFile()
   {
-    var modName = "TestMod3";
+    var modName = "TestMod-" + Guid.NewGuid();
 
     var pathMods = this.GetTestDataFolder()
                        .FullName;
@@ -62,7 +62,7 @@ public class LsUnpackageEngineTests : LsHelperTestsBase
   [Fact]
   public void ShouldExtractPakFile()
   {
-    var modName = "TestMod2";
+    var modName = "TestMod-" + Guid.NewGuid();
 
     var pathMods = this.GetTestDataFolder()
                        .FullName;
@@ -92,7 +92,7 @@ public class LsUnpackageEngineTests : LsHelperTestsBase
   [Fact]
   public void ShouldGenerateMetaFile()
   {
-    var modName = "TestMod1";
+    var modName = "TestMod-" + Guid.NewGuid();
 
     var pathMods = this.GetTestDataFolder()
                        .FullName;
@@ -134,7 +134,7 @@ public class LsUnpackageEngineTests : LsHelperTestsBase
   [Fact]
   public void ShouldImportPakFile()
   {
-    var modName = "TestMod4";
+    var modName = "TestMod-" + Guid.NewGuid();
 
     var pathMods = this.GetTestDataFolder()
                        .FullName;
