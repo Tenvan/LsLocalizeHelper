@@ -9,7 +9,8 @@
     <AssemblyVersion>3.3.1</AssemblyVersion>
     <FileVersion>3.3.1</FileVersion>
     <NeutralLanguage>de-DE</NeutralLanguage>
-    <TargetFrameworks>net7.0-windows;net6.0-windows;net472;net481</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481</TargetFrameworks>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
