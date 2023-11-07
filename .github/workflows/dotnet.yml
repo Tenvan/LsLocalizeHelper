@@ -31,7 +31,7 @@ jobs:
       run: dotnet restore
       
     - name: Test
-      run: dotnet test --no-restore --logger simple --results-directory "TestResults-${{ matrix.dotnet-version }}"    
+      run: dotnet test --no-restore --verbosity normal /p:ConsoleLoggerFormat=Simple    
       
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v3
