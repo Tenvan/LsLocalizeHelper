@@ -1,3 +1,5 @@
+using LsHelperUnitTests.Classes;
+
 using LsLocalizeHelperLib.Enums;
 using LsLocalizeHelperLib.Services;
 
@@ -16,31 +18,37 @@ public class DataTests : LsHelperTestsBase
 
   #region Constructors
 
-  public DataTests(ITestOutputHelper testOutputHelper) { this.testOutputHelper = testOutputHelper; }
+  public DataTests(ITestOutputHelper testOutputHelper)
+  {
+    this.testOutputHelper = testOutputHelper;
+    LsWorkingDataService.Clear();
+  }
 
   #endregion
 
   #region Methods
 
   [Fact]
+  [Repeat(5)]
   public void ShouldLoadData()
   {
     this.LoadTestData();
 
     LsWorkingDataService.TranslatedItems.Count()
                         .Should()
-                        .BeGreaterThan(0);
+                        .Be(15);
 
     LsWorkingDataService.OriginCurrentItems.Count()
                         .Should()
-                        .BeGreaterThan(0);
+                        .Be(14);
 
     LsWorkingDataService.OriginPreviousItems.Count()
                         .Should()
-                        .BeGreaterThan(0);
+                        .Be(14);
   }
 
   [Fact]
+  [Repeat(5)]
   public void ShouldValidateLoadedData()
   {
     this.LoadTestData();

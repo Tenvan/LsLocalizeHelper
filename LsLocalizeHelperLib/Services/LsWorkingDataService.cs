@@ -33,8 +33,11 @@ public static class LsWorkingDataService
 
   public static void Clear()
   {
+    LsWorkingDataService.CurrentFiles.Clear();
     LsWorkingDataService.OriginCurrentItems.Clear();
     LsWorkingDataService.OriginPreviousItems.Clear();
+    LsWorkingDataService.PreviousFiles.Clear();
+    LsWorkingDataService.TranslatedFiles.Clear();
     LsWorkingDataService.TranslatedItems.Clear();
   }
 
