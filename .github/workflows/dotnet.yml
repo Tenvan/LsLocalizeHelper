@@ -41,11 +41,11 @@ jobs:
       run: dotnet test Bg3LocaHelper.sln --no-restore --verbosity normal    
       
     - name: Publish 
-      run: dotnet publish ./LSLocalizeHelper/LSLocalizeHelper.csproj --configuration Release --no-build --output ${{ publish-dir }} --framework ${{ matrix.dotnet-framework }}
+      run: dotnet publish ./LSLocalizeHelper/LSLocalizeHelper.csproj --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.dotnet-framework }}
 
     - name: Zip the publish directory
       run: |
-        cd ${{ publish-dir }}
+        cd ${{ env.publish-dir }}
         zip -r ${{ env.asset-file }} ./*
         cd ..
     
