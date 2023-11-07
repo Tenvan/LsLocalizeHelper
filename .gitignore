@@ -1,3 +1,4 @@
+.publish/
 bin/
 obj/
 /packages/
@@ -9,3 +10,4 @@ riderModule.iml
 /TestingData/test.pak
 /TestingData/TestModGER
 *.trx
+*.zip
