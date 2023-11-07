@@ -19,8 +19,7 @@ jobs:
     strategy:
       matrix:
         dotnet-version: [ '6.0.x' ]
-        dotnet-framework: [ 'net6.0-windows' ]
-#        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
+        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
 
     steps:
     - name: Checkout code
@@ -47,6 +46,7 @@ jobs:
       run: |
         cd ${{ env.publish-dir }}
         zip -r ${{ env.asset-file }} ./*
+        Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.asset-file }}
         cd ..
     
     - name: Create Release
