@@ -26,14 +26,13 @@
   <System:String x:Key="Changed">已更改</System:String>
   <System:String x:Key="Unchanged">维持原有</System:String>
   <System:String x:Key="Status">状态</System:String>
-  
-  <System:String x:Key="Flag">Flag</System:String>
+  <System:String x:Key="Flag">标记</System:String>
 
-  <System:String x:Key="ExistingSet">Exists</System:String>
-  <System:String x:Key="NewSet">New</System:String>
-  <System:String x:Key="DeletedSet">Deleted</System:String>
-  <System:String x:Key="DuplicateSet">Duplicate</System:String>
-  <System:String x:Key="LsTagError">LSTag Synatx Error</System:String>
+  <System:String x:Key="ExistingSet">已有</System:String>
+  <System:String x:Key="NewSet">新建</System:String>
+  <System:String x:Key="DeletedSet">已删除</System:String>
+  <System:String x:Key="DuplicateSet">重复</System:String>
+  <System:String x:Key="LsTagError">LSTag 语法错误</System:String>
 
   <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">设置工作文件夹路径</System:String>
   <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">工作文件夹</System:String>
