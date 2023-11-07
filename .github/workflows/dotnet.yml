@@ -15,6 +15,7 @@ jobs:
     
     env: 
       asset-file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}.zip
+      publish-dir: ./.publish-${{ matrix.dotnet-framework }}
     strategy:
       matrix:
         dotnet-version: [ '6.0.x' ]
@@ -40,11 +41,11 @@ jobs:
       run: dotnet test Bg3LocaHelper.sln --no-restore --verbosity normal    
       
     - name: Publish 
-      run: dotnet publish ./LSLocalizeHelper/LSLocalizeHelper.csproj --configuration Release --no-build --output ./.publish/${{ matrix.dotnet-framework }} --framework ${{ matrix.dotnet-framework }}
+      run: dotnet publish ./LSLocalizeHelper/LSLocalizeHelper.csproj --configuration Release --no-build --output ${{ publish-dir }} --framework ${{ matrix.dotnet-framework }}
 
     - name: Zip the publish directory
       run: |
-        cd ./publish
+        cd ${{ publish-dir }}
         zip -r ${{ env.asset-file }} ./*
         cd ..
     
