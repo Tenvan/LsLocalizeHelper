@@ -45,7 +45,6 @@ jobs:
     - name: Zip the publish directory
       run: |
         cd ${{ env.publish-dir }}
-        zip -r ${{ env.asset-file }} ./*
         Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.asset-file }}
         cd ..
     
