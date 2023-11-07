@@ -31,7 +31,7 @@ public class LsUnpackageEngineTests : LsHelperTestsBase
   {
     var modName = "TestMod-" + Guid.NewGuid();
 
-    var pathMods = this.GetTestDataFolder()
+    var pathMods = this.GetTestExtractDataFolder()
                        .FullName;
 
     this.CleanDir(Path.Combine(pathMods, modName));
@@ -64,7 +64,7 @@ public class LsUnpackageEngineTests : LsHelperTestsBase
   {
     var modName = "TestMod-" + Guid.NewGuid();
 
-    var pathMods = this.GetTestDataFolder()
+    var pathMods = this.GetTestExtractDataFolder()
                        .FullName;
 
     this.CleanDir(Path.Combine(pathMods, modName));
@@ -94,7 +94,7 @@ public class LsUnpackageEngineTests : LsHelperTestsBase
   {
     var modName = "TestMod-" + Guid.NewGuid();
 
-    var pathMods = this.GetTestDataFolder()
+    var pathMods = this.GetTestExtractDataFolder()
                        .FullName;
 
     this.CleanDir(Path.Combine(pathMods, modName));
@@ -136,7 +136,7 @@ public class LsUnpackageEngineTests : LsHelperTestsBase
   {
     var modName = "TestMod-" + Guid.NewGuid();
 
-    var pathMods = this.GetTestDataFolder()
+    var pathMods = this.GetTestExtractDataFolder()
                        .FullName;
 
     this.CleanDir(Path.Combine(pathMods, modName));

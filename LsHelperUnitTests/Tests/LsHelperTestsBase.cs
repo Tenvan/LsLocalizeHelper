@@ -53,6 +53,15 @@ public class LsHelperTestsBase
     return test;
   }
 
+  protected DirectoryInfo GetTestExtractDataFolder()
+  {
+    var dirInfo = new DirectoryInfo(".").Parent.Parent.Parent.Parent;
+    var testDataFolder = Path.Combine(dirInfo.FullName, "TestingDataExtract");
+    var test = new DirectoryInfo(testDataFolder);
+
+    return test;
+  }
+
   #endregion
 
 }
