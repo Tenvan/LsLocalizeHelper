@@ -18,7 +18,8 @@ jobs:
     strategy:
       matrix:
         dotnet-version: [ '6.0.x' ]
-        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
+        dotnet-framework: [ 'net6.0-windows' ]
+#        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
 
     steps:
     - name: Checkout code
@@ -33,7 +34,7 @@ jobs:
       run: dotnet restore Bg3LocaHelper.sln
       
     - name: Build
-      run: dotnet build Bg3LocaHelper.sln --configuration Release --no-restore --verbosity normal
+      run: dotnet build Bg3LocaHelper.sln --configuration Release --no-restore --verbosity minimal
       
     - name: Test
       run: dotnet test Bg3LocaHelper.sln --no-restore --verbosity normal    
