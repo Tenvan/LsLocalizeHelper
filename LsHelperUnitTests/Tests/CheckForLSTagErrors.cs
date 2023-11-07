@@ -4,7 +4,7 @@ using LsLocalizeHelperLib.Helper;
 
 using Xunit.Abstractions;
 
-namespace LsHelperUnitTests;
+namespace LsHelperUnitTests.Tests;
 
 public class CheckForLsTagErrors
 {

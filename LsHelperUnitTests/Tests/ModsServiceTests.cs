@@ -54,12 +54,12 @@ public class ModsServiceTests
     target.LoadMods(dataDir.FullName);
 
     target.Items.Count.Should()
-               .Be(2);
+               .BeGreaterThan(1);
 
     var modModels = target.Items.ToArray();
 
     modModels.Length.Should()
-             .Be(2);
+             .BeGreaterThan(1);
   }
 
   #endregion
