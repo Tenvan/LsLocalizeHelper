@@ -7,6 +7,33 @@ on:
       - v*
 
 jobs:
+  test:
+    environment: dev
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        dotnet-version: [ '6.0.x', '7.0.x' ]
+        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+          
+      - name: Restore dependencies
+        run: dotnet restore LsLocalizeHelper.sln
+
+      - name: Build
+        run: dotnet build LsLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
+
+      - name: Test
+        run: dotnet test LsLocalizeHelper.sln --no-restore --verbosity normal
+  
   build:
     permissions: write-all
     name: print-token
@@ -21,17 +48,10 @@ jobs:
 
     env: 
       target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.framework }}-${{ github.ref_name }}.zip
-      nightly_flags: ${{ github.ref == 'refs/heads/develop' && '--draft --prerelease' || '' }}
       publish-dir: ./.publish/${{ matrix.framework }}
       project-file: ./LsLocalizeHelper/LsLocalizeHelper.csproj
 
     steps:
-    - name: GitHub Tag Name example
-      run: |
-        echo "github.ref     : ${{ github.ref }}"
-        echo "github.ref_name: ${{ github.ref_name }}"
-        echo "nightly_flags  : ${{ env.nightly_flags }}"
-        
     - name: Checkout code
       uses: actions/checkout@v4
     
@@ -64,7 +84,9 @@ jobs:
           gh release create "${{ github.ref_name }}" \
           --title="${GITHUB_REPOSITORY#*/} ${{ github.ref_name }}" \
           --generate-notes \
-          --notes-file ./RELEASE.MD ${{ env.nightly_flags }}
+          --notes-file ./RELEASE.MD \ 
+          --draft \
+          --prerelease
         fi
 
     - name: Upload Release Asset
