@@ -23,7 +23,6 @@ jobs:
       target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.framework }}-${{ github.ref_name }}.zip
       publish-dir: ./.publish/${{ matrix.framework }}
       project-file: ./LSLocalizeHelper/LSLocalizeHelper.csproj
-      tag: ${{ github.ref_name }}
 
     steps:
     - name: GitHub Tag Name example
@@ -31,7 +30,6 @@ jobs:
         echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
         echo "Tag name from github.ref_name: ${{ github.ref_name }}"
         echo "Tag name from GITHUB_REF##*/ :${GITHUB_REF##*/}"
-        echo "Tag name from tag: $tag"
         
     - name: Checkout code
       uses: actions/checkout@v4
@@ -56,21 +54,21 @@ jobs:
     - name: Create Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        tag: $tag
+        tag: ${{ github.ref_name }}
       run: |
         if gh release view "${{ github.ref }}" > /dev/null 2>&1 ; then
-          echo "Release $tag exists"
+          echo "Release ${{ github.ref_name }} exists"
         else
-          echo "Release $tag does not exist, creating..."
-          gh release create "${{ github.ref }}" \
-          --title="${GITHUB_REPOSITORY#*/} $tag" \
+          echo "Release ${{ github.ref_name }} does not exist, creating..."
+          gh release create "${{ github.ref_name }}" \
+          --title="${GITHUB_REPOSITORY#*/} ${{ github.ref_name }}" \
           --generate-notes
         fi
 
     - name: Upload Release Asset
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        tag: $tag
+        tag: ${{ github.ref_name }}
       run: |
-        gh release upload "$tag" \
+        gh release upload "${{ github.ref_name }}" \
         ${{ env.target_file }}
