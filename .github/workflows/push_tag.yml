@@ -23,7 +23,7 @@ jobs:
       target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.framework }}-${{ github.ref_name }}.zip
       publish-dir: ./.publish/${{ matrix.framework }}
       project-file: ./LSLocalizeHelper/LSLocalizeHelper.csproj
-      tag: ${{ github.ref_name }}"
+      tag: ${{ github.ref_name }}
 
     steps:
     - name: GitHub Tag Name example
@@ -31,7 +31,7 @@ jobs:
         echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
         echo "Tag name from github.ref_name: ${{ github.ref_name }}"
         echo "Tag name from GITHUB_REF##*/ :${GITHUB_REF##*/}"
-        echo "Tag name from $tag: $tag"
+        echo "Tag name from tag: $tag"
         
     - name: Checkout code
       uses: actions/checkout@v4
