@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Publish net6.0" type="DotNetFolderPublish" factoryName="Publish to folder">
-    <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="Portable" self_contained="true" target_folder="$PROJECT_DIR$/../Bg3LocaHelperPublished/net6.0" target_framework="net6.0-windows" uuid_high="-8816743877473976288" uuid_low="-6656244271907284030" />
+    <riderPublish configuration="Release" delete_existing_files="true" platform="Any CPU" runtime="Portable" self_contained="true" target_folder="$PROJECT_DIR$/../LSLocalizeHelperPublished/net6.0" target_framework="net6.0-windows" uuid_high="-8816743877473976288" uuid_low="-6656244271907284030" />
     <method v="2" />
   </configuration>
 </component>

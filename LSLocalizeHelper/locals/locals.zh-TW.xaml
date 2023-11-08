@@ -45,7 +45,7 @@
   <System:String x:Key="R-47916Bb7-62C2-4222-Ad3A-3E4A6F2Dd326">導入</System:String>
   <System:String x:Key="R-0A685E01-6672-48C9-Aeff-D82F68346E99">導入對話框</System:String>
 
-  <System:String x:Key="R-9B9E1Bbb-Dc9D-475F-8977-5Dc8C60288F5">Bg3LocaHelper《博德之门3》模组本地化助手</System:String>
+  <System:String x:Key="R-9B9E1Bbb-Dc9D-475F-8977-5Dc8C60288F5">LSLocalizeHelper 《博德之门3》模组本地化助手</System:String>
 
   <System:String x:Key="R-Bc06Ec85-2434-4Aa6-93D6-971C94181391">退出程式</System:String>
   <System:String x:Key="R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5">加載選定的 XML 文檔</System:String>
