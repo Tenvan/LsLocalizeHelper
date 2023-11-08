@@ -56,7 +56,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ github.ref_name }}
       run: |
-        if gh release view "${{ github.ref }}" > /dev/null 2>&1 ; then
+        if gh release view "${{ github.ref_name }}" > /dev/null 2>&1 ; then
           echo "Release ${{ github.ref_name }} exists"
         else
           echo "Release ${{ github.ref_name }} does not exist, creating..."
