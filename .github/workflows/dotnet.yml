@@ -41,15 +41,33 @@ jobs:
     env: 
       asset-file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}.zip
       publish-dir: ./.publish/${{ matrix.dotnet-framework }}
+      project-file: ./LSLocalizeHelper/LSLocalizeHelper.csproj
+      
     strategy:
       matrix:
         dotnet-version: [ '6.0.x' ]
-        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
+#        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
+        dotnet-framework: [ 'net6.0-windows' ]
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
+    
+    - name: Get version
+      id: package_version
+      uses: KageKirin/get-csproj-version@v1.0.0
+      with:
+        file: ${{ env.project-file }}
+        
+    - name: Get new tag
+      env:
+        new_tag: ${{ steps.package_version.outputs.version }}
+      run: |
+        echo "NEW_TAG=v${{ env.new_tag }}" >> $GITHUB_ENV
+        echo "ASSET_FILE=${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}-${{ env.new_tag }}.zip" >> $GITHUB_ENV
+        echo "NEW_TAG = $NEW_TAG" 
+        echo "ASSET_FILE= $ASSET_FILE" 
+    
     - name: Setup .NET ${{ matrix.dotnet-version }}
       uses: actions/setup-dotnet@v3
       with:
@@ -62,11 +80,11 @@ jobs:
       run: dotnet build Bg3LocaHelper.sln --configuration Release --no-restore --verbosity minimal
       
     - name: Publish 
-      run: dotnet publish ./LSLocalizeHelper/LSLocalizeHelper.csproj --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.dotnet-framework }}
+      run: dotnet publish ${{ env.project-file }} --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.dotnet-framework }}
 
     - name: Zip the publish directory
 #      run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.asset-file }}
-      run:  zip -r ./${{ env.asset-file }} ${{ env.publish-dir }}/* 
+      run:  zip -r ./$ASSET_FILE ${{ env.publish-dir }}/* 
     
     - name: Create Release
       id: create_release
@@ -74,8 +92,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Dieses Token wird von den GitHub Actions bereitgestellt
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: $NEW_TAG
+        release_name: Release $NEW_TAG
         draft: false
         prerelease: false
 
@@ -86,6 +104,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./${{ env.asset-file }}
+        asset_path: ./$ASSET_FILE
         asset_name: ${{ env.asset-file }}
         asset_content_type: application/octet-stream
