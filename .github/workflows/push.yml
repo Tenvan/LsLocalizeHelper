@@ -31,11 +31,11 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
 
 #      - name: Restore dependencies
-#        run: dotnet restore LSLocalizeHelper.sln
+#        run: dotnet restore LsLocalizeHelper.sln
 #
 #      - name: Build
-#        run: dotnet build LSLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
+#        run: dotnet build LsLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
 #
 #      - name: Test
-#        run: dotnet test LSLocalizeHelper.sln --no-restore --verbosity normal
+#        run: dotnet test LsLocalizeHelper.sln --no-restore --verbosity normal
   

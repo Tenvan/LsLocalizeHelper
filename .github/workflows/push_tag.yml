@@ -22,7 +22,7 @@ jobs:
     env: 
       target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.framework }}-${{ github.ref_name }}.zip
       publish-dir: ./.publish/${{ matrix.framework }}
-      project-file: ./LSLocalizeHelper/LSLocalizeHelper.csproj
+      project-file: ./LsLocalizeHelper/LsLocalizeHelper.csproj
 
     steps:
     - name: GitHub Tag Name example
@@ -40,10 +40,10 @@ jobs:
         dotnet-version: ${{ matrix.dotnet-version }}
 
     - name: Restore dependencies
-      run: dotnet restore LSLocalizeHelper.sln
+      run: dotnet restore LsLocalizeHelper.sln
 
     - name: Build
-      run: dotnet build LSLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
+      run: dotnet build LsLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
 
     - name: Publish 
       run: dotnet publish ${{ env.project-file }} --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.framework }}
