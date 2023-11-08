@@ -25,7 +25,7 @@ public static class SettingsManager
   {
     var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-    return Path.Combine(appData, "LSLocalizeHelper", fileName);
+    return Path.Combine(appData, "LsLocalizeHelper", fileName);
   }
 
   public static void Load()

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 using LsLocalizeHelperLib.Services;
 
-namespace LSLocalizeHelper.Views;
+namespace LsLocalizeHelper.Views;
 
 public partial class ImportDialog : Window
 {

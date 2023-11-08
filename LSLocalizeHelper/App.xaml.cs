@@ -3,7 +3,7 @@ using System.Windows;
 
 using LsLocalizeHelperLib.Services;
 
-namespace LSLocalizeHelper;
+namespace LsLocalizeHelper;
 
 /// <summary>
 /// Interaction logic for App.xaml

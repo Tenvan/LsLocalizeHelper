@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using LsLocalizeHelperLib.Models;
 using LsLocalizeHelperLib.Services;
 
-namespace LSLocalizeHelper.Views;
+namespace LsLocalizeHelper.Views;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml

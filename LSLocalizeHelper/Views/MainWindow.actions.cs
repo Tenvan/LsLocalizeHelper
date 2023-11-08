@@ -15,7 +15,7 @@ using LsLocalizeHelperLib.Helper;
 using LsLocalizeHelperLib.Models;
 using LsLocalizeHelperLib.Services;
 
-namespace LSLocalizeHelper.Views;
+namespace LsLocalizeHelper.Views;
 
 /// <summary>
 /// Methods for doing something.

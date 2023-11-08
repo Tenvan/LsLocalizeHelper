@@ -15,7 +15,7 @@ using ReactiveUI;
 
 using Clipboard = System.Windows.Forms.Clipboard;
 
-namespace LSLocalizeHelper.Views;
+namespace LsLocalizeHelper.Views;
 
 /// <summary>
 /// Set of all Event Methods
