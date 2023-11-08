@@ -7,30 +7,7 @@ on:
       - v*
 
 jobs:
-#  test:
-#    environment: dev
-#    runs-on: windows-latest      
-#       
-#    steps:      
-#      - name: Checkout code
-#        uses: actions/checkout@v4
-#
-#      - name: Setup .NET ${{ matrix.dotnet-version }}
-#        uses: actions/setup-dotnet@v3
-#        with:
-#          dotnet-version: ${{ matrix.dotnet-version }}
-#
-#      - name: Restore dependencies
-#        run: dotnet restore Bg3LocaHelper.sln
-#
-#      - name: Build
-#        run: dotnet build Bg3LocaHelper.sln --configuration Release --no-restore --verbosity minimal
-#
-#      - name: Test
-#        run: dotnet test Bg3LocaHelper.sln --no-restore --verbosity normal
-  
   build:
-#    needs: test 
     permissions: write-all
     name: print-token
     environment: dev
@@ -46,7 +23,7 @@ jobs:
       target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.framework }}-${{ github.ref_name }}.zip
       publish-dir: ./.publish/${{ matrix.framework }}
       project-file: ./LSLocalizeHelper/LSLocalizeHelper.csproj
-      
+      tag: ${{ github.ref_name }}"
 
     steps:
     - name: GitHub Tag Name example
@@ -54,6 +31,7 @@ jobs:
         echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
         echo "Tag name from github.ref_name: ${{ github.ref_name }}"
         echo "Tag name from GITHUB_REF##*/ :${GITHUB_REF##*/}"
+        echo "Tag name from $tag: $tag"
         
     - name: Checkout code
       uses: actions/checkout@v4
@@ -76,23 +54,24 @@ jobs:
       run:  zip -r ./${{ env.target_file }} ${{ env.publish-dir }}/* 
 
     - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: ${{ github.ref == 'refs/heads/main' && true || false }}
-        prerelease: ${{ github.ref == 'refs/heads/main' && false || true }}
-        
+        tag: $tag
+      run: |
+        if gh release view "${{ github.ref }}" > /dev/null 2>&1 ; then
+          echo "Release $tag exists"
+        else
+          echo "Release $tag does not exist, creating..."
+          gh release create "${{ github.ref }}" \
+          --title="${GITHUB_REPOSITORY#*/} $tag" \
+          --generate-notes
+        fi
+
     - name: Upload Release Asset
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{ github.ref_name }}
+        tag: $tag
       run: |
         gh release upload "$tag" \
-        --repo="$GITHUB_REPOSITORY" \
         --generate-notes \
         ${{ env.target_file }}
-        

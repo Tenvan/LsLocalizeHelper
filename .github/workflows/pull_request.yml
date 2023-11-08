@@ -24,12 +24,12 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
-#      - name: Restore dependencies
-#        run: dotnet restore Bg3LocaHelper.sln
-#
-#      - name: Build
-#        run: dotnet build Bg3LocaHelper.sln --configuration Release --no-restore --verbosity minimal
-#
-#      - name: Test
-#        run: dotnet test Bg3LocaHelper.sln --no-restore --verbosity normal
+      - name: Restore dependencies
+        run: dotnet restore Bg3LocaHelper.sln
+
+      - name: Build
+        run: dotnet build Bg3LocaHelper.sln --configuration Release --no-restore --verbosity minimal
+
+      - name: Test
+        run: dotnet test Bg3LocaHelper.sln --no-restore --verbosity normal
   
