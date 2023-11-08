@@ -59,60 +59,11 @@ jobs:
       with:
 #        file: ${{ env.project-file }}
         file: ./Directory.Build.props
-        
-    - name: Get new tag ENV
-      env:
-        new_tag: ${{ steps.package_version.outputs.version }}
-        target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}-${{ env.new_tag }}.zip
-      run: |
-        echo "env.new_tag = ${{ env.new_tag }}" 
-        echo "env.target_file= ${{ env.target_file }}" 
-        echo "new_tag = $new_tag" 
-        echo "target_file= $target_file" 
-    
-    - name: Print new tag ENV
-      run: |
-        echo "new_tag = $new_tag" 
-        echo "target_file= $target_file" 
-    
-    - name: Get new tag GITHUB_STATE
-      env:
-        new_tag: ${{ steps.package_version.outputs.version }}
-        target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}-${{ env.new_tag }}.zip
-      run: |
-        echo "new_tag=${{ env.new_tag }}" >> $GITHUB_STATE
-        echo "target_file=${{ env.target_file }}" >> $GITHUB_STATE
-        echo "env.new_tag = ${{ env.new_tag }}" 
-        echo "env.target_file= ${{ env.target_file }}" 
-        echo "new_tag = $new_tag" 
-        echo "target_file= $target_file" 
-  
-    - name: Print new tag GITHUB_STATE
-      run: |
-        echo "new_tag = $new_tag" 
-        echo "target_file= $target_file" 
-  
-    - name: Get new tag GITHUB_OUTPUT
-      env:
-        new_tag: ${{ steps.package_version.outputs.version }}
-        target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}-${{ env.new_tag }}.zip
-      run: |
-        echo "new_tag=${{ env.new_tag }}" >> $GITHUB_OUTPUT
-        echo "target_file=${{ env.target_file }}" >> $GITHUB_OUTPUT
-        echo "env.new_tag = ${{ env.new_tag }}" 
-        echo "env.target_file= ${{ env.target_file }}" 
-        echo "new_tag = $new_tag" 
-        echo "target_file= $target_file" 
-  
-    - name: Print new tag GITHUB_OUTPUT
-      run: |
-        echo "new_tag = $new_tag" 
-        echo "target_file= $target_file" 
-  
+
     - name: Get new tag GITHUB_ENV
       env:
         new_tag: ${{ steps.package_version.outputs.version }}
-        target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}-${{ env.new_tag }}.zip
+        target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}-${{ steps.package_version.outputs.version }}.zip
       run: |
         echo "new_tag=${{ env.new_tag }}" >> $GITHUB_ENV
         echo "target_file=${{ env.target_file }}" >> $GITHUB_ENV
