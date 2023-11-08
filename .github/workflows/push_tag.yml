@@ -38,8 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     
     env: 
-      target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${tag#v}.zip
-      asset-file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}.zip
+      target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ github.ref_name }}".zip
       publish-dir: ./.publish/${{ matrix.dotnet-framework }}
       project-file: ./LSLocalizeHelper/LSLocalizeHelper.csproj
       
@@ -53,8 +52,8 @@ jobs:
     - name: GitHub Tag Name example
       run: |
         echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-        echo "Tag name from github.ref_name: ${{  github.ref_name }}"
-        echo "${GITHUB_REF##*/}"
+        echo "Tag name from github.ref_name: ${{ github.ref_name }}"
+        echo "Tag name from GITHUB_REF##*/ :${GITHUB_REF##*/}"
         
     - name: Checkout code
       uses: actions/checkout@v4
@@ -84,7 +83,7 @@ jobs:
       run: |
         gh release create "$tag" \
         --repo="$GITHUB_REPOSITORY" \
-        --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+        --title="${GITHUB_REPOSITORY#*/} ${{ github.ref_name }}" \
         --generate-notes \
         ${{ env.target_file }}
         
