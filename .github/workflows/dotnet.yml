@@ -91,11 +91,11 @@ jobs:
       run: dotnet build Bg3LocaHelper.sln --configuration Release --no-restore --verbosity minimal
 
     - name: Publish 
-      run: dotnet publish $project-file --configuration Release --no-build --output $publish-dir --framework ${{ matrix.dotnet-framework }}
+      run: dotnet publish ${{ env.project-file }} --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.dotnet-framework }}
 
     - name: Zip the publish directory
 #      run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.asset-file }}
-      run:  zip -r ./$ASSET_FILE $publish-dir/* 
+      run:  zip -r ./$ASSET_FILE ${{ env.publish-dir }}/* 
 
     - name: Create Release
       id: create_release
