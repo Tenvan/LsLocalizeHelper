@@ -28,9 +28,9 @@ jobs:
     steps:
     - name: GitHub Tag Name example
       run: |
-        echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-        echo "Tag name from github.ref_name: ${{ github.ref_name }}"
-        echo "Tag name from GITHUB_REF##*/ :${GITHUB_REF##*/}"
+        echo "github.ref     : ${{ github.ref }}"
+        echo "github.ref_name: ${{ github.ref_name }}"
+        echo "nightly_flags  : ${{ env.nightly_flags }}"
         
     - name: Checkout code
       uses: actions/checkout@v4
