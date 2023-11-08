@@ -37,16 +37,16 @@ jobs:
     
     runs-on: ubuntu-latest
     
-    env: 
-      target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ github.ref_name }}.zip
-      publish-dir: ./.publish/${{ matrix.dotnet-framework }}
-      project-file: ./LSLocalizeHelper/LSLocalizeHelper.csproj
-      
     strategy:
       matrix:
         dotnet-version: [ '6.0.x' ]
-        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
-#        dotnet-framework: [ 'net6.0-windows' ]
+        framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
+
+    env: 
+      target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.framework }}-${{ github.ref_name }}.zip
+      publish-dir: ./.publish/${{ matrix.framework }}
+      project-file: ./LSLocalizeHelper/LSLocalizeHelper.csproj
+      
 
     steps:
     - name: GitHub Tag Name example
@@ -70,20 +70,29 @@ jobs:
       run: dotnet build Bg3LocaHelper.sln --configuration Release --no-restore --verbosity minimal
 
     - name: Publish 
-      run: dotnet publish ${{ env.project-file }} --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.dotnet-framework }}
+      run: dotnet publish ${{ env.project-file }} --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.framework }}
 
     - name: Zip the publish directory
-#      run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.target_file }}
       run:  zip -r ./${{ env.target_file }} ${{ env.publish-dir }}/* 
 
-    - name: Create release
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: ${{ github.ref == 'refs/heads/main' && true || false }}
+        prerelease: ${{ github.ref == 'refs/heads/main' && false || true }}
+        
+    - name: Upload Release Asset
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ github.ref_name }}
       run: |
-        gh release create "$tag" \
+        gh release upload "$tag" \
         --repo="$GITHUB_REPOSITORY" \
-        --title="${GITHUB_REPOSITORY#*/} ${{ github.ref_name }}" \
         --generate-notes \
         ${{ env.target_file }}
         
