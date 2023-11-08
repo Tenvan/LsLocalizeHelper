@@ -15,7 +15,13 @@ jobs:
         dotnet-version: [ '6.0.x' ]
         dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
 
-    steps:      
+    steps:
+      - name: GitHub Tag Name example
+        run: |
+          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
+          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
+          echo "${GITHUB_REF##*/}"
+          
       - name: Checkout code
         uses: actions/checkout@v4
 
