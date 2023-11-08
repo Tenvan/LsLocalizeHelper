@@ -45,8 +45,8 @@ jobs:
     strategy:
       matrix:
         dotnet-version: [ '6.0.x' ]
-#        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
-        dotnet-framework: [ 'net6.0-windows' ]
+        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
+#        dotnet-framework: [ 'net6.0-windows' ]
 
     steps:
     - name: GitHub Tag Name example
@@ -87,25 +87,3 @@ jobs:
         --generate-notes \
         ${{ env.target_file }}
         
-#    - name: Create Release
-#      id: create_release
-#      uses: actions/create-release@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Dieses Token wird von den GitHub Actions bereitgestellt
-#      with:
-#        tag_name: $new_tag
-#        release_name: Release $new_tag
-#        draft: false
-#        prerelease: false
-#    
-#    - name: Upload Release Asset
-#      id: upload-release-asset
-#      uses: actions/upload-release-asset@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      with:
-#        upload_url: ${{ steps.create_release.outputs.upload_url }}
-#        asset_path: ./${{ env.target_file }}
-#        asset_name: ${{ env.target_file }}
-#        asset_content_type: application/octet-stream
-
