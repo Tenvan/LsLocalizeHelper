@@ -38,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     
     env: 
+      target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${tag#v}.zip
       asset-file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}.zip
       publish-dir: ./.publish/${{ matrix.dotnet-framework }}
       project-file: ./LSLocalizeHelper/LSLocalizeHelper.csproj
@@ -51,31 +52,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
-    - name: Get version
-      id: package_version
-      uses: KageKirin/get-csproj-version@v1.0.0
-      with:
-        file: ./Directory.Build.props
-
-    - name: Get new tag GITHUB_ENV
-      env:
-        new_version: ${{ steps.package_version.outputs.version }}
-        new_tag: v${{ steps.package_version.outputs.version }}
-        target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-v${{ steps.package_version.outputs.version }}.zip
-      run: |
-        echo "new_version=${{ env.new_version }}" >> $GITHUB_ENV
-        echo "new_tag=${{ env.new_tag }}" >> $GITHUB_ENV
-        echo "target_file=${{ env.target_file }}" >> $GITHUB_ENV
-        echo "new_version = $new_version" 
-        echo "new_tag = $new_tag" 
-        echo "target_file= $target_file" 
-  
-    - name: Print new tag GITHUB_ENV
-      run: |
-        echo "new_version = $new_version" 
-        echo "new_tag = $new_tag" 
-        echo "target_file= $target_file"
     
     - name: Setup .NET ${{ matrix.dotnet-version }}
       uses: actions/setup-dotnet@v3
@@ -92,8 +68,8 @@ jobs:
       run: dotnet publish ${{ env.project-file }} --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.dotnet-framework }}
 
     - name: Zip the publish directory
-#      run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.asset-file }}
-      run:  zip -r ./$ASSET_FILE ${{ env.publish-dir }}/* 
+#      run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.target_file }}
+      run:  zip -r ./${{ env.target_file }} ${{ env.publish-dir }}/* 
 
     - name: Create release
       env:
