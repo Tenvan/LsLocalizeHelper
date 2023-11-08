@@ -1,0 +1,35 @@
+---
+name: LsLocalHelper.NET
+
+on:
+  push:
+    branches: [ develop, main ]
+
+jobs:
+  test:
+    environment: dev
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        dotnet-version: [ '6.0.x' ]
+        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
+
+    steps:      
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Restore dependencies
+        run: dotnet restore Bg3LocaHelper.sln
+
+      - name: Build
+        run: dotnet build Bg3LocaHelper.sln --configuration Release --no-restore --verbosity minimal
+
+      - name: Test
+        run: dotnet test Bg3LocaHelper.sln --no-restore --verbosity normal
+  
