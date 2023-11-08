@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        dotnet-version: [ '6.0.x', '7.0.x' ]
+        dotnet-version: [ '7.0.x' ]
         dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
 
     steps:
@@ -35,6 +35,7 @@ jobs:
         run: dotnet test LsLocalizeHelper.sln --no-restore --verbosity normal
   
   build:
+    needs: test
     permissions: write-all
     name: print-token
     environment: dev
@@ -83,10 +84,9 @@ jobs:
           echo "Release ${{ github.ref_name }} does not exist, creating..."
           gh release create "${{ github.ref_name }}" \
           --title="${GITHUB_REPOSITORY#*/} ${{ github.ref_name }}" \
+          --draft --prerelease \
           --generate-notes \
-          --notes-file ./RELEASE.MD \ 
-          --draft \
-          --prerelease
+          --notes-file ./RELEASE.MD 
         fi
 
     - name: Upload Release Asset
