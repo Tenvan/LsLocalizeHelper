@@ -1,5 +1,5 @@
 ---
-name: LsLocalHelper.NET
+name: On Push Tags 
 
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     
     env: 
-      target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ github.ref_name }}".zip
+      target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ github.ref_name }}.zip
       publish-dir: ./.publish/${{ matrix.dotnet-framework }}
       project-file: ./LSLocalizeHelper/LSLocalizeHelper.csproj
       

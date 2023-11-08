@@ -1,5 +1,5 @@
 ---
-name: LsLocalHelper.NET
+name: On Push Branches
 
 on:
   push:

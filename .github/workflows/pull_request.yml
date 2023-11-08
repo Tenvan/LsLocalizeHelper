@@ -1,5 +1,5 @@
 ---
-name: LsLocalHelper.NET
+name: On Pull Requests
 
 on:
   pull_request:
