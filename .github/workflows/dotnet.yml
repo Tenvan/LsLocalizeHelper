@@ -66,8 +66,8 @@ jobs:
       run: |
         echo "NEW_TAG=v${{ env.new_tag }}" >> $GITHUB_ENV
         echo "ASSET_FILE=${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}-${{ env.new_tag }}.zip" >> $GITHUB_ENV
-        echo "NEW_TAG = $NEW_TAG" 
-        echo "ASSET_FILE= $ASSET_FILE" 
+        echo "NEW_TAG = ${{ env.NEW_TAG }}" 
+        echo "ASSET_FILE= ${{ env.ASSET_FILE }}" 
     
     - name: Setup .NET ${{ matrix.dotnet-version }}
       uses: actions/setup-dotnet@v3
