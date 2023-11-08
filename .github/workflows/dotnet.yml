@@ -15,7 +15,7 @@ jobs:
     
     env: 
       asset-file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.dotnet-framework }}-${{ matrix.dotnet-version }}.zip
-      publish-dir: ./.publish-${{ matrix.dotnet-framework }}
+      publish-dir: ./.publish/${{ matrix.dotnet-framework }}
     strategy:
       matrix:
         dotnet-version: [ '6.0.x' ]
@@ -43,10 +43,7 @@ jobs:
       run: dotnet publish ./LSLocalizeHelper/LSLocalizeHelper.csproj --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.dotnet-framework }}
 
     - name: Zip the publish directory
-      run: |
-        cd ${{ env.publish-dir }}
-        Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.asset-file }}
-        cd ..
+      run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.asset-file }}
     
     - name: Create Release
       id: create_release
