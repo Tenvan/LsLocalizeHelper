@@ -71,8 +71,9 @@ jobs:
       run: dotnet publish ${{ env.project-file }} --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.framework }}
 
     - name: Zip the publish directory
-      run:  zip -r ./${{ env.target_file }} ${{ env.publish-dir }}/* 
-
+#      run:  zip -r ./${{ env.target_file }} ${{ env.publish-dir }}/* 
+      run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.target_file }}
+      
     - name: Create Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
