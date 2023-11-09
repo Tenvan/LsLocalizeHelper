@@ -160,8 +160,8 @@ public partial class MainWindow : Window,
     {
       this.LanguageItems.Add(new CultureInfo("de-DE"));
       this.LanguageItems.Add(new CultureInfo("en-US"));
-      this.LanguageItems.Add(new CultureInfo("zh-Hans"));
-      this.LanguageItems.Add(new CultureInfo("zh-Hant"));
+      this.LanguageItems.Add(new CultureInfo("zh-CN"));
+      this.LanguageItems.Add(new CultureInfo("zh-TW"));
     }
 
     // this.Language = culture;

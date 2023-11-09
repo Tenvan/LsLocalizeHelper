@@ -10,7 +10,7 @@
     <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481</TargetFrameworks>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
-    <RootNamespace>LsLocalizeHelper1</RootNamespace>
+    <RootNamespace>LsLocalizeHelper</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
