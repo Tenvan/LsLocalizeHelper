@@ -77,10 +77,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ github.ref_name }}
-      run: |
-        $releaseName = ${{ github.ref_name }}
-        $repositoryName = $env:GITHUB_REPOSITORY.Split('/')[1]
-        
+        releaseName: ${{ github.ref_name }}
+        repositoryName: ${{ github.ref_name }}
+      run: |        
         if ((gh release view "$releaseName) -ne $null) {
           Write-Output "Release $releaseName exists"
         } else {
