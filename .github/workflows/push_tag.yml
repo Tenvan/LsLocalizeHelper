@@ -6,11 +6,17 @@ on:
     tags:
       - v*
 
+env:
+  repositoryName: ${{ github.repository }}
+  releaseName: ${{ github.ref_name }}
+  projectFile: ./LsLocalizeHelper/LsLocalizeHelper.csproj
+  solutionFile: ./LsLocalizeHelper.sln
+
 jobs:
   test:
     environment: dev
     runs-on: windows-latest
-
+    
     strategy:
       matrix:
         dotnet-version: [ '7.0.x' ]
@@ -20,19 +26,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-#      - name: Setup .NET ${{ matrix.dotnet-version }}
-#        uses: actions/setup-dotnet@v3
-#        with:
-#          dotnet-version: ${{ matrix.dotnet-version }}
-#          
-#      - name: Restore dependencies
-#        run: dotnet restore LsLocalizeHelper.sln
-#
-#      - name: Build
-#        run: dotnet build LsLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
-#
-#      - name: Test
-#        run: dotnet test LsLocalizeHelper.sln --no-restore --verbosity normal
+      - name: Setup .NET ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.solutionFile }}
+
+      - name: Build
+        run: dotnet build ${{ env.solutionFile }} --configuration Release --no-restore --verbosity minimal
+
+      - name: Test
+        run: dotnet test ${{ env.solutionFile }} --no-restore --verbosity normal
   
   build:
     needs: test
@@ -47,10 +53,7 @@ jobs:
         dotnet-version: [ '6.0.x' ]
         framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
 
-    env: 
-      repositoryName: ${{ github.repository }}
-      releaseName: ${{ github.ref_name }}    
-      projectFile: ./LsLocalizeHelper/LsLocalizeHelper.csproj
+    env:
       targetFile: release-${{ matrix.framework }}-${{ github.ref_name }}.zip
       publishFolder: ./.publish/${{ matrix.framework }}
 
@@ -61,7 +64,10 @@ jobs:
         Write-Output 'releaseName...: ${{ env.releaseName }}'
         Write-Output 'projectFile...: ${{ env.projectFile }}'
         Write-Output 'targetFile....: ${{ env.targetFile }}'  
-        Write-Output 'publishFolder.: ${{ env.publishFolder }}'  
+        Write-Output 'publishFolder.: ${{ env.publishFolder }}'
+        
+        $repositoryName = "${{ github.repository }}".Split('/')[1]
+        echo "Repository name is $repositoryName"
     
     - name: Checkout code
       uses: actions/checkout@v4
@@ -72,10 +78,10 @@ jobs:
         dotnet-version: ${{ matrix.dotnet-version }}
 
     - name: Restore dependencies
-      run: dotnet restore LsLocalizeHelper.sln
+      run: dotnet restore ${{ env.solutionFile }}
 
     - name: Build
-      run: dotnet build LsLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
+      run: dotnet build ${{ env.solutionFile }} --configuration Release --no-restore --verbosity minimal
 
     - name: Publish 
       run: dotnet publish ${{ env.projectFile }} --configuration Release --no-build --output ${{ env.publishFolder }} --framework ${{ matrix.framework }}
@@ -91,7 +97,7 @@ jobs:
           Write-Output 'Release ${{ env.releaseName }} exists'
         } else {
           Write-Output 'Release ${{ env.releaseName }} does not exist, creating...'
-          gh release create '${{ env.releaseName }}' --title='${{ env.repositoryName }} ${{ env.releaseName }}' --draft --prerelease --generate-notes --notes-file ./RELEASE.MD
+          gh release create '${{ env.releaseName }}' --title='${{ env.repositoryName }} Release ${{ env.releaseName }}' --draft --prerelease --generate-notes --notes-file ./RELEASE.MD
         }
 
     - name: Upload Release Asset

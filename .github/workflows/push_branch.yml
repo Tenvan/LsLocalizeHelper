@@ -5,11 +5,17 @@ on:
   push:
     branches: [ develop, main ]
 
+env:
+  repositoryName: ${{ github.repository }}
+  releaseName: ${{ github.ref_name }}
+  projectFile: ./LsLocalizeHelper/LsLocalizeHelper.csproj
+  solutionFile: ./LsLocalizeHelper.sln
+
 jobs:
   test:
     environment: dev
     runs-on: windows-latest
-
+    
     strategy:
       matrix:
         dotnet-version: [ '7.0.x' ]
@@ -24,11 +30,11 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
-#      - name: Restore dependencies
-#        run: dotnet restore LsLocalizeHelper.sln
-#
-#      - name: Build
-#        run: dotnet build LsLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
-#
-#      - name: Test
-#        run: dotnet test LsLocalizeHelper.sln --no-restore --verbosity normal
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.solutionFile }}
+
+      - name: Build
+        run: dotnet build ${{ env.solutionFile }} --configuration Release --no-restore --verbosity minimal
+
+      - name: Test
+        run: dotnet test ${{ env.solutionFile }} --no-restore --verbosity normal
