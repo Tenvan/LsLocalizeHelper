@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     environment: dev
-    runs-on: windows-latest
+    runs-on: windows-2023
 
     strategy:
       matrix:
@@ -40,7 +40,7 @@ jobs:
     name: print-token
     environment: dev
     
-    runs-on: windows-latest
+    runs-on: windows-2023
     
     strategy:
       matrix:
@@ -71,24 +71,25 @@ jobs:
       run: dotnet publish ${{ env.project-file }} --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.framework }}
 
     - name: Zip the publish directory
-#      run:  zip -r ./${{ env.target_file }} ${{ env.publish-dir }}/* 
       run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.target_file }}
-      
+
     - name: Create Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ github.ref_name }}
       run: |
-        if gh release view "${{ github.ref_name }}" > /dev/null 2>&1 ; then
-          echo "Release ${{ github.ref_name }} exists"
-        else
-          echo "Release ${{ github.ref_name }} does not exist, creating..."
-          gh release create "${{ github.ref_name }}" \
-          --title="${GITHUB_REPOSITORY#*/} ${{ github.ref_name }}" \
+        $releaseName = ${{ github.ref_name }}
+        $repositoryName = $env:GITHUB_REPOSITORY.Split('/')[1]
+        
+        if ((gh release view "$releaseName) -ne $null) {
+          Write-Output "Release $releaseName exists"
+        } else {
+          Write-Output "Release $releaseName does not exist, creating..."
+          gh release create "$releaseName" \
+          --title="$repositoryName $releaseName" \
           --draft --prerelease \
           --generate-notes \
           --notes-file ./RELEASE.MD 
-        fi
 
     - name: Upload Release Asset
       env:
