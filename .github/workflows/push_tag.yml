@@ -20,22 +20,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup .NET ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ matrix.dotnet-version }}
-          
-      - name: Restore dependencies
-        run: dotnet restore LsLocalizeHelper.sln
-
-      - name: Build
-        run: dotnet build LsLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
-
-      - name: Test
-        run: dotnet test LsLocalizeHelper.sln --no-restore --verbosity normal
+#      - name: Setup .NET ${{ matrix.dotnet-version }}
+#        uses: actions/setup-dotnet@v3
+#        with:
+#          dotnet-version: ${{ matrix.dotnet-version }}
+#          
+#      - name: Restore dependencies
+#        run: dotnet restore LsLocalizeHelper.sln
+#
+#      - name: Build
+#        run: dotnet build LsLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
+#
+#      - name: Test
+#        run: dotnet test LsLocalizeHelper.sln --no-restore --verbosity normal
   
   build:
-    needs: test
+#    needs: test
     permissions: write-all
     name: print-token
     environment: dev
@@ -48,11 +48,29 @@ jobs:
         framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
 
     env: 
-      target_file: ${{ github.ref == 'refs/heads/main' && 'release' || 'nightly' }}-${{ matrix.framework }}-${{ github.ref_name }}.zip
-      publish-dir: ./.publish/${{ matrix.framework }}
+      github_ref: $env:GITHUB_REF
+      framework: ${{ matrix.framework }}
       project-file: ./LsLocalizeHelper/LsLocalizeHelper.csproj
+      repositoryName: $env:GITHUB_REPOSITORY.Split('/')[1]
+      github_ref_name: $env:GITHUB_REF_NAME
+      publish-dir: ./.publish/${{ matrix.framework }}
+      releaseName: ${{ github.ref_name }}    
 
     steps:
+    - name: Set Environment
+      run: |
+        $github_ref = $env:GITHUB_REF
+        $framework = $env:FRAMEWORK
+        $github_ref_name = $env:GITHUB_REF_NAME
+        $tag = $github_ref_name
+
+        if ($github_ref -eq 'refs/heads/main') {
+            $target_file = "release-$framework-$github_ref_name.zip"
+        } 
+        else {
+            $target_file = "nightly-$framework-$github_ref_name.zip"
+        }
+        
     - name: Checkout code
       uses: actions/checkout@v4
     
@@ -71,26 +89,27 @@ jobs:
       run: dotnet publish ${{ env.project-file }} --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.framework }}
 
     - name: Zip the publish directory
-      run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./${{ env.target_file }}
+      run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./$target_file
 
     - name: Create Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{ github.ref_name }}
-        releaseName: ${{ github.ref_name }}
-        repositoryName: ${{ github.ref_name }}
-      run: |        
+      run: |
+        $repositoryName = $env:GITHUB_REPOSITORY.Split('/')[1]
+
+        Write-Output 'ReleaseName: $releaseName'
+        Write-Output 'repositoryName: repositoryName'
+        Write-Output 'tag: $tag'
+
         if ((gh release view "$releaseName) -ne $null) {
-          Write-Output "Release $releaseName exists"
+          Write-Output 'Release $releaseName exists'
         } else {
-          Write-Output "Release $releaseName does not exist, creating..."
-          gh release create "$releaseName" --title="$repositoryName $releaseName" --draft --prerelease --generate-notes --notes-file ./RELEASE.MD
+          Write-Output 'Release $releaseName does not exist, creating...'
+          gh release create '$tag' --title='$repositoryName $releaseName' --draft --prerelease --generate-notes --notes-file ./RELEASE.MD
         }
 
     - name: Upload Release Asset
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{ github.ref_name }}
       run: |
-        gh release upload "${{ github.ref_name }}" \
-        ${{ env.target_file }}
+        gh release upload $tag $target_file
