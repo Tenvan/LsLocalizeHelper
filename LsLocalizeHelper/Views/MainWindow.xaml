@@ -12,6 +12,7 @@
         xmlns:global="clr-namespace:"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         x:Name="WindowMain"
         Title="{DynamicResource R-9B9E1Bbb-Dc9D-475F-8977-5Dc8C60288F5}"
         Width="1280"
@@ -64,39 +65,119 @@
 
     <ToolBarTray Grid.Row="0"
                  Grid.Column="0"
-                 Grid.ColumnSpan="12">
-      <ToolBar Width="Auto" Style="{StaticResource MaterialDesignToolBar}">
+                 Grid.ColumnSpan="12" VerticalAlignment="Center">
+      <ToolBar Width="Auto" Style="{StaticResource MaterialDesignToolBar}"
+               Margin="2, 5" VerticalContentAlignment="Center" VerticalAlignment="Center">
 
-        <Button Command="{Binding ApplicationExitCommand}"
-                Content="{materialDesign:PackIcon Kind=ExitToApp}"
-                IsEnabled="{Binding BarModel.NotModified}"
-                ToolTip="{DynamicResource R-Bc06Ec85-2434-4Aa6-93D6-971C94181391}" />
-        <Button Command="{Binding ShowSettingsDialogCommand}"
-                Content="{materialDesign:PackIcon Kind=Settings}"
-                IsEnabled="{Binding BarModel.NotModified}"
-                ToolTip="{DynamicResource OpenSettings}" />
-        <Separator />
-        <Button Command="{Binding LoadXmlDataCommand}"
-                Content="{materialDesign:PackIcon Kind=FolderOpen}"
-                IsEnabled="{Binding BarModel.NotModified}"
-                ToolTip="{DynamicResource R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5}" />
-        <Button Command="{Binding SaveXmlDataCommand}"
-                Content="{materialDesign:PackIcon Kind=ContentSaveAdd}"
-                IsEnabled="{Binding HasDataLoaded}"
-                ToolTip="{DynamicResource R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3}" />
-        <Separator />
-        <Button Command="{Binding ImportNewModCommand}"
-                Content="{materialDesign:PackIcon Kind=Import}"
-                IsEnabled="{Binding BarModel.NotModified}"
-                ToolTip="{DynamicResource R-0246F297-E448-4D0B-945A-32F0C73F98C7}" />
-        <Button Command="{Binding PackModsCommand}"
-                Content="{materialDesign:PackIcon Kind=Package}"
-                ToolTip="{DynamicResource R-933E62F0-E08A-435A-86D0-9585F2Ad6B7C}" />
-        <Separator />
-        <Button Command="{Binding RefreshCommand}"
-                Content="{materialDesign:PackIcon Kind=Refresh}"
-                ToolTip="{DynamicResource R-84Dd6204-13D5-4898-Baac-76A4A41Dbe99}" />
-        <Separator />
+        <RepeatButton Command="{Binding ApplicationExitCommand}"
+                      Margin="0,0, 4, 0"
+                      IsEnabled="{Binding BarModel.NotModified}"
+                      ToolTip="{DynamicResource R-Bc06Ec85-2434-4Aa6-93D6-971C94181391}"
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+          <RepeatButton.ContentTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Margin="0,0,5,0"
+                                         Kind="ExitToApp" />
+                <TextBlock Text="{DynamicResource Exit}" VerticalAlignment="Center" />
+              </StackPanel>
+            </DataTemplate>
+          </RepeatButton.ContentTemplate>
+        </RepeatButton>
+
+        <RepeatButton Command="{Binding ShowSettingsDialogCommand}"
+                      ToolTip="{DynamicResource OpenSettings}"
+                      Margin="0,0, 4, 0"
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+          <RepeatButton.ContentTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Margin="0,0,5,0"
+                                         Kind="Settings" />
+                <TextBlock Text="{DynamicResource Settings}" VerticalAlignment="Center" />
+              </StackPanel>
+            </DataTemplate>
+          </RepeatButton.ContentTemplate>
+        </RepeatButton>
+
+        <RepeatButton Command="{Binding LoadXmlDataCommand}"
+                      IsEnabled="{Binding BarModel.NotModified}"
+                      ToolTip="{DynamicResource R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5}"
+                      Margin="0,0, 4, 0"
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+          <RepeatButton.ContentTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Margin="0,0,5,0"
+                                         Kind="FolderOpen" />
+                <TextBlock Text="{DynamicResource Load}" VerticalAlignment="Center" />
+              </StackPanel>
+            </DataTemplate>
+          </RepeatButton.ContentTemplate>
+        </RepeatButton>
+
+        <RepeatButton Command="{Binding SaveXmlDataCommand}"
+                      IsEnabled="{Binding HasDataLoaded}"
+                      ToolTip="{DynamicResource R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3}"
+                      Margin="0,0, 4, 0"
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+          <RepeatButton.ContentTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Margin="0,0,5,0"
+                                         Kind="ContentSaveAdd" />
+                <TextBlock Text="{DynamicResource Save}" VerticalAlignment="Center" />
+              </StackPanel>
+            </DataTemplate>
+          </RepeatButton.ContentTemplate>
+        </RepeatButton>
+
+        <RepeatButton Command="{Binding ImportNewModCommand}"
+                      IsEnabled="{Binding BarModel.NotModified}"
+                      ToolTip="{DynamicResource R-0246F297-E448-4D0B-945A-32F0C73F98C7}"
+                      Margin="0,0, 4, 0"
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+          <RepeatButton.ContentTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Margin="0,0,5,0"
+                                         Kind="Import" />
+                <TextBlock Text="{DynamicResource Import}" VerticalAlignment="Center" />
+              </StackPanel>
+            </DataTemplate>
+          </RepeatButton.ContentTemplate>
+        </RepeatButton>
+
+        <RepeatButton Command="{Binding PackModsCommand}"
+                      ToolTip="{DynamicResource R-933E62F0-E08A-435A-86D0-9585F2Ad6B7C}"
+                      Margin="0,0, 4, 0"
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+          <RepeatButton.ContentTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Margin="0,0,5,0"
+                                         Kind="Package" />
+                <TextBlock Text="{DynamicResource Packing}" VerticalAlignment="Center" />
+              </StackPanel>
+            </DataTemplate>
+          </RepeatButton.ContentTemplate>
+        </RepeatButton>
+
+        <RepeatButton Command="{Binding RefreshCommand}"
+                      ToolTip="{DynamicResource R-84Dd6204-13D5-4898-Baac-76A4A41Dbe99}"
+                      Margin="0,0, 0, 0"
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+          <RepeatButton.ContentTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon Margin="0,0,5,0"
+                                         Kind="Refresh" />
+                <TextBlock Text="{DynamicResource Refresh}" VerticalAlignment="Center" />
+              </StackPanel>
+            </DataTemplate>
+          </RepeatButton.ContentTemplate>
+        </RepeatButton>
+
         <CheckBox x:Name="CheckBoxAutoClipboard"
                   Content="{DynamicResource R-54B6Cde5-Effe-48B1-B19B-31B2Cb994D44}"
                   IsChecked="True" />
@@ -120,6 +201,7 @@
               Grid.Column="0"
               Grid.ColumnSpan="3"
               Margin="5"
+              Padding="2"
               Header="{DynamicResource R-92C669E1-2208-46D9-Ab54-07C7E8C45283}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
@@ -127,6 +209,7 @@
           <StackPanel Height="24" Orientation="Horizontal">
             <materialDesign:PackIcon Width="20"
                                      Height="20"
+                                     Margin="2,2,2,2"
                                      VerticalAlignment="Center"
                                      Kind="FormatListGroupPlus" />
             <TextBlock Margin="8,0,20,0"
@@ -160,13 +243,15 @@
               Grid.Column="3"
               Grid.ColumnSpan="3"
               Margin="5"
+              Padding="2"
               Header="{DynamicResource R-5E3E7030-4C59-4322-A108-157Afeb42Fad}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
         <DataTemplate>
           <StackPanel Height="24" Orientation="Horizontal">
             <materialDesign:PackIcon Width="20"
-                                     Height="20"
+                                     Height="20" 
+                                     Margin="2,2,2,2"
                                      VerticalAlignment="Center"
                                      Kind="FormatListGroupPlus" />
             <TextBlock Margin="8,0,20,0"
@@ -214,6 +299,7 @@
               Grid.Column="6"
               Grid.ColumnSpan="3"
               Margin="5"
+              Padding="2"
               Header="{DynamicResource R-6Cc7Af69-B89E-497E-A5C7-3B158D5Fbd1A}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
@@ -221,6 +307,7 @@
           <StackPanel Height="24" Orientation="Horizontal">
             <materialDesign:PackIcon Width="20"
                                      Height="20"
+                                     Margin="2,2,2,2"
                                      VerticalAlignment="Center"
                                      Kind="FormatListGroupPlus" />
             <TextBlock Margin="8,0,20,0"
@@ -256,6 +343,7 @@
               Grid.Column="9"
               Grid.ColumnSpan="3"
               Margin="5"
+              Padding="2"
               Header="{DynamicResource R-Fe2B3802-8Bac-4650-96D8-Dd69Eedd7185}"
               Style="{StaticResource MaterialDesignCardGroupBox}">
       <GroupBox.HeaderTemplate>
@@ -263,6 +351,7 @@
           <StackPanel Height="24" Orientation="Horizontal">
             <materialDesign:PackIcon Width="20"
                                      Height="20"
+                                     Margin="2,2,2,2"
                                      VerticalAlignment="Center"
                                      Kind="FormatListGroupPlus" />
             <TextBlock Margin="8,0,20,0"
@@ -323,7 +412,7 @@
         <DataGrid.Columns>
 
           <!-- Column TranslationStatus -->
-          <DataGridTemplateColumn SortMemberPath="Status" >
+          <DataGridTemplateColumn SortMemberPath="Status">
             <DataGridTemplateColumn.Header>
               <materialDesign:PackIcon Width="20"
                                        Height="20"
@@ -375,7 +464,7 @@
           </DataGridTemplateColumn>
 
           <!-- Column DatSetFlag -->
-          <DataGridTemplateColumn SortMemberPath="Flag" >
+          <DataGridTemplateColumn SortMemberPath="Flag">
 
             <DataGridTemplateColumn.Header>
               <materialDesign:PackIcon Width="20"
@@ -707,14 +796,17 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Background="{StaticResource MaterialDesignDarkBackground}"
-                Margin="2,2,5,2"
+                Margin="2,2,2,2"
+                Padding="2"
                 Header="{DynamicResource TranslatedText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
         <GroupBox.HeaderTemplate>
           <DataTemplate>
-            <StackPanel Height="24" Orientation="Horizontal">
+            <StackPanel Height="26" Orientation="Horizontal">
               <materialDesign:PackIcon Width="20"
                                        Height="20"
+                                       Margin="5, 0, 0,0"
+
                                        VerticalAlignment="Center"
                                        Kind="ReceiptTextEditOutline" />
               <TextBlock Margin="8,0,20,0"
@@ -727,20 +819,20 @@
                       Margin="5,0"
                       Click="ButtonCopyTranslated_OnExecuted"
                       Content="{DynamicResource ButtonCopy}"
-                      Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+                      Style="{StaticResource MaterialDesignPaperSecondaryLightButton}" />
 
               <Button x:Name="ButtonPasteTranslated"
                       Height="Auto"
                       Margin="5,0"
                       Click="ButtonPasteTranslated_OnClick"
                       Content="{DynamicResource ButtonPaste}"
-                      Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+                      Style="{StaticResource MaterialDesignPaperSecondaryLightButton}" />
               <Button x:Name="ButtonApplyTranslated"
                       Height="Auto"
                       Margin="5,0"
                       Click="ButtonApplyTranslated_OnClick"
                       Content="{DynamicResource ButtonApply}"
-                      Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+                      Style="{StaticResource MaterialDesignPaperSecondaryLightButton}" />
 
             </StackPanel>
           </DataTemplate>
@@ -757,14 +849,16 @@
       <GroupBox Grid.Row="1"
                 Grid.Column="0"
                 Background="{StaticResource MaterialDesignDarkBackground}"
-                Margin="0,2,0,2"
+                Margin="2,2,1,0"
+                Padding="0,2"
                 Header="{DynamicResource OriginText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
         <GroupBox.HeaderTemplate>
           <DataTemplate>
-            <StackPanel Height="24" Orientation="Horizontal">
+            <StackPanel Height="26" Orientation="Horizontal">
               <materialDesign:PackIcon Width="20"
                                        Height="20"
+                                       Margin="5, 0, 0,0"
                                        VerticalAlignment="Center"
                                        Kind="ReceiptTextCheckOutline" />
               <TextBlock Margin="8,0,20,0"
@@ -776,7 +870,7 @@
                       Height="Auto"
                       Click="ButtonCopyCurrent_OnClick"
                       Content="{DynamicResource ButtonCopy}"
-                      Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+                      Style="{StaticResource MaterialDesignPaperSecondaryLightButton}" />
             </StackPanel>
           </DataTemplate>
         </GroupBox.HeaderTemplate>
@@ -794,14 +888,16 @@
       <GroupBox Grid.Row="1"
                 Grid.Column="1"
                 Background="{StaticResource MaterialDesignDarkBackground}"
-                Margin="5,2,2,2"
+                Margin="1,2,2,0"
+                Padding="5, 2"
                 Header="{DynamicResource PreviousText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
         <GroupBox.HeaderTemplate>
           <DataTemplate>
-            <StackPanel Height="24" Orientation="Horizontal">
+            <StackPanel Height="26" Orientation="Horizontal">
               <materialDesign:PackIcon Width="20"
                                        Height="20"
+                                       Margin="5, 0, 0,0"
                                        VerticalAlignment="Center"
                                        Kind="ReceiptTextClock" />
               <TextBlock Margin="8,0,20,0"
@@ -813,7 +909,7 @@
                       Height="Auto"
                       Click="ButtonCopyPrevious_OnClick"
                       Content="{DynamicResource ButtonCopy}"
-                      Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}" />
+                      Style="{StaticResource MaterialDesignPaperSecondaryLightButton}" />
 
 
             </StackPanel>

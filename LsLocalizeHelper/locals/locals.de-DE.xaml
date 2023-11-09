@@ -34,6 +34,14 @@
   <System:String x:Key="DuplicateSet">Duplikat</System:String>
   <System:String x:Key="LsTagError">LSTag Synatx Fehler</System:String>
 
+  <System:String x:Key="Exit">Beenden</System:String>
+  <System:String x:Key="Settings">Einstellungen</System:String>
+  <System:String x:Key="Load">Laden</System:String>
+  <System:String x:Key="Save">Speichern</System:String>
+  <System:String x:Key="Import">Importieren</System:String>
+  <System:String x:Key="Packing">Packen</System:String>
+  <System:String x:Key="Refresh">Aktualisieren</System:String>
+
   <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">Modifikationen Arbeitsordner</System:String>
   <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">Arbeitsordner</System:String>
 

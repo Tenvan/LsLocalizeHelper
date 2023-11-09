@@ -34,6 +34,14 @@
   <System:String x:Key="DuplicateSet">重复</System:String>
   <System:String x:Key="LsTagError">LSTag 语法错误</System:String>
 
+  <System:String x:Key="Exit">Exit</System:String>
+  <System:String x:Key="Settings">Settings</System:String>
+  <System:String x:Key="Load">Load</System:String>
+  <System:String x:Key="Save">Save</System:String>
+  <System:String x:Key="Import">Import</System:String>
+  <System:String x:Key="Packing">Packing</System:String>
+  <System:String x:Key="Refresh">Refresh</System:String>
+
   <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">设置工作文件夹路径</System:String>
   <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">工作文件夹</System:String>
 
