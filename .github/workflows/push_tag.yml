@@ -101,11 +101,11 @@ jobs:
         Write-Output 'repositoryName: repositoryName'
         Write-Output 'tag: $tag'
 
-        if ((gh release view "$releaseName) -ne $null) {
+        if ((gh release view $releaseName) -ne $null) {
           Write-Output 'Release $releaseName exists'
         } else {
           Write-Output 'Release $releaseName does not exist, creating...'
-          gh release create '$tag' --title='$repositoryName $releaseName' --draft --prerelease --generate-notes --notes-file ./RELEASE.MD
+          gh release create '$releaseName' --title='$repositoryName $releaseName' --draft --prerelease --generate-notes --notes-file ./RELEASE.MD
         }
 
     - name: Upload Release Asset
