@@ -7,9 +7,9 @@ public class StatusBarModel : ViewModelBase
 
   #region Fields
 
-  private int count;
+  private int count = 0;
 
-  private int countDeleted;
+  private int countDeleted = 0;
 
   private int countNew;
 
