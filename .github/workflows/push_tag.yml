@@ -35,7 +35,7 @@ jobs:
 #        run: dotnet test LsLocalizeHelper.sln --no-restore --verbosity normal
   
   build:
-#    needs: test
+    needs: test
     permissions: write-all
     name: print-token
     environment: dev
@@ -48,29 +48,41 @@ jobs:
         framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
 
     env: 
-      github_ref: $env:GITHUB_REF
       framework: ${{ matrix.framework }}
-      project-file: ./LsLocalizeHelper/LsLocalizeHelper.csproj
       repositoryName: $env:GITHUB_REPOSITORY.Split('/')[1]
-      github_ref_name: $env:GITHUB_REF_NAME
-      publish-dir: ./.publish/${{ matrix.framework }}
+      githubRefName: $env:GITHUB_REF_NAME
       releaseName: ${{ github.ref_name }}    
+      projectFile: ./LsLocalizeHelper/LsLocalizeHelper.csproj
+      targetFile: release-${{ matrix.framework }}-${{ github.ref_name }}.zip
+      publishFolder: ./.publish/${{ matrix.framework }}
 
     steps:
-    - name: Set Environment
+    - name: Print Environment
       run: |
-        $github_ref = $env:GITHUB_REF
-        $framework = $env:FRAMEWORK
-        $github_ref_name = $env:GITHUB_REF_NAME
-        $tag = $github_ref_name
+        Write-Output 'framework 1: $framework'
+        Write-Output 'framework 2: $env:framework'
+        Write-Output 'framework 3: ${{ env.framework }}'
+        Write-Output 'repositoryName 1: $repositoryName'
+        Write-Output 'repositoryName 2: $env:repositoryName'
+        Write-Output 'repositoryName 3: ${{ env.repositoryName }}'
+        Write-Output 'githubRefName 1: $githubRefName'
+        Write-Output 'githubRefName 2: $env:githubRefName'
+        Write-Output 'githubRefName 3: ${{ env.githubRefName }}'
+        Write-Output 'releaseName 1: $releaseName'
+        Write-Output 'releaseName 2: $env:releaseName'
+        Write-Output 'releaseName 3: ${{ env.releaseName }}'
+        Write-Output 'projectFile 1: $projectFile'
+        Write-Output 'projectFile 2: $env:projectFile'
+        Write-Output 'projectFile 3: ${{ env.projectFile }}'
+        Write-Output 'targetFile 1: $targetFile'  
+        Write-Output 'targetFile 2: $env:targetFile'  
+        Write-Output 'targetFile 3: ${{ env.targetFile }}'  
+        Write-Output 'publishFolder 1: $publishFolder'  
+        Write-Output 'publishFolder 2: $env:publishFolder'  
+        Write-Output 'publishFolder 3: ${{ env.publishFolder }}'  
 
-        if ($github_ref -eq 'refs/heads/main') {
-            $target_file = "release-$framework-$github_ref_name.zip"
-        } 
-        else {
-            $target_file = "nightly-$framework-$github_ref_name.zip"
-        }
-        
+        Write-Output 'tag: $env:tag'
+    
     - name: Checkout code
       uses: actions/checkout@v4
     
@@ -86,10 +98,10 @@ jobs:
       run: dotnet build LsLocalizeHelper.sln --configuration Release --no-restore --verbosity minimal
 
     - name: Publish 
-      run: dotnet publish ${{ env.project-file }} --configuration Release --no-build --output ${{ env.publish-dir }} --framework ${{ matrix.framework }}
+      run: dotnet publish ${{ env.projectFile }} --configuration Release --no-build --output ${{ env.publishFolder }} --framework ${{ matrix.framework }}
 
     - name: Zip the publish directory
-      run: Compress-Archive -Path ${{ env.publish-dir }}/* -DestinationPath ./$target_file
+      run: Compress-Archive -Path ${{ env.publishFolder }}/* -DestinationPath ./$env:targetFile
 
     - name: Create Release
       env:
@@ -97,19 +109,19 @@ jobs:
       run: |
         $repositoryName = $env:GITHUB_REPOSITORY.Split('/')[1]
 
-        Write-Output 'ReleaseName: $releaseName'
-        Write-Output 'repositoryName: repositoryName'
-        Write-Output 'tag: $tag'
+        Write-Output 'ReleaseName: $env:releaseName'
+        Write-Output 'repositoryName: $env:repositoryName'
+        Write-Output 'tag: $env:tag'
 
-        if ((gh release view $releaseName) -ne $null) {
-          Write-Output 'Release $releaseName exists'
+        if ((gh release view $env:releaseName) -ne $null) {
+          Write-Output 'Release $env:releaseName exists'
         } else {
-          Write-Output 'Release $releaseName does not exist, creating...'
-          gh release create '$releaseName' --title='$repositoryName $releaseName' --draft --prerelease --generate-notes --notes-file ./RELEASE.MD
+          Write-Output 'Release $env:releaseName does not exist, creating...'
+          gh release create '$env:releaseName' --title='$env:repositoryName $env:releaseName' --draft --prerelease --generate-notes --notes-file ./RELEASE.MD
         }
 
     - name: Upload Release Asset
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        gh release upload $tag $target_file
+        gh release upload $env:releaseName $env:targetFile
