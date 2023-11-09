@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     environment: dev
-    runs-on: windows-2023
+    runs-on: windows-latest
 
     strategy:
       matrix:
@@ -40,7 +40,7 @@ jobs:
     name: print-token
     environment: dev
     
-    runs-on: windows-2023
+    runs-on: windows-latest
     
     strategy:
       matrix:
