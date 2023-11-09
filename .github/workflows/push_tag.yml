@@ -85,11 +85,8 @@ jobs:
           Write-Output "Release $releaseName exists"
         } else {
           Write-Output "Release $releaseName does not exist, creating..."
-          gh release create "$releaseName" \
-          --title="$repositoryName $releaseName" \
-          --draft --prerelease \
-          --generate-notes \
-          --notes-file ./RELEASE.MD 
+          gh release create "$releaseName" --title="$repositoryName $releaseName" --draft --prerelease --generate-notes --notes-file ./RELEASE.MD
+        }
 
     - name: Upload Release Asset
       env:
