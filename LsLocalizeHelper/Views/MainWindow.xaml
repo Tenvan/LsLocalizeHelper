@@ -9,10 +9,8 @@
         xmlns:converter="clr-namespace:LsLocalizeHelperLib.Converter;assembly=LsLocalizeHelperLib"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:enums="clr-namespace:LsLocalizeHelperLib.Enums;assembly=LsLocalizeHelperLib"
-        xmlns:global="clr-namespace:"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         x:Name="WindowMain"
         Title="{DynamicResource R-9B9E1Bbb-Dc9D-475F-8977-5Dc8C60288F5}"
         Width="1280"
@@ -21,7 +19,7 @@
         MinHeight="400"
         Background="{DynamicResource MaterialDesignPaper}"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        FontFamily="{materialDesign:MaterialDesignFont}"
+        FontFamily="{md:MaterialDesignFont}"
         LocationChanged="WindowMain_LocationChanged"
         SizeChanged="WindowMain_SizeChanged"
         TextElement.FontSize="14"
@@ -34,8 +32,7 @@
     <ResourceDictionary>
       <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
       <converter:TextFromResourceConverter x:Key="TextFromResourceConverter" />
-      <Style TargetType="{x:Type ToolTip}">
-      </Style>
+      <Style TargetType="{x:Type ToolTip}" />
     </ResourceDictionary>
   </Window.Resources>
 
@@ -65,114 +62,111 @@
 
     <ToolBarTray Grid.Row="0"
                  Grid.Column="0"
-                 Grid.ColumnSpan="12" VerticalAlignment="Center">
-      <ToolBar Width="Auto" Style="{StaticResource MaterialDesignToolBar}"
-               Margin="2, 5" VerticalContentAlignment="Center" VerticalAlignment="Center">
+                 Grid.ColumnSpan="12"
+                 VerticalAlignment="Center">
+      <ToolBar Width="Auto"
+               Margin="2,5"
+               VerticalAlignment="Center"
+               VerticalContentAlignment="Center"
+               Style="{StaticResource MaterialDesignToolBar}">
 
-        <RepeatButton Command="{Binding ApplicationExitCommand}"
-                      Margin="0,0, 4, 0"
+        <RepeatButton Margin="0,0,4,0"
+                      Command="{Binding ApplicationExitCommand}"
                       IsEnabled="{Binding BarModel.NotModified}"
-                      ToolTip="{DynamicResource R-Bc06Ec85-2434-4Aa6-93D6-971C94181391}"
-                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}"
+                      ToolTip="{DynamicResource R-Bc06Ec85-2434-4Aa6-93D6-971C94181391}">
           <RepeatButton.ContentTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Margin="0,0,5,0"
-                                         Kind="ExitToApp" />
-                <TextBlock Text="{DynamicResource Exit}" VerticalAlignment="Center" />
+                <md:PackIcon Margin="0,0,5,0" Kind="ExitToApp" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource Exit}" />
               </StackPanel>
             </DataTemplate>
           </RepeatButton.ContentTemplate>
         </RepeatButton>
 
-        <RepeatButton Command="{Binding ShowSettingsDialogCommand}"
-                      ToolTip="{DynamicResource OpenSettings}"
-                      Margin="0,0, 4, 0"
-                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+        <RepeatButton Margin="0,0,4,0"
+                      Command="{Binding ShowSettingsDialogCommand}"
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}"
+                      ToolTip="{DynamicResource OpenSettings}">
           <RepeatButton.ContentTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Margin="0,0,5,0"
-                                         Kind="Settings" />
-                <TextBlock Text="{DynamicResource Settings}" VerticalAlignment="Center" />
+                <md:PackIcon Margin="0,0,5,0" Kind="Settings" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource Settings}" />
               </StackPanel>
             </DataTemplate>
           </RepeatButton.ContentTemplate>
         </RepeatButton>
 
-        <RepeatButton Command="{Binding LoadXmlDataCommand}"
+        <RepeatButton Margin="0,0,4,0"
+                      Command="{Binding LoadXmlDataCommand}"
                       IsEnabled="{Binding BarModel.NotModified}"
-                      ToolTip="{DynamicResource R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5}"
-                      Margin="0,0, 4, 0"
-                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}"
+                      ToolTip="{DynamicResource R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5}">
           <RepeatButton.ContentTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Margin="0,0,5,0"
-                                         Kind="FolderOpen" />
-                <TextBlock Text="{DynamicResource Load}" VerticalAlignment="Center" />
+                <md:PackIcon Margin="0,0,5,0" Kind="FolderOpen" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource Load}" />
               </StackPanel>
             </DataTemplate>
           </RepeatButton.ContentTemplate>
         </RepeatButton>
 
-        <RepeatButton Command="{Binding SaveXmlDataCommand}"
+        <RepeatButton Margin="0,0,4,0"
+                      Command="{Binding SaveXmlDataCommand}"
                       IsEnabled="{Binding HasDataLoaded}"
-                      ToolTip="{DynamicResource R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3}"
-                      Margin="0,0, 4, 0"
-                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}"
+                      ToolTip="{DynamicResource R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3}">
           <RepeatButton.ContentTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Margin="0,0,5,0"
-                                         Kind="ContentSaveAdd" />
-                <TextBlock Text="{DynamicResource Save}" VerticalAlignment="Center" />
+                <md:PackIcon Margin="0,0,5,0" Kind="ContentSaveAdd" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource Save}" />
               </StackPanel>
             </DataTemplate>
           </RepeatButton.ContentTemplate>
         </RepeatButton>
 
-        <RepeatButton Command="{Binding ImportNewModCommand}"
+        <RepeatButton Margin="0,0,4,0"
+                      Command="{Binding ImportNewModCommand}"
                       IsEnabled="{Binding BarModel.NotModified}"
-                      ToolTip="{DynamicResource R-0246F297-E448-4D0B-945A-32F0C73F98C7}"
-                      Margin="0,0, 4, 0"
-                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}"
+                      ToolTip="{DynamicResource R-0246F297-E448-4D0B-945A-32F0C73F98C7}">
           <RepeatButton.ContentTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Margin="0,0,5,0"
-                                         Kind="Import" />
-                <TextBlock Text="{DynamicResource Import}" VerticalAlignment="Center" />
+                <md:PackIcon Margin="0,0,5,0" Kind="Import" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource Import}" />
               </StackPanel>
             </DataTemplate>
           </RepeatButton.ContentTemplate>
         </RepeatButton>
 
-        <RepeatButton Command="{Binding PackModsCommand}"
-                      ToolTip="{DynamicResource R-933E62F0-E08A-435A-86D0-9585F2Ad6B7C}"
-                      Margin="0,0, 4, 0"
-                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+        <RepeatButton Margin="0,0,4,0"
+                      Command="{Binding PackModsCommand}"
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}"
+                      ToolTip="{DynamicResource R-933E62F0-E08A-435A-86D0-9585F2Ad6B7C}">
           <RepeatButton.ContentTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Margin="0,0,5,0"
-                                         Kind="Package" />
-                <TextBlock Text="{DynamicResource Packing}" VerticalAlignment="Center" />
+                <md:PackIcon Margin="0,0,5,0" Kind="Package" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource Packing}" />
               </StackPanel>
             </DataTemplate>
           </RepeatButton.ContentTemplate>
         </RepeatButton>
 
-        <RepeatButton Command="{Binding RefreshCommand}"
-                      ToolTip="{DynamicResource R-84Dd6204-13D5-4898-Baac-76A4A41Dbe99}"
-                      Margin="0,0, 0, 0"
-                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}">
+        <RepeatButton Margin="0,0,0,0"
+                      Command="{Binding RefreshCommand}"
+                      Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}"
+                      ToolTip="{DynamicResource R-84Dd6204-13D5-4898-Baac-76A4A41Dbe99}">
           <RepeatButton.ContentTemplate>
             <DataTemplate>
               <StackPanel Orientation="Horizontal">
-                <materialDesign:PackIcon Margin="0,0,5,0"
-                                         Kind="Refresh" />
-                <TextBlock Text="{DynamicResource Refresh}" VerticalAlignment="Center" />
+                <md:PackIcon Margin="0,0,5,0" Kind="Refresh" />
+                <TextBlock VerticalAlignment="Center" Text="{DynamicResource Refresh}" />
               </StackPanel>
             </DataTemplate>
           </RepeatButton.ContentTemplate>
@@ -185,7 +179,7 @@
         <Label VerticalContentAlignment="Center" Content="{DynamicResource R-9B8Dbcb5-C187-409F-A672-A4Ec2A8E80E1}" />
         <TextBox x:Name="TextBoxQuickSearch"
                  Width="200"
-                 materialDesign:TextFieldAssist.HasClearButton="True" />
+                 md:TextFieldAssist.HasClearButton="True" />
         <Separator />
         <Label VerticalContentAlignment="Center" Content="{DynamicResource R-Ba4B59F8-8D60-4E6A-89B6-4B374Fcfe0B0}" />
         <ComboBox x:Name="ComboBoxLanguage"
@@ -207,11 +201,11 @@
       <GroupBox.HeaderTemplate>
         <DataTemplate>
           <StackPanel Height="24" Orientation="Horizontal">
-            <materialDesign:PackIcon Width="20"
-                                     Height="20"
-                                     Margin="2,2,2,2"
-                                     VerticalAlignment="Center"
-                                     Kind="FormatListGroupPlus" />
+            <md:PackIcon Width="20"
+                         Height="20"
+                         Margin="2,2,2,2"
+                         VerticalAlignment="Center"
+                         Kind="FormatListGroupPlus" />
             <TextBlock Margin="8,0,20,0"
                        VerticalAlignment="Center"
                        Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
@@ -249,11 +243,11 @@
       <GroupBox.HeaderTemplate>
         <DataTemplate>
           <StackPanel Height="24" Orientation="Horizontal">
-            <materialDesign:PackIcon Width="20"
-                                     Height="20" 
-                                     Margin="2,2,2,2"
-                                     VerticalAlignment="Center"
-                                     Kind="FormatListGroupPlus" />
+            <md:PackIcon Width="20"
+                         Height="20"
+                         Margin="2,2,2,2"
+                         VerticalAlignment="Center"
+                         Kind="FormatListGroupPlus" />
             <TextBlock Margin="8,0,20,0"
                        VerticalAlignment="Center"
                        Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
@@ -283,18 +277,6 @@
       </ListBox>
     </GroupBox>
 
-    <materialDesign:Snackbar x:Name="MainSnackbar"
-                             Grid.Row="1"
-                             Grid.Column="3"
-                             Grid.ColumnSpan="6"
-                             Margin="0,20,0,0"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Top"
-                             HorizontalContentAlignment="Left"
-                             ActionButtonPlacement="SeparateLine"
-                             ActionButtonStyle="{StaticResource MaterialDesignOutlinedButton}"
-                             MessageQueue="{materialDesign:MessageQueue}" />
-
     <GroupBox Grid.Row="1"
               Grid.Column="6"
               Grid.ColumnSpan="3"
@@ -305,11 +287,11 @@
       <GroupBox.HeaderTemplate>
         <DataTemplate>
           <StackPanel Height="24" Orientation="Horizontal">
-            <materialDesign:PackIcon Width="20"
-                                     Height="20"
-                                     Margin="2,2,2,2"
-                                     VerticalAlignment="Center"
-                                     Kind="FormatListGroupPlus" />
+            <md:PackIcon Width="20"
+                         Height="20"
+                         Margin="2,2,2,2"
+                         VerticalAlignment="Center"
+                         Kind="FormatListGroupPlus" />
             <TextBlock Margin="8,0,20,0"
                        VerticalAlignment="Center"
                        Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
@@ -349,11 +331,11 @@
       <GroupBox.HeaderTemplate>
         <DataTemplate>
           <StackPanel Height="24" Orientation="Horizontal">
-            <materialDesign:PackIcon Width="20"
-                                     Height="20"
-                                     Margin="2,2,2,2"
-                                     VerticalAlignment="Center"
-                                     Kind="FormatListGroupPlus" />
+            <md:PackIcon Width="20"
+                         Height="20"
+                         Margin="2,2,2,2"
+                         VerticalAlignment="Center"
+                         Kind="FormatListGroupPlus" />
             <TextBlock Margin="8,0,20,0"
                        VerticalAlignment="Center"
                        Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
@@ -402,115 +384,118 @@
 
       <DataGrid x:Name="TranslationGrid"
                 Grid.Row="0"
-                materialDesign:DataGridAssist.CellPadding="3"
-                materialDesign:DataGridAssist.ColumnHeaderPadding="5"
+                md:DataGridAssist.CellPadding="3"
+                md:DataGridAssist.ColumnHeaderPadding="5"
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
                 ItemsSource="{Binding DataGridItems}"
                 KeyUp="TranslationGrid_OnKeyUp"
-                SelectionMode="Single">
+                SelectionMode="Single"
+                Sorting="TranslationGrid_OnSorting">
         <DataGrid.Columns>
 
-          <!-- Column TranslationStatus -->
+          <!--  Column TranslationStatus  -->
           <DataGridTemplateColumn SortMemberPath="Status">
             <DataGridTemplateColumn.Header>
-              <materialDesign:PackIcon Width="20"
-                                       Height="20"
-                                       VerticalAlignment="Center"
-                                       ToolTip="{StaticResource Status}"
-                                       Kind="Origin" />
+              <md:PackIcon Width="20"
+                           Height="20"
+                           VerticalAlignment="Center"
+                           Kind="Origin"
+                           ToolTip="{StaticResource Status}" />
             </DataGridTemplateColumn.Header>
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <StackPanel Orientation="Vertical" VerticalAlignment="Top"
+                <StackPanel VerticalAlignment="Top"
+                            Orientation="Vertical"
                             ToolTip="{Binding Status, Converter={StaticResource TextFromResourceConverter}}">
-                  <materialDesign:PackIcon Width="20"
-                                           Height="20"
-                                           Foreground="YellowGreen"
-                                           VerticalAlignment="Center"
-                                           x:Name="StatusIcon"
-                                           Kind="Information" />
+                  <md:PackIcon x:Name="StatusIcon"
+                               Width="20"
+                               Height="20"
+                               VerticalAlignment="Center"
+                               Foreground="YellowGreen"
+                               Kind="Information" />
                 </StackPanel>
 
                 <DataTemplate.Triggers>
                   <DataTrigger Binding="{Binding Path=Status}" Value="Translated">
-                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="YellowGreen" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="ReceiptTextCheckOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="YellowGreen" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Status}" Value="NewAndTranslated">
-                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="CornflowerBlue" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="ReceiptTextCheckOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="CornflowerBlue" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Status}" Value="Origin">
-                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="DarkOrange" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="ReceiptTextCheckOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="DarkOrange" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Status}" Value="NewAndOrigin">
-                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="CornflowerBlue" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="ReceiptTextCheckOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="CornflowerBlue" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Status}" Value="Deleted">
-                    <Setter Property="Kind" Value="DeleteAlert" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="White" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="DeleteAlert" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="White" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Status}" Value="Updated">
-                    <Setter Property="Kind" Value="ListStatus" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="Yellow" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="ListStatus" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="Yellow" />
                   </DataTrigger>
                 </DataTemplate.Triggers>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <!-- Column DatSetFlag -->
+          <!--  Column DatSetFlag  -->
           <DataGridTemplateColumn SortMemberPath="Flag">
 
             <DataGridTemplateColumn.Header>
-              <materialDesign:PackIcon Width="20"
-                                       Height="20"
-                                       VerticalAlignment="Center"
-                                       ToolTip="{StaticResource Flag}"
-                                       Kind="Flag" />
+              <md:PackIcon Width="20"
+                           Height="20"
+                           VerticalAlignment="Center"
+                           Kind="Flag"
+                           ToolTip="{StaticResource Flag}" />
             </DataGridTemplateColumn.Header>
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <StackPanel Orientation="Vertical" VerticalAlignment="Top"
+                <StackPanel VerticalAlignment="Top"
+                            Orientation="Vertical"
                             ToolTip="{Binding Flag, Converter={StaticResource TextFromResourceConverter}}">
-                  <materialDesign:PackIcon Width="20"
-                                           Height="20"
-                                           VerticalAlignment="Center"
-                                           Visibility="Hidden"
-                                           x:Name="StatusIcon" />
+                  <md:PackIcon x:Name="StatusIcon"
+                               Width="20"
+                               Height="20"
+                               VerticalAlignment="Center"
+                               Visibility="Hidden" />
                 </StackPanel>
 
                 <DataTemplate.Triggers>
                   <DataTrigger Binding="{Binding Path=Flag}" Value="LsTagError">
-                    <Setter Property="Visibility" Value="Visible" TargetName="StatusIcon" />
-                    <Setter Property="Kind" Value="AlertCircleOutline" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="IndianRed" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="AlertCircleOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="IndianRed" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Flag}" Value="DuplicateSet">
-                    <Setter Property="Visibility" Value="Visible" TargetName="StatusIcon" />
-                    <Setter Property="Kind" Value="AlertDecagramOutline" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="Red" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="AlertDecagramOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="Red" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Flag}" Value="ExistingSet">
-                    <Setter Property="Visibility" Value="Hidden" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Visibility" Value="Hidden" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Flag}" Value="NewSet">
-                    <Setter Property="Visibility" Value="Hidden" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Visibility" Value="Hidden" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=Flag}" Value="DeletedSet">
-                    <Setter Property="Visibility" Value="Hidden" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Visibility" Value="Hidden" />
                   </DataTrigger>
                 </DataTemplate.Triggers>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <!-- Column mod name -->
+          <!--  Column mod name  -->
           <DataGridTextColumn Binding="{Binding Mod.Name}">
             <DataGridTextColumn.Header>
               <TextBlock>
@@ -521,21 +506,21 @@
             </DataGridTextColumn.Header>
           </DataGridTextColumn>
 
-          <!-- Column source file name -->
+          <!--  Column source file name  -->
           <DataGridTextColumn Binding="{Binding SourceFile.Name}">
             <DataGridTextColumn.Header>
               <TextBlock Text="{DynamicResource R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd}" />
             </DataGridTextColumn.Header>
           </DataGridTextColumn>
 
-          <!-- Column uuid -->
+          <!--  Column uuid  -->
           <DataGridTextColumn Binding="{Binding Uuid}">
             <DataGridTextColumn.Header>
               <TextBlock Text="{DynamicResource R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C}" />
             </DataGridTextColumn.Header>
           </DataGridTextColumn>
 
-          <!-- Column Version -->
+          <!--  Column Version  -->
           <DataGridTextColumn Binding="{Binding Version}">
             <DataGridTextColumn.Header>
               <TextBlock>
@@ -546,8 +531,8 @@
             </DataGridTextColumn.Header>
           </DataGridTextColumn>
 
-          <!-- Column translated text -->
-          <DataGridTemplateColumn Width="*">
+          <!--  Column translated text  -->
+          <DataGridTemplateColumn Width="*" SortMemberPath="Text">
             <DataGridTemplateColumn.Header>
               <TextBlock>
                 <TextBlock.Text>
@@ -569,8 +554,8 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <!-- Column current origin text -->
-          <DataGridTemplateColumn Width="*">
+          <!--  Column current origin text  -->
+          <DataGridTemplateColumn Width="*" SortMemberPath="Origin">
             <DataGridTemplateColumn.Header>
               <TextBlock>
                 <TextBlock.Text>
@@ -592,60 +577,61 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <!-- Column origin status -->
+          <!--  Column origin status  -->
           <DataGridTemplateColumn SortMemberPath="OriginStatus">
             <DataGridTemplateColumn.Header>
-              <materialDesign:PackIcon Width="20"
-                                       Height="20"
-                                       VerticalAlignment="Center"
-                                       ToolTip="{StaticResource Status}"
-                                       Kind="Origin" />
+              <md:PackIcon Width="20"
+                           Height="20"
+                           VerticalAlignment="Center"
+                           Kind="Origin"
+                           ToolTip="{StaticResource Status}" />
             </DataGridTemplateColumn.Header>
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
-                <StackPanel Orientation="Vertical" VerticalAlignment="Top"
+                <StackPanel VerticalAlignment="Top"
+                            Orientation="Vertical"
                             ToolTip="{Binding OriginStatus, Converter={StaticResource TextFromResourceConverter}}">
-                  <materialDesign:PackIcon Width="20"
-                                           Height="20"
-                                           Foreground="YellowGreen"
-                                           VerticalAlignment="Center"
-                                           x:Name="StatusIcon"
-                                           Kind="Information" />
+                  <md:PackIcon x:Name="StatusIcon"
+                               Width="20"
+                               Height="20"
+                               VerticalAlignment="Center"
+                               Foreground="YellowGreen"
+                               Kind="Information" />
                 </StackPanel>
 
                 <DataTemplate.Triggers>
                   <DataTrigger Binding="{Binding Path=OriginStatus}" Value="Translated">
-                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="YellowGreen" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="ReceiptTextCheckOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="YellowGreen" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=OriginStatus}" Value="NewAndTranslated">
-                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="CornflowerBlue" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="ReceiptTextCheckOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="CornflowerBlue" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=OriginStatus}" Value="Origin">
-                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="DarkOrange" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="ReceiptTextCheckOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="DarkOrange" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=OriginStatus}" Value="NewAndOrigin">
-                    <Setter Property="Kind" Value="ReceiptTextCheckOutline" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="CornflowerBlue" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="ReceiptTextCheckOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="CornflowerBlue" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=OriginStatus}" Value="Deleted">
-                    <Setter Property="Kind" Value="DeleteAlert" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="White" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="DeleteAlert" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="White" />
                   </DataTrigger>
                   <DataTrigger Binding="{Binding Path=OriginStatus}" Value="Updated">
-                    <Setter Property="Kind" Value="ListStatus" TargetName="StatusIcon" />
-                    <Setter Property="Foreground" Value="Yellow" TargetName="StatusIcon" />
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="ListStatus" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="Yellow" />
                   </DataTrigger>
                 </DataTemplate.Triggers>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <!-- Column previous origin text -->
-          <DataGridTemplateColumn Width="*">
+          <!--  Column previous origin text  -->
+          <DataGridTemplateColumn Width="*" SortMemberPath="Previous">
             <DataGridTemplateColumn.Header>
               <TextBlock>
                 <TextBlock.Text>
@@ -699,6 +685,19 @@
           </Style>
         </DataGrid.RowStyle>
       </DataGrid>
+      <md:Snackbar x:Name="MainSnackbar"
+                   Grid.Row="0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   HorizontalContentAlignment="Left"
+                   Background="{StaticResource MaterialDesignCardBackground}" 
+                   Foreground="{StaticResource MaterialDesignBody}" 
+                   ActionButtonPlacement="SeparateLine"
+                   ActionButtonStyle="{StaticResource MaterialDesignFlatSecondaryButton}"
+                   MessageQueue="{md:MessageQueue}">
+
+      </md:Snackbar>
+
 
       <StackPanel Grid.Row="1"
                   VerticalAlignment="Bottom"
@@ -711,7 +710,9 @@
         <TextBlock Margin="5,0"
                    Padding="8"
                    VerticalAlignment="Center"
-                   Text="{Binding BarModel.ModifiedText}">
+                   Background="Yellow"
+                   Foreground="Black"
+                   Text="{Binding BarModel.ModifiedText, FallbackValue=No Status}">
           <TextBlock.Style>
             <Style TargetType="TextBlock">
               <Style.Triggers>
@@ -731,44 +732,46 @@
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
                    Text="{DynamicResource R-6433Ac43-8420-4Cfa-8D04-21C1A7Cbd28F}" />
-        <TextBlock Margin="5,0"
-                   VerticalAlignment="Center"
-                   Text="{DynamicResource R-64096B00-73C8-407C-A961-D4Bd779Da5C6}" />
 
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
                    Text="{DynamicResource R-64096B00-73C8-407C-A961-D4Bd779Da5C6}" />
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
-                   Text="{Binding BarModel.Count}" />
+                   Foreground="Aqua"
+                   Text="{Binding BarModel.Count, FallbackValue=0}" />
 
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
                    Text="{DynamicResource R-Eff58155-Ba8F-4F77-88D0-F3F863Fc1Cd5}" />
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
-                   Text="{Binding BarModel.CountOrigins}" />
+                   Foreground="Orange"
+                   Text="{Binding BarModel.CountOrigins, FallbackValue=0}" />
 
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
                    Text="{DynamicResource R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D}" />
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
-                   Text="{Binding BarModel.CountTranslated}" />
+                   Foreground="YellowGreen"
+                   Text="{Binding BarModel.CountTranslated, FallbackValue=0}" />
 
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
                    Text="{DynamicResource R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8}" />
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
-                   Text="{Binding BarModel.CountDeleted}" />
+                   Foreground="OrangeRed"
+                   Text="{Binding BarModel.CountDeleted, FallbackValue=0}" />
 
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
                    Text="{DynamicResource R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa}" />
         <TextBlock Margin="5,0"
                    VerticalAlignment="Center"
-                   Text="{Binding BarModel.CountNew}" />
+                   Foreground="CornflowerBlue"
+                   Text="{Binding BarModel.CountNew, FallbackValue=0}" />
 
       </StackPanel>
     </Grid>
@@ -795,20 +798,19 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                Background="{StaticResource MaterialDesignDarkBackground}"
                 Margin="2,2,2,2"
                 Padding="2"
+                Background="{StaticResource MaterialDesignDarkBackground}"
                 Header="{DynamicResource TranslatedText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
         <GroupBox.HeaderTemplate>
           <DataTemplate>
             <StackPanel Height="26" Orientation="Horizontal">
-              <materialDesign:PackIcon Width="20"
-                                       Height="20"
-                                       Margin="5, 0, 0,0"
-
-                                       VerticalAlignment="Center"
-                                       Kind="ReceiptTextEditOutline" />
+              <md:PackIcon Width="20"
+                           Height="20"
+                           Margin="5,0,0,0"
+                           VerticalAlignment="Center"
+                           Kind="ReceiptTextEditOutline" />
               <TextBlock Margin="8,0,20,0"
                          VerticalAlignment="Center"
                          Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
@@ -848,19 +850,19 @@
 
       <GroupBox Grid.Row="1"
                 Grid.Column="0"
-                Background="{StaticResource MaterialDesignDarkBackground}"
                 Margin="2,2,1,0"
                 Padding="0,2"
+                Background="{StaticResource MaterialDesignDarkBackground}"
                 Header="{DynamicResource OriginText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
         <GroupBox.HeaderTemplate>
           <DataTemplate>
             <StackPanel Height="26" Orientation="Horizontal">
-              <materialDesign:PackIcon Width="20"
-                                       Height="20"
-                                       Margin="5, 0, 0,0"
-                                       VerticalAlignment="Center"
-                                       Kind="ReceiptTextCheckOutline" />
+              <md:PackIcon Width="20"
+                           Height="20"
+                           Margin="5,0,0,0"
+                           VerticalAlignment="Center"
+                           Kind="ReceiptTextCheckOutline" />
               <TextBlock Margin="8,0,20,0"
                          VerticalAlignment="Center"
                          Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
@@ -878,7 +880,7 @@
         <FlowDocumentScrollViewer Document="{Binding OriginCurrentFlowDoc}">
           <FlowDocumentScrollViewer.Resources>
             <Style TargetType="{x:Type FlowDocument}">
-              <Setter Property="FontFamily" Value="{materialDesign:MaterialDesignFont}" />
+              <Setter Property="FontFamily" Value="{md:MaterialDesignFont}" />
             </Style>
           </FlowDocumentScrollViewer.Resources>
         </FlowDocumentScrollViewer>
@@ -887,19 +889,19 @@
 
       <GroupBox Grid.Row="1"
                 Grid.Column="1"
-                Background="{StaticResource MaterialDesignDarkBackground}"
                 Margin="1,2,2,0"
-                Padding="5, 2"
+                Padding="5,2"
+                Background="{StaticResource MaterialDesignDarkBackground}"
                 Header="{DynamicResource PreviousText}"
                 Style="{StaticResource MaterialDesignCardGroupBox}">
         <GroupBox.HeaderTemplate>
           <DataTemplate>
             <StackPanel Height="26" Orientation="Horizontal">
-              <materialDesign:PackIcon Width="20"
-                                       Height="20"
-                                       Margin="5, 0, 0,0"
-                                       VerticalAlignment="Center"
-                                       Kind="ReceiptTextClock" />
+              <md:PackIcon Width="20"
+                           Height="20"
+                           Margin="5,0,0,0"
+                           VerticalAlignment="Center"
+                           Kind="ReceiptTextClock" />
               <TextBlock Margin="8,0,20,0"
                          VerticalAlignment="Center"
                          Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
@@ -919,7 +921,7 @@
         <FlowDocumentScrollViewer Document="{Binding OriginPreviousFlowDoc}">
           <FlowDocumentScrollViewer.Resources>
             <Style TargetType="{x:Type FlowDocument}">
-              <Setter Property="FontFamily" Value="{materialDesign:MaterialDesignFont}" />
+              <Setter Property="FontFamily" Value="{md:MaterialDesignFont}" />
             </Style>
           </FlowDocumentScrollViewer.Resources>
         </FlowDocumentScrollViewer>

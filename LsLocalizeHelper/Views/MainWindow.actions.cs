@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Xml.Linq;
+
+using DynamicData;
 
 using HtmlAgilityPack;
 
@@ -134,6 +137,12 @@ public partial class MainWindow
     this.HasDataLoaded = true;
     this.BarModel.Loaded = true;
     this.RefreshStatusBar();
+    this.RestoreOrder();
+  }
+
+  private void RestoreOrder()
+  {
+    this.sortingHelper.SyncToGrid();
   }
 
   private void DoPackMods()
@@ -171,16 +180,19 @@ public partial class MainWindow
     var filteredData = LsWorkingDataService.FilterData(filterText);
     this.TranslationGrid.ItemsSource = filteredData;
 
+    this.RefreshStatusBar();
+    this.RestoreOrder();
+
     this.OriginCurrentFlowDoc = DocumentHelper.HighlightTextToFlowDocument(
       text: this.CurrentDataRow?.Origin,
       searchReg: this.TextBoxQuickSearch.Text,
-      highlightColor:  Brushes.CornflowerBlue
+      highlightColor: Brushes.CornflowerBlue
     );
 
     this.OriginPreviousFlowDoc = DocumentHelper.HighlightTextToFlowDocument(
       text: this.CurrentDataRow?.Previous,
       searchReg: this.TextBoxQuickSearch.Text,
-      highlightColor:  Brushes.CornflowerBlue
+      highlightColor: Brushes.CornflowerBlue
     );
   }
 
@@ -238,15 +250,17 @@ public partial class MainWindow
 
   private void RefreshStatusBar()
   {
-    this.BarModel.Count = LsWorkingDataService.TranslatedItems.Count;
-    this.BarModel.CountDeleted = LsWorkingDataService.TranslatedItems.Count(t => t.Status == TranslationStatus.Deleted);
+    var statusRows = this.TranslationGrid.Items.Cast<DataRowModel>().ToList();
+    
+    this.BarModel.Count = statusRows.Count;
+    this.BarModel.CountDeleted = statusRows.Count(t => t.Status == TranslationStatus.Deleted);
 
     this.BarModel.CountTranslated
-      = LsWorkingDataService.TranslatedItems.Count(t => t.Status == TranslationStatus.Translated);
+      = statusRows.Count(t => t.Status == TranslationStatus.Translated);
 
-    this.BarModel.CountOrigins = LsWorkingDataService.TranslatedItems.Count(t => t.Status == TranslationStatus.Origin);
+    this.BarModel.CountOrigins = statusRows.Count(t => t.Status == TranslationStatus.Origin);
 
-    this.BarModel.CountNew = LsWorkingDataService.TranslatedItems.Count(
+    this.BarModel.CountNew = statusRows.Count(
       t => t.Status == TranslationStatus.NewAndTranslated || t.Status == TranslationStatus.NewAndOrigin
     );
   }

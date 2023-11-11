@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Documents;
 
+using LsLocalizeHelperLib.Helper;
 using LsLocalizeHelperLib.Models;
 using LsLocalizeHelperLib.Services;
 
@@ -26,6 +29,8 @@ public partial class MainWindow
   private bool hasDataLoaded;
 
   private FlowDocument originPreviousFlowDoc;
+
+  private SortingHelper sortingHelper;
 
   #endregion
 

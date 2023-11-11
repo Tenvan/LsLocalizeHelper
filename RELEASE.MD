@@ -1,7 +1,8 @@
 # Current Release Changes
 
-- Automatic Releasebuild on GitHib
-- Toolbar with full Button texts
-- Design changes (color and paddings)
-- Storing last Sorting between refresh and filter changes
-- Statusbar shows values of filtered Data
+- Automatic release build on GitHub
+- Toolbar with complete button texts
+- Design changes (colour and spacing)
+- Multi-column sorting is supported
+- Saving of the last sorting between refresh and filter changes
+- Status bar shows values of filtered data

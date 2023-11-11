@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
+using LsLocalizeHelperLib.Helper;
 using LsLocalizeHelperLib.Models;
 using LsLocalizeHelperLib.Services;
 
@@ -32,6 +33,7 @@ public partial class MainWindow : Window,
   public MainWindow()
   {
     this.InitializeComponent();
+    this.sortingHelper = new SortingHelper(this.TranslationGrid);
 
     this.SetLocals(CultureInfo.CurrentCulture);
 

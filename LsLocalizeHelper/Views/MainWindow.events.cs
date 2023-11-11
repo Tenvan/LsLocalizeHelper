@@ -1,13 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 
 using LsLocalizeHelperLib.Enums;
+using LsLocalizeHelperLib.Helper;
 using LsLocalizeHelperLib.Models;
 using LsLocalizeHelperLib.Services;
 
@@ -205,6 +209,20 @@ public partial class MainWindow
 
         break;
     }
+  }
+
+  private void TranslationGrid_OnSorting(object sender, DataGridSortingEventArgs e)
+  {
+    // Cancel the built-in sort to enable the custom sort. 
+    e.Handled = true;
+    var hasShiftKey = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
+    var hasControlKey = Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
+
+    this.sortingHelper.ColumnClicked(column: e.Column.SortMemberPath, hasControlKey: hasControlKey, hasShiftKey: hasControlKey);
+    this.sortingHelper.SyncToGrid();
+
+    Console.WriteLine($"count sortingHelper SortDescription: {this.sortingHelper.Sortings.Count}");
+    Console.WriteLine($"count translationGrid SortDescription: {this.TranslationGrid.Items.SortDescriptions.Count}");
   }
 
   private void WindowMain_LocationChanged(object sender, EventArgs e)
