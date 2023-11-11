@@ -47,7 +47,7 @@ public class LsUnpackageEngine
   {
     var englishLocalizationPath = Path.Combine(this.TempFolder, "Localization", "English");
 
-    if (Directory.GetFiles(englishLocalizationPath, "*.xml")
+    if (Directory.GetFiles(path: englishLocalizationPath, searchPattern: "*.xml")
                  .Length
         > 0) { return; }
 
