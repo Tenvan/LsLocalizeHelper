@@ -1,0 +1,93 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+  <System:String x:Key="ButtonYes">Ja</System:String>
+  <System:String x:Key="ButtonNo">Nein</System:String>
+  <System:String x:Key="ButtonAbort">Abbruch</System:String>
+  <System:String x:Key="ButtonApply">Übernehmen</System:String>
+
+  <System:String x:Key="ButtonCopy">Kopieren</System:String>
+  <System:String x:Key="ButtonPaste">Einfügen</System:String>
+
+  <System:String x:Key="TranslatedText">Übersetzter Text</System:String>
+  <System:String x:Key="OriginText">Aktueller Original Text</System:String>
+  <System:String x:Key="PreviousText">Vorheriger Original Text</System:String>
+  <System:String x:Key="OpenSettings">Einstellungen öffnen</System:String>
+  
+  <System:String x:Key="Origin">Original</System:String>
+  <System:String x:Key="Translated">Übersetzt</System:String>
+  <System:String x:Key="NewAndOrigin">Neues Original</System:String>
+  <System:String x:Key="NewAndTranslated">Neu Übersetzt</System:String>
+  <System:String x:Key="Deleted">Gelöscht</System:String>
+  <System:String x:Key="Updated">Geändert</System:String>
+
+  <System:String x:Key="Changed">Geändert</System:String>
+  <System:String x:Key="Unchanged">Unverändert</System:String>
+  <System:String x:Key="Status">Status</System:String>
+  
+  <System:String x:Key="Flag">Flag</System:String>
+  
+  <System:String x:Key="ExistingSet">Vorhanden</System:String>
+  <System:String x:Key="NewSet">Neu</System:String>
+  <System:String x:Key="DeletedSet">Gelöscht</System:String>
+  <System:String x:Key="DuplicateSet">Duplikat</System:String>
+  <System:String x:Key="LsTagError">LSTag Synatx Fehler</System:String>
+
+  <System:String x:Key="Exit">Beenden</System:String>
+  <System:String x:Key="Settings">Einstellungen</System:String>
+  <System:String x:Key="Load">Laden</System:String>
+  <System:String x:Key="Save">Speichern</System:String>
+  <System:String x:Key="Import">Importieren</System:String>
+  <System:String x:Key="Packing">Packen</System:String>
+  <System:String x:Key="Refresh">Aktualisieren</System:String>
+
+  <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">Modifikationen Arbeitsordner</System:String>
+  <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">Arbeitsordner</System:String>
+
+  <System:String x:Key="R-3Cf586E1-Ce6F-4243-813D-B9Dab430A94A">Einstellungen</System:String>
+  <System:String x:Key="R-2Ec27278-4B56-4E97-B301-Ed5A55D4775A">Neue Modifikation importieren</System:String>
+  <System:String x:Key="R-2De6Da9A-Ac18-475B-Ab80-F7Dd58793C74">Pfad zur PAK Datei</System:String>
+  <System:String x:Key="R-1C413D19-59A0-4Ada-9F1D-67626108618B">Neuer Name der Modifikation</System:String>
+
+  <System:String x:Key="R-47916Bb7-62C2-4222-Ad3A-3E4A6F2Dd326">Importieren</System:String>
+  <System:String x:Key="R-0A685E01-6672-48C9-Aeff-D82F68346E99">Import Dialog</System:String>
+
+  <System:String x:Key="R-9B9E1Bbb-Dc9D-475F-8977-5Dc8C60288F5">LarianStudio Localization Helper (Baldurs Gate 3)</System:String>
+
+  <System:String x:Key="R-Bc06Ec85-2434-4Aa6-93D6-971C94181391">Programm beenden</System:String>
+  <System:String x:Key="R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5">Gewählte Xml-Dokumente laden</System:String>
+  <System:String x:Key="R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3">Übersetzungen speichern</System:String>
+  <System:String x:Key="R-0246F297-E448-4D0B-945A-32F0C73F98C7">PAK Datei in neue Mod importieren</System:String>
+  <System:String x:Key="R-933E62F0-E08A-435A-86D0-9585F2Ad6B7C">Ausgewählte Mods packen und zippen</System:String>
+  <System:String x:Key="R-84Dd6204-13D5-4898-Baac-76A4A41Dbe99">Aktualisieren</System:String>
+  <System:String x:Key="R-54B6Cde5-Effe-48B1-B19B-31B2Cb994D44">Automtische Zwischenablage</System:String>
+  <System:String x:Key="R-9B8Dbcb5-C187-409F-A672-A4Ec2A8E80E1">Schnellfilter</System:String>
+  <System:String x:Key="R-Ba4B59F8-8D60-4E6A-89B6-4B374Fcfe0B0">Sprache</System:String>
+  <System:String x:Key="R-92C669E1-2208-46D9-Ab54-07C7E8C45283">Projekt auswählen</System:String>
+  <System:String x:Key="R-5E3E7030-4C59-4322-A108-157Afeb42Fad">Aktuelle Original XML</System:String>
+  <System:String x:Key="R-6Cc7Af69-B89E-497E-A5C7-3B158D5Fbd1A">Vorherige Original XML</System:String>
+  <System:String x:Key="R-Fe2B3802-8Bac-4650-96D8-Dd69Eedd7185">Übersetzte XML</System:String>
+  <System:String x:Key="R-6E19A96F-85D0-4B69-8C9A-7Dcc398292C5">Mod</System:String>
+  <System:String x:Key="R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd">Datei</System:String>
+  <System:String x:Key="R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C">Uid</System:String>
+  <System:String x:Key="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4">Version</System:String>
+  <System:String x:Key="R-91E83186-18D2-43B6-Bcbd-1A592E5B6341">Import erfolgreich durchgeführt.</System:String>
+  <System:String x:Key="R-2417E08C-347F-4D57-925D-Cefdb628Fc7E">Fehler</System:String>
+  <System:String x:Key="R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab">Package ZIP für '{0}' erfolgreich erstellt.</System:String>
+  <System:String x:Key="R-C109D0A4-5995-4Fda-957A-55Bd3F527043">Fehler der Erstellung des Mods '{0}'\n{1}</System:String>
+  
+  <System:String x:Key="R-A97Cc11F-608E-46C9-9903-Eb5562C5Ba85">Erfolgreich gespeichert</System:String>
+  <System:String x:Key="R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade">Fehler beim Speichern aufgetreten</System:String>
+    
+  <System:String x:Key="R-C8D8F14A-Dc4B-4Cab-8F34-0F8B93B43Ebc">Bearbeitungstatus:</System:String>
+  <System:String x:Key="R-6433Ac43-8420-4Cfa-8D04-21C1A7Cbd28F">Anzahl Texte</System:String>
+  <System:String x:Key="R-64096B00-73C8-407C-A961-D4Bd779Da5C6">Gesamt:</System:String>
+  <System:String x:Key="R-Eff58155-Ba8F-4F77-88D0-F3F863Fc1Cd5">Original:</System:String>
+  <System:String x:Key="R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D">Übersetzt:</System:String>
+  <System:String x:Key="R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8">Gelöscht:</System:String>
+  <System:String x:Key="R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa">Neu:</System:String>
+  
+  <System:String x:Key="R-6D51Eefc-7825-40A6-A4C1-69D7D9F4261F">Keine englischen Lokalisierungs Dateien gefunden!</System:String>
+
+</ResourceDictionary>

@@ -1,0 +1,91 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+  <System:String x:Key="ButtonYes">是</System:String>
+  <System:String x:Key="ButtonNo">否</System:String>
+
+  <System:String x:Key="ButtonAbort">取消</System:String>
+  <System:String x:Key="ButtonApply">確認</System:String>
+
+  <System:String x:Key="ButtonCopy">複製</System:String>
+  <System:String x:Key="ButtonPaste">粘貼</System:String>
+
+  <System:String x:Key="TranslatedText">翻譯文本框</System:String>
+  <System:String x:Key="OriginText">新版本的文本框（原版）</System:String>
+  <System:String x:Key="PreviousText">舊版本的文本框（原版）</System:String>
+  <System:String x:Key="OpenSettings">設置</System:String>
+
+  <System:String x:Key="Origin">原版</System:String>
+  <System:String x:Key="Translated">已翻譯</System:String>
+  <System:String x:Key="NewAndOrigin">新增原版</System:String>
+  <System:String x:Key="NewAndTranslated">新增翻譯</System:String>
+  <System:String x:Key="Deleted">已刪除</System:String>
+  <System:String x:Key="Updated">已更新</System:String>
+
+  <System:String x:Key="Changed">已更改</System:String>
+  <System:String x:Key="Unchanged">維持原有</System:String>
+  <System:String x:Key="Status">狀態</System:String> 
+  <System:String x:Key="Flag">標記</System:String>
+
+  <System:String x:Key="ExistingSet">已有</System:String>
+  <System:String x:Key="NewSet">新建</System:String>
+  <System:String x:Key="DeletedSet">已刪除</System:String>
+  <System:String x:Key="DuplicateSet">重複</System:String>
+  <System:String x:Key="LsTagError">LSTag 語法錯誤</System:String>
+
+  <System:String x:Key="Exit">Exit</System:String>
+  <System:String x:Key="Settings">Settings</System:String>
+  <System:String x:Key="Load">Load</System:String>
+  <System:String x:Key="Save">Save</System:String>
+  <System:String x:Key="Import">Import</System:String>
+  <System:String x:Key="Packing">Packing</System:String>
+  <System:String x:Key="Refresh">Refresh</System:String>
+
+  <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">設置工作檔夾路徑</System:String>
+  <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">工作檔夾</System:String>
+
+  <System:String x:Key="R-3Cf586E1-Ce6F-4243-813D-B9Dab430A94A">設置</System:String>
+  <System:String x:Key="R-2Ec27278-4B56-4E97-B301-Ed5A55D4775A">導入新的模組。</System:String>
+  <System:String x:Key="R-2De6Da9A-Ac18-475B-Ab80-F7Dd58793C74">PAK檔路徑</System:String>
+  <System:String x:Key="R-1C413D19-59A0-4Ada-9F1D-67626108618B">新模組的名稱</System:String>
+
+  <System:String x:Key="R-47916Bb7-62C2-4222-Ad3A-3E4A6F2Dd326">導入</System:String>
+  <System:String x:Key="R-0A685E01-6672-48C9-Aeff-D82F68346E99">導入對話框</System:String>
+
+  <System:String x:Key="R-9B9E1Bbb-Dc9D-475F-8977-5Dc8C60288F5">LsLocalizeHelper 《博德之门3》模组本地化助手</System:String>
+
+  <System:String x:Key="R-Bc06Ec85-2434-4Aa6-93D6-971C94181391">退出程式</System:String>
+  <System:String x:Key="R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5">加載選定的 XML 文檔</System:String>
+  <System:String x:Key="R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3">保存翻譯內容</System:String>
+  <System:String x:Key="R-0246F297-E448-4D0B-945A-32F0C73F98C7">將PAK檔導入到新的模組中</System:String>
+  <System:String x:Key="R-933E62F0-E08A-435A-86D0-9585F2Ad6B7C">打包並壓縮選定的模組</System:String>
+  <System:String x:Key="R-84Dd6204-13D5-4898-Baac-76A4A41Dbe99">更新</System:String>
+  <System:String x:Key="R-54B6Cde5-Effe-48B1-B19B-31B2Cb994D44">自動剪貼板</System:String>
+  <System:String x:Key="R-9B8Dbcb5-C187-409F-A672-A4Ec2A8E80E1">快速篩選</System:String>
+  <System:String x:Key="R-Ba4B59F8-8D60-4E6A-89B6-4B374Fcfe0B0">語言</System:String>
+  <System:String x:Key="R-92C669E1-2208-46D9-Ab54-07C7E8C45283">選擇專案</System:String>
+  <System:String x:Key="R-5E3E7030-4C59-4322-A108-157Afeb42Fad">當前版本的 XML（原版）</System:String>
+  <System:String x:Key="R-6Cc7Af69-B89E-497E-A5C7-3B158D5Fbd1A">舊版本的 XML（原版）</System:String>
+  <System:String x:Key="R-Fe2B3802-8Bac-4650-96D8-Dd69Eedd7185">翻譯後的XML</System:String>
+  <System:String x:Key="R-6E19A96F-85D0-4B69-8C9A-7Dcc398292C5">模組</System:String>
+  <System:String x:Key="R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd">檔</System:String>
+  <System:String x:Key="R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C">Uid</System:String>
+  <System:String x:Key="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4">版本</System:String>
+  <System:String x:Key="R-91E83186-18D2-43B6-Bcbd-1A592E5B6341">導入成功.</System:String>
+  <System:String x:Key="R-2417E08C-347F-4D57-925D-Cefdb628Fc7E">錯誤</System:String>
+  <System:String x:Key="R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab">成功創建了名為'{0}'的 模組ZIP壓縮包</System:String>
+  <System:String x:Key="R-C109D0A4-5995-4Fda-957A-55Bd3F527043">創建模組'{0}'時出錯\n{1}</System:String>
+  
+  <System:String x:Key="R-A97Cc11F-608E-46C9-9903-Eb5562C5Ba85">保存成功</System:String>
+  <System:String x:Key="R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade">儲存時發生錯誤</System:String>
+
+  <System:String x:Key="R-C8D8F14A-Dc4B-4Cab-8F34-0F8B93B43Ebc">編輯狀態:</System:String>
+  <System:String x:Key="R-6433Ac43-8420-4Cfa-8D04-21C1A7Cbd28F">文本字數</System:String>
+  <System:String x:Key="R-64096B00-73C8-407C-A961-D4Bd779Da5C6">全部:</System:String>
+  <System:String x:Key="R-Eff58155-Ba8F-4F77-88D0-F3F863Fc1Cd5">原版:</System:String>
+  <System:String x:Key="R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D">已翻譯:</System:String>
+  <System:String x:Key="R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8">已刪除:</System:String>
+  <System:String x:Key="R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa">新增:</System:String>
+
+</ResourceDictionary>

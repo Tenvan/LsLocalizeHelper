@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <UseWindowsForms>True</UseWindowsForms>
+    <NeutralLanguage>de-DE</NeutralLanguage>
+    <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481</TargetFrameworks>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
+    <RootNamespace>LsLocalizeHelper</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\FileEngine.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="FileTemplates\local.xml" />
+    <None Remove="Resources\splash.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Rx.Net.Plus" Version="1.1.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LSLib">
+      <HintPath>..\External\LSLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LsLocalizeHelperLib\LsLocalizeHelperLib.csproj" />
+  </ItemGroup>
+
+</Project>

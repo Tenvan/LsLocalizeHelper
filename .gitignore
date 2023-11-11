@@ -1,3 +1,4 @@
+.publish/
 bin/
 obj/
 /packages/
@@ -5,3 +6,8 @@ riderModule.iml
 /_ReSharper.Caches/
 **/*.user
 /samples/*.xml
+.vs/
+/TestingData/test.pak
+/TestingData/TestModGER
+*.trx
+*.zip

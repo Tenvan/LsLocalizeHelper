@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LocationsWithSilentDeleteHolder">
+    <option name="locations">
+      <list>
+        <option value="$PROJECT_DIR$/../Bg3LocaHelperPublished" />
+        <option value="$PROJECT_DIR$/../Bg3LocaHelperPublished/net472" />
+        <option value="$PROJECT_DIR$/../Bg3LocaHelperPublished/net7.0" />
+        <option value="$PROJECT_DIR$/../Bg3LocaHelperPublished/net6.0" />
+        <option value="$PROJECT_DIR$/../Bg3LocaHelperPublished/net481" />
+      </list>
+    </option>
+  </component>
+</project>

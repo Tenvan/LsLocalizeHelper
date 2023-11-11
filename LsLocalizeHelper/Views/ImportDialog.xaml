@@ -1,0 +1,85 @@
+<Window x:Class="LsLocalizeHelper.Views.ImportDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:rules="clr-namespace:LsLocalizeHelperLib.Rules;assembly=LsLocalizeHelperLib"
+        Title="{DynamicResource R-0A685E01-6672-48C9-Aeff-D82F68346E99}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        FontFamily="{wpf:MaterialDesignFont}"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        TextElement.FontSize="14"
+        TextElement.FontWeight="Medium"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        UseLayoutRounding="False"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="ToolWindow" Cursor="">
+  <Grid Margin="16">
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="50" />
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition Height="50" />
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.Row="0"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Text="{DynamicResource R-2Ec27278-4B56-4E97-B301-Ed5A55D4775A}"
+               FontSize="20" />
+
+    <StackPanel Grid.Row="1" Orientation="Horizontal">
+
+      <TextBox x:Name="TextBoxPakFile"
+               Width="600"
+               wpf:HintAssist.Hint="{DynamicResource R-2De6Da9A-Ac18-475B-Ab80-F7Dd58793C74}"
+               FontSize="16"
+               Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+      <Button Margin="5,0,0,0"
+              Click="ButtonBrowseFolder_OnClick"
+              HorizontalAlignment="Right"
+              Content="..." />
+
+    </StackPanel>
+
+    <TextBox x:Name="TextBoxModName"
+             Grid.Row="2"
+             wpf:HintAssist.Hint="{DynamicResource R-1C413D19-59A0-4Ada-9F1D-67626108618B}"
+             FontSize="18"
+             Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+      <TextBox.Text>
+        <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
+          <Binding.ValidationRules>
+            <rules:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+          </Binding.ValidationRules>
+        </Binding>
+      </TextBox.Text>
+    </TextBox>
+
+    <StackPanel Grid.Row="3"
+                Margin="0,16,0,0"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+      <Button Click="ButtonImport_OnClick"
+              Content="{DynamicResource R-47916Bb7-62C2-4222-Ad3A-3E4A6F2Dd326}"
+              IsDefault="True"
+              Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}">
+        <Button.CommandParameter>
+          <system:Boolean>True</system:Boolean>
+        </Button.CommandParameter>
+      </Button>
+      <Button Margin="8,0,0,0"
+              Click="ButtonAbort_OnClick"
+              Content="{DynamicResource ButtonAbort}"
+              IsCancel="True"
+              Style="{StaticResource MaterialDesignFlatSecondaryMidBgButton}">
+        <Button.CommandParameter>
+          <system:Boolean>False</system:Boolean>
+        </Button.CommandParameter>
+      </Button>
+    </StackPanel>
+  </Grid>
+</Window>

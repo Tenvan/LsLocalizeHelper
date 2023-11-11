@@ -1,0 +1,91 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+  <System:String x:Key="ButtonYes">Yes</System:String>
+  <System:String x:Key="ButtonNo">No</System:String>
+
+  <System:String x:Key="ButtonAbort">Abort</System:String>
+  <System:String x:Key="ButtonApply">Apply</System:String>
+
+  <System:String x:Key="ButtonCopy">Copy</System:String>
+  <System:String x:Key="ButtonPaste">Insert</System:String>
+
+  <System:String x:Key="TranslatedText">Translated text</System:String>
+  <System:String x:Key="OriginText">Current original text</System:String>
+  <System:String x:Key="PreviousText">Previous original text</System:String>
+  <System:String x:Key="OpenSettings">Open Settings</System:String>
+
+  <System:String x:Key="Origin">Origin</System:String>
+  <System:String x:Key="Translated">Translated</System:String>
+  <System:String x:Key="NewAndOrigin">New Origin</System:String>
+  <System:String x:Key="NewAndTranslated">New Translated</System:String>
+  <System:String x:Key="Deleted">Deleted</System:String>
+  <System:String x:Key="Updated">Updated</System:String>
+
+  <System:String x:Key="Changed">Changed</System:String>
+  <System:String x:Key="Unchanged">Unchanged</System:String>
+  <System:String x:Key="Status">Status</System:String>
+  <System:String x:Key="Flag">Flag</System:String>
+
+  <System:String x:Key="ExistingSet">Exists</System:String>
+  <System:String x:Key="NewSet">New</System:String>
+  <System:String x:Key="DeletedSet">Deleted</System:String>
+  <System:String x:Key="DuplicateSet">Duplicate</System:String>
+  <System:String x:Key="LsTagError">LSTag Synatx Error</System:String>
+
+  <System:String x:Key="Exit">Exit</System:String>
+  <System:String x:Key="Settings">Settings</System:String>
+  <System:String x:Key="Load">Load</System:String>
+  <System:String x:Key="Save">Save</System:String>
+  <System:String x:Key="Import">Import</System:String>
+  <System:String x:Key="Packing">Packing</System:String>
+  <System:String x:Key="Refresh">Refresh</System:String>
+
+  <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">Modifications working folder</System:String>
+  <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">Work folder</System:String>
+
+  <System:String x:Key="R-3Cf586E1-Ce6F-4243-813D-B9Dab430A94A">Settings</System:String>
+  <System:String x:Key="R-2Ec27278-4B56-4E97-B301-Ed5A55D4775A">Import new modification</System:String>
+  <System:String x:Key="R-2De6Da9A-Ac18-475B-Ab80-F7Dd58793C74">Path to the PAK file</System:String>
+  <System:String x:Key="R-1C413D19-59A0-4Ada-9F1D-67626108618B">New name of the modification</System:String>
+
+  <System:String x:Key="R-47916Bb7-62C2-4222-Ad3A-3E4A6F2Dd326">Import</System:String>
+  <System:String x:Key="R-0A685E01-6672-48C9-Aeff-D82F68346E99">Import dialog</System:String>
+
+  <System:String x:Key="R-9B9E1Bbb-Dc9D-475F-8977-5Dc8C60288F5">LarianStudio Localization Helper (Baldur's Gate 3)</System:String>
+
+  <System:String x:Key="R-Bc06Ec85-2434-4Aa6-93D6-971C94181391">Exit program</System:String>
+  <System:String x:Key="R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5">Load selected XML documents</System:String>
+  <System:String x:Key="R-D59D9Bbd-1Aa1-44Ac-8Aeb-7Badfd0B1Fd3">Save translations</System:String>
+  <System:String x:Key="R-0246F297-E448-4D0B-945A-32F0C73F98C7">Import PAK file into new mod</System:String>
+  <System:String x:Key="R-933E62F0-E08A-435A-86D0-9585F2Ad6B7C">Pack and zip selected mods</System:String>
+  <System:String x:Key="R-84Dd6204-13D5-4898-Baac-76A4A41Dbe99">Refresh</System:String>
+  <System:String x:Key="R-54B6Cde5-Effe-48B1-B19B-31B2Cb994D44">Automatic clipboard</System:String>
+  <System:String x:Key="R-9B8Dbcb5-C187-409F-A672-A4Ec2A8E80E1">Quick filter</System:String>
+  <System:String x:Key="R-Ba4B59F8-8D60-4E6A-89B6-4B374Fcfe0B0">Language</System:String>
+  <System:String x:Key="R-92C669E1-2208-46D9-Ab54-07C7E8C45283">Select project</System:String>
+  <System:String x:Key="R-5E3E7030-4C59-4322-A108-157Afeb42Fad">Current original XML</System:String>
+  <System:String x:Key="R-6Cc7Af69-B89E-497E-A5C7-3B158D5Fbd1A">Previous original XML</System:String>
+  <System:String x:Key="R-Fe2B3802-8Bac-4650-96D8-Dd69Eedd7185">Translated XML</System:String>
+  <System:String x:Key="R-6E19A96F-85D0-4B69-8C9A-7Dcc398292C5">Modification</System:String>
+  <System:String x:Key="R-E1103304-3D2E-4Ea8-A867-6318Ef6A48Fd">File</System:String>
+  <System:String x:Key="R-494Bfdb2-02E6-4E3D-A45E-7Afbdfe8C81C">Uid</System:String>
+  <System:String x:Key="R-6F0Db4B2-1E74-4872-B191-C539Db5Eeee4">Version</System:String>
+  <System:String x:Key="R-91E83186-18D2-43B6-Bcbd-1A592E5B6341">Import completed successfully.</System:String>
+  <System:String x:Key="R-2417E08C-347F-4D57-925D-Cefdb628Fc7E">Error</System:String>
+  <System:String x:Key="R-F2Fcb892-8135-48Ac-Af05-14F0E47034Ab">Package ZIP for '{0}' created successfully.</System:String>
+  <System:String x:Key="R-C109D0A4-5995-4Fda-957A-55Bd3F527043">Error creating mod '{0}'\n{1}</System:String>
+  
+  <System:String x:Key="R-A97Cc11F-608E-46C9-9903-Eb5562C5Ba85">Successfully saved</System:String>
+  <System:String x:Key="R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade">Error occurred while saving</System:String>
+
+  <System:String x:Key="R-C8D8F14A-Dc4B-4Cab-8F34-0F8B93B43Ebc">Editing status:</System:String>
+  <System:String x:Key="R-6433Ac43-8420-4Cfa-8D04-21C1A7Cbd28F">Number texts</System:String>
+  <System:String x:Key="R-64096B00-73C8-407C-A961-D4Bd779Da5C6">Total:</System:String>
+  <System:String x:Key="R-Eff58155-Ba8F-4F77-88D0-F3F863Fc1Cd5">Origin:</System:String>
+  <System:String x:Key="R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D">Translated:</System:String>
+  <System:String x:Key="R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8">Deleted:</System:String>
+  <System:String x:Key="R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa">New:</System:String>
+
+</ResourceDictionary>
