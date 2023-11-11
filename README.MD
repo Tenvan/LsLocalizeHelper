@@ -39,21 +39,19 @@ And can package it up for upload to Nexusmod.... with one tool.
 ## Screens version 3.0
 Previews of the next version completely refactored with Wpf.
 
-![screen1.png](images/screen1.png)
+Screenshot 10 ![screen10.png](images/screen10.png)
 
-![screen2.png](images/screen2.png)
+Screenshot 11 ![screen11.png](images/screen11.png)
 
-![screen3.png](images/screen3.png)
+Screenshot 12 ![screen12.png](images/screen12.png)
 
-![screen4.png](images/screen4.png)
+Screenshot 3 ![screen3.png](images/screen3.png)
 
-![screen5.png](images/screen5.png)
+Screenshot 4 ![screen4.png](images/screen4.png)
 
-![screen6.png](images/screen6.png)
+Screenshot 7 ![screen7.png](images/screen7.png)
 
-![screen7.png](images/screen7.png)
-
-![screen8.png](images/screen8.png)
+Screenshot 8 ![screen8.png](images/screen8.png)
 
 
 ## Configuration
