@@ -11,6 +11,7 @@
         xmlns:enums="clr-namespace:LsLocalizeHelperLib.Enums;assembly=LsLocalizeHelperLib"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:uc="clr-namespace:LsLocalizeHelper.Controls"
         x:Name="WindowMain"
         Title="{DynamicResource R-9B9E1Bbb-Dc9D-475F-8977-5Dc8C60288F5}"
         Width="1280"
@@ -840,12 +841,10 @@
           </DataTemplate>
         </GroupBox.HeaderTemplate>
 
-        <TextBox x:Name="TextBoxTranslated"
-                 AcceptsReturn="True"
-                 AcceptsTab="True"
-                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto" />
-
+        <uc:LsTextBox x:Name="TextBoxTranslated"
+                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                   ScrollViewer.VerticalScrollBarVisibility="Auto">
+        </uc:LsTextBox>
       </GroupBox>
 
       <GroupBox Grid.Row="1"
@@ -877,7 +876,9 @@
           </DataTemplate>
         </GroupBox.HeaderTemplate>
 
-        <FlowDocumentScrollViewer Document="{Binding OriginCurrentFlowDoc}">
+        <FlowDocumentScrollViewer
+          FontSize="16"
+          Document="{Binding OriginCurrentFlowDoc}">
           <FlowDocumentScrollViewer.Resources>
             <Style TargetType="{x:Type FlowDocument}">
               <Setter Property="FontFamily" Value="{md:MaterialDesignFont}" />
@@ -918,7 +919,9 @@
           </DataTemplate>
         </GroupBox.HeaderTemplate>
 
-        <FlowDocumentScrollViewer Document="{Binding OriginPreviousFlowDoc}">
+        <FlowDocumentScrollViewer
+          FontSize="16"
+          Document="{Binding OriginPreviousFlowDoc}">
           <FlowDocumentScrollViewer.Resources>
             <Style TargetType="{x:Type FlowDocument}">
               <Setter Property="FontFamily" Value="{md:MaterialDesignFont}" />
