@@ -34,6 +34,13 @@
       <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
       <converter:TextFromResourceConverter x:Key="TextFromResourceConverter" />
       <Style TargetType="{x:Type ToolTip}" />
+      <!-- <Style TargetType="{x:Type DataGridCell}"> -->
+      <!--   <Style.Triggers> -->
+      <!--     <Trigger Property="IsMouseOver" Value="True"> -->
+      <!--       <Setter Property="Background" Value="{StaticResource MaterialDesignBadge}" /> -->
+      <!--     </Trigger> -->
+      <!--   </Style.Triggers> -->
+      <!-- </Style> -->
     </ResourceDictionary>
   </Window.Resources>
 
@@ -682,6 +689,16 @@
                 <Setter Property="Foreground" Value="Blue" />
                 <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
               </DataTrigger>
+              <DataTrigger Binding="{Binding OriginStatus}" Value="{x:Static enums:TranslationStatus.Updated}">
+                <Setter Property="Foreground" Value="PowderBlue" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignBadge}" />
+              </DataTrigger>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="DarkGreen"/>
+              </Trigger>
+              <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="MidnightBlue"/>
+              </Trigger>
             </Style.Triggers>
           </Style>
         </DataGrid.RowStyle>
