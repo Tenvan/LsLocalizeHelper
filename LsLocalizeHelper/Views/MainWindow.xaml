@@ -34,6 +34,13 @@
       <converter:TextQuickSearchMultiConverter x:Key="TextQuickSearchMultiConverter" />
       <converter:TextFromResourceConverter x:Key="TextFromResourceConverter" />
       <Style TargetType="{x:Type ToolTip}" />
+      <!-- <Style TargetType="{x:Type DataGridCell}"> -->
+      <!--   <Style.Triggers> -->
+      <!--     <Trigger Property="IsMouseOver" Value="True"> -->
+      <!--       <Setter Property="Background" Value="{StaticResource MaterialDesignBadge}" /> -->
+      <!--     </Trigger> -->
+      <!--   </Style.Triggers> -->
+      <!-- </Style> -->
     </ResourceDictionary>
   </Window.Resources>
 
@@ -658,6 +665,24 @@
         <DataGrid.RowStyle>
           <Style TargetType="DataGridRow">
             <Style.Triggers>
+              
+              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Translated}">
+                <Setter Property="Foreground" Value="LightGreen" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Origin}">
+                <Setter Property="Foreground" Value="Orange" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+              </DataTrigger>
+
+              <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                  <Condition Binding="{Binding Path=Status}" Value="{x:Static enums:TranslationStatus.Origin}" />
+                  <Condition Binding="{Binding Path=OriginStatus}" Value="{x:Static enums:TranslationStatus.Updated}" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Foreground" Value="PowderBlue" />
+              </MultiDataTrigger>
+              
               <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Deleted}">
                 <Setter Property="Background" Value="Brown" />
                 <Setter Property="Foreground" Value="White" />
@@ -670,18 +695,16 @@
                 <Setter Property="Background" Value="DarkGreen" />
                 <Setter Property="Foreground" Value="White" />
               </DataTrigger>
-              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Origin}">
-                <Setter Property="Foreground" Value="Orange" />
-                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-              </DataTrigger>
-              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Translated}">
-                <Setter Property="Foreground" Value="LightGreen" />
-                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-              </DataTrigger>
               <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Updated}">
                 <Setter Property="Foreground" Value="Blue" />
                 <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
               </DataTrigger>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="DarkGreen"/>
+              </Trigger>
+              <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="MidnightBlue"/>
+              </Trigger>
             </Style.Triggers>
           </Style>
         </DataGrid.RowStyle>
@@ -841,10 +864,7 @@
           </DataTemplate>
         </GroupBox.HeaderTemplate>
 
-        <uc:LsTextBox x:Name="TextBoxTranslated"
-                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                   ScrollViewer.VerticalScrollBarVisibility="Auto">
-        </uc:LsTextBox>
+        <uc:LsTextBox x:Name="TextBoxTranslated" />
       </GroupBox>
 
       <GroupBox Grid.Row="1"
