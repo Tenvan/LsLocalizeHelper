@@ -130,7 +130,7 @@ public static class LsWorkingDataService
     dataRowModel.Origin = currentUid?.Text;
     dataRowModel.Previous = previousUid?.Text;
 
-    dataRowModel.Status = dataRowModel.Text.Equals(dataRowModel.Origin)
+    dataRowModel.Status = dataRowModel.Text.Equals(dataRowModel.Origin) || dataRowModel.Text.Equals(dataRowModel.Previous)
                             ? TranslationStatus.Origin
                             : TranslationStatus.Translated;
 

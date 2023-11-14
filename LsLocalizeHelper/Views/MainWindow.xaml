@@ -665,6 +665,24 @@
         <DataGrid.RowStyle>
           <Style TargetType="DataGridRow">
             <Style.Triggers>
+              
+              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Translated}">
+                <Setter Property="Foreground" Value="LightGreen" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Origin}">
+                <Setter Property="Foreground" Value="Orange" />
+                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
+              </DataTrigger>
+
+              <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                  <Condition Binding="{Binding Path=Status}" Value="{x:Static enums:TranslationStatus.Origin}" />
+                  <Condition Binding="{Binding Path=OriginStatus}" Value="{x:Static enums:TranslationStatus.Updated}" />
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Foreground" Value="PowderBlue" />
+              </MultiDataTrigger>
+              
               <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Deleted}">
                 <Setter Property="Background" Value="Brown" />
                 <Setter Property="Foreground" Value="White" />
@@ -677,21 +695,9 @@
                 <Setter Property="Background" Value="DarkGreen" />
                 <Setter Property="Foreground" Value="White" />
               </DataTrigger>
-              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Origin}">
-                <Setter Property="Foreground" Value="Orange" />
-                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-              </DataTrigger>
-              <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Translated}">
-                <Setter Property="Foreground" Value="LightGreen" />
-                <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-              </DataTrigger>
               <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Updated}">
                 <Setter Property="Foreground" Value="Blue" />
                 <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
-              </DataTrigger>
-              <DataTrigger Binding="{Binding OriginStatus}" Value="{x:Static enums:TranslationStatus.Updated}">
-                <Setter Property="Foreground" Value="PowderBlue" />
-                <Setter Property="Background" Value="{DynamicResource MaterialDesignBadge}" />
               </DataTrigger>
               <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="DarkGreen"/>
