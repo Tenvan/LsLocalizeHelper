@@ -864,7 +864,9 @@
           </DataTemplate>
         </GroupBox.HeaderTemplate>
 
-        <uc:LsTextBox x:Name="TextBoxTranslated">
+        <uc:LsTextBox x:Name="TextBoxTranslated"
+                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                   ScrollViewer.VerticalScrollBarVisibility="Auto">
         </uc:LsTextBox>
       </GroupBox>
 
