@@ -11,7 +11,13 @@ namespace LsLocalizeHelperLib.Services;
 public static class SettingsManager
 {
 
+  #region Static Fields
+
   private static readonly string settingsPath;
+
+  #endregion
+
+  #region Static Constructors
 
   static SettingsManager()
   {
@@ -19,20 +25,20 @@ public static class SettingsManager
     SettingsManager.Settings = new UserSettings();
   }
 
+  #endregion
+
+  #region Static Properties
+
   public static UserSettings? Settings { get; set; }
 
-  private static string GetLocalFilePath(string fileName)
-  {
-    var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+  #endregion
 
-    return Path.Combine(appData, "LsLocalizeHelper", fileName);
-  }
+  #region Static Methods
 
   public static void Load()
   {
     if (File.Exists(SettingsManager.settingsPath))
     {
-
       try
       {
         SettingsManager.Settings
@@ -56,5 +62,14 @@ public static class SettingsManager
     var json = JsonConvert.SerializeObject(value: SettingsManager.Settings, formatting: Formatting.Indented);
     File.WriteAllText(path: SettingsManager.settingsPath, contents: json);
   }
+
+  private static string GetLocalFilePath(string fileName)
+  {
+    var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+    return Path.Combine(appData, "LsLocalizeHelper", fileName);
+  }
+
+  #endregion
 
 }

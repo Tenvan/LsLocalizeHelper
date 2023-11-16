@@ -32,6 +32,8 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Google.Cloud.Translate.V3" Version="3.3.0" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="Rx.Net.Plus" Version="1.1.15" />
   </ItemGroup>
 

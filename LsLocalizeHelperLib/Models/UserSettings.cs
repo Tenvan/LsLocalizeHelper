@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace LsLocalizeHelperLib.Models;
 
 [Serializable]
@@ -21,6 +23,12 @@ public class UserSettings
   public string ModsPath { get; set; } = "";
 
   public double ProjectHeight { get; set; }
+
+  public string RapidApiKey { get; set; } = "";
+
+  public string SourceLanguage { get; set; } = "en";
+
+  public string TargetLanguage { get; set; } = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
 
   public double TranslationHeight { get; set; }
 

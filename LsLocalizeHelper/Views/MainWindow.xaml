@@ -840,6 +840,20 @@
                          Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                          Text="{Binding}" />
 
+              <Button x:Name="ButtonTranslateMicrosoft"
+                      Height="Auto"
+                      Margin="0,0, 5, 0"
+                      Click="ButtonTranslateCurrent_Microsoft_OnClick"
+                      Content="{DynamicResource ButtonTranslateMicrosoft}"
+                      Style="{StaticResource MaterialDesignPaperButton}" />
+
+              <Button x:Name="ButtonTranslateMyMemory"
+                      Height="Auto"
+                      Margin="0,0, 20, 0"
+                      Click="ButtonTranslateCurrent_MyMemory_OnClick"
+                      Content="{DynamicResource ButtonTranslateMyMemory}"
+                      Style="{StaticResource MaterialDesignPaperButton}" />
+
               <Button x:Name="ButtonCopyTranslated"
                       Height="Auto"
                       Margin="5,0"
@@ -889,9 +903,11 @@
 
               <Button x:Name="ButtonCopyCurrent"
                       Height="Auto"
+                      Margin="5,0"
                       Click="ButtonCopyCurrent_OnClick"
                       Content="{DynamicResource ButtonCopy}"
                       Style="{StaticResource MaterialDesignPaperSecondaryLightButton}" />
+
             </StackPanel>
           </DataTemplate>
         </GroupBox.HeaderTemplate>
