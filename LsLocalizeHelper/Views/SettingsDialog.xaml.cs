@@ -17,6 +17,9 @@ public partial class SettingsDialog : Window
   {
     this.InitializeComponent();
     this.TextBoxModsPath.Text = SettingsManager.Settings?.ModsPath;
+    this.TextBoxRapidApiKey.Text = SettingsManager.Settings!.RapidApiKey;
+    this.TextBoxSourceLanguage.Text = SettingsManager.Settings!.SourceLanguage;
+    this.TextBoxTargetLanguage.Text = SettingsManager.Settings!.TargetLanguage;
   }
 
   #endregion
@@ -32,6 +35,9 @@ public partial class SettingsDialog : Window
   private void ApplySettings()
   {
     SettingsManager.Settings!.ModsPath = this.TextBoxModsPath.Text;
+    SettingsManager.Settings!.RapidApiKey = this.TextBoxRapidApiKey.Text;
+    SettingsManager.Settings!.SourceLanguage = this.TextBoxSourceLanguage.Text;
+    SettingsManager.Settings!.TargetLanguage = this.TextBoxTargetLanguage.Text;
     SettingsManager.Save();
     this.DialogResult = true;
     this.Close();
@@ -42,7 +48,10 @@ public partial class SettingsDialog : Window
     var dialog = new FolderBrowserDialog();
     var result = dialog.ShowDialog();
 
-    if (result == System.Windows.Forms.DialogResult.OK) { this.TextBoxModsPath.Text = dialog.SelectedPath; }
+    if (result == System.Windows.Forms.DialogResult.OK)
+    {
+      this.TextBoxModsPath.Text = dialog.SelectedPath;
+    }
   }
 
   private void ButtonAbort_OnClick(object sender, RoutedEventArgs e) { this.AbortSettings(); }

@@ -8,7 +8,7 @@
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="locals/locals.de-DE.xaml" />
         <!-- This is the current way to setup your app's initial theme -->
-        <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Indigo" SecondaryColor="LightBlue" />
+        <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="BlueGrey" SecondaryColor="LightBlue" />
 
         <ResourceDictionary
           Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />

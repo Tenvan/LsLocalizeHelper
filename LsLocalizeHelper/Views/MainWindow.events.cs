@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,12 +11,20 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 
+using Google.Api.Gax.Grpc.Rest;
+using Google.Api.Gax.ResourceNames;
+using Google.Cloud.Translate.V3;
+
 using LsLocalizeHelperLib.Enums;
 using LsLocalizeHelperLib.Helper;
 using LsLocalizeHelperLib.Models;
 using LsLocalizeHelperLib.Services;
 
+using Newtonsoft.Json;
+
 using ReactiveUI;
+
+using RestSharp;
 
 using Clipboard = System.Windows.Forms.Clipboard;
 
@@ -47,7 +56,10 @@ public partial class MainWindow
 
   private void ButtonCopyTranslated_OnExecuted(object sender, RoutedEventArgs routedEventArgs)
   {
-    if (!string.IsNullOrEmpty(this.TextBoxTranslated.Text)) { App.SetClipboardText(this.TextBoxTranslated.Text); }
+    if (!string.IsNullOrEmpty(this.TextBoxTranslated.Text))
+    {
+      App.SetClipboardText(this.TextBoxTranslated.Text);
+    }
   }
 
   private void ButtonPasteTranslated_OnClick(object sender, RoutedEventArgs e)
@@ -73,13 +85,19 @@ public partial class MainWindow
     var listBox = sender as CheckBox;
     var data = listBox?.DataContext;
 
-    if (data is not XmlFileListBoxItem listBoxItem) { return; }
+    if (data is not XmlFileListBoxItem listBoxItem)
+    {
+      return;
+    }
 
     // clear previous selections for this mod
     var listBoxItemsOfMod = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
                                 .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
 
-    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod)
+    {
+      xmlFileListBoxItem.IsChecked = false;
+    }
 
     this.SaveListBoxOriginCurrentFile();
     this.ReLoadXmlFiles();
@@ -90,13 +108,19 @@ public partial class MainWindow
     var listBox = sender as CheckBox;
     var data = listBox?.DataContext;
 
-    if (data is not XmlFileListBoxItem listBoxItem) { return; }
+    if (data is not XmlFileListBoxItem listBoxItem)
+    {
+      return;
+    }
 
     // clear previous selections for this mod
     var listBoxItemsOfMod = this.ListBoxOriginPreviousFile.Items.Cast<XmlFileListBoxItem>()
                                 .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
 
-    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod)
+    {
+      xmlFileListBoxItem.IsChecked = false;
+    }
 
     this.SaveListBoxOriginPreviousFile();
     this.ReLoadXmlFiles();
@@ -107,13 +131,19 @@ public partial class MainWindow
     var listBox = sender as CheckBox;
     var data = listBox?.DataContext;
 
-    if (data is not XmlFileListBoxItem listBoxItem) { return; }
+    if (data is not XmlFileListBoxItem listBoxItem)
+    {
+      return;
+    }
 
     // clear previous selections for this mod
     var listBoxItemsOfMod = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
                                 .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
 
-    foreach (var xmlFileListBoxItem in listBoxItemsOfMod) { xmlFileListBoxItem.IsChecked = false; }
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod)
+    {
+      xmlFileListBoxItem.IsChecked = false;
+    }
 
     this.SaveListBoxTranslatedFile();
 
@@ -125,19 +155,11 @@ public partial class MainWindow
     this.TranslationGrid.Events()
         .SelectionChanged.Throttle(TimeSpan.FromSeconds(0.4))
         .ObserveOn(RxApp.MainThreadScheduler)
-        .Select(
-           e => e.AddedItems.Count > 0
-                  ? e.AddedItems[0] as DataRowModel
-                  : null
-         )
+        .Select(e => e.AddedItems.Count > 0 ? e.AddedItems[0] as DataRowModel : null)
         .Subscribe(this.CopyToClipboardOnRowChanged);
 
     this.TranslationGrid.Events()
-        .SelectionChanged.Select(
-           e => e.AddedItems.Count > 0
-                  ? e.AddedItems[0] as DataRowModel
-                  : null
-         )
+        .SelectionChanged.Select(e => e.AddedItems.Count > 0 ? e.AddedItems[0] as DataRowModel : null)
         .Subscribe(this.SetTextBoxOnRowChanged);
 
     this.ListBoxMods.Events()
@@ -204,8 +226,14 @@ public partial class MainWindow
       case Key.Delete:
         var item = this.TranslationGrid.SelectedItem as DataRowModel;
 
-        if (item!.Status == TranslationStatus.Deleted) { LsWorkingDataService.RecalculateStatus(item); }
-        else { item!.Status = TranslationStatus.Deleted; }
+        if (item!.Status == TranslationStatus.Deleted)
+        {
+          LsWorkingDataService.RecalculateStatus(item);
+        }
+        else
+        {
+          item!.Status = TranslationStatus.Deleted;
+        }
 
         break;
     }
@@ -218,7 +246,12 @@ public partial class MainWindow
     var hasShiftKey = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
     var hasControlKey = Keyboard.Modifiers.HasFlag(ModifierKeys.Control);
 
-    this.sortingHelper.ColumnClicked(column: e.Column.SortMemberPath, hasControlKey: hasControlKey, hasShiftKey: hasControlKey);
+    this.sortingHelper.ColumnClicked(
+      column: e.Column.SortMemberPath,
+      hasControlKey: hasControlKey,
+      hasShiftKey: hasControlKey
+    );
+
     this.sortingHelper.SyncToGrid();
 
     Console.WriteLine($"count sortingHelper SortDescription: {this.sortingHelper.Sortings.Count}");
@@ -252,5 +285,90 @@ public partial class MainWindow
   }
 
   #endregion
+
+  private async void ButtonTranslateCurrent_MyMemory_OnClick(object sender, RoutedEventArgs e)
+  {
+    try
+    {
+      var input = this.CurrentDataRow?.Origin;
+      var sl = SettingsManager.Settings?.SourceLanguage;
+      var tl = SettingsManager.Settings?.TargetLanguage;
+
+      var requestUrl
+        = $"https://translated-mymemory---translation-memory.p.rapidapi.com/get?langpair={sl}%7C{tl}&q={Uri.EscapeDataString(input)}&mt=1&onlyprivate=0&de=a%40b.c";
+
+      var client = new RestClient(requestUrl);
+      var request = new RestRequest();
+
+      request.AddHeader(name: "X-RapidAPI-Key", value: SettingsManager.Settings.RapidApiKey);
+      request.AddHeader(name: "X-RapidAPI-Host", value: "translated-mymemory---translation-memory.p.rapidapi.com");
+
+      var response = await client.ExecuteAsync(request);
+
+      if (response.IsSuccessful)
+      {
+        dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+        string translated = jsonResponse.responseData.translatedText;
+
+        this.TextBoxTranslated.Text = translated;
+      }
+      else
+      {
+        this.ShowToast("API call unsuccessful: " + response.ErrorMessage);
+      }
+    }
+    catch (Exception exception)
+    {
+      this.ShowToast(exception.Message);
+    }
+  }
+
+  private async void ButtonTranslateCurrent_Microsoft_OnClick(object sender, RoutedEventArgs e)
+  {
+    try
+    {
+      var input = this.CurrentDataRow?.Origin;
+      var sl = SettingsManager.Settings?.SourceLanguage;
+      var tl = SettingsManager.Settings?.TargetLanguage;
+
+      var requestUrl
+        = $"https://microsoft-translator-text.p.rapidapi.com/translate?from={sl}&to%5B0%5D={tl}&api-version=3.0&profanityAction=NoAction&textType=plain";
+
+      var client = new RestClient(requestUrl);
+      var request = new RestRequest();
+
+      request.AddHeader(name: "content-type", value: "application/json");
+      request.AddHeader(name: "X-RapidAPI-Key", value: SettingsManager.Settings.RapidApiKey);
+      request.AddHeader(name: "X-RapidAPI-Host", value: "microsoft-translator-text.p.rapidapi.com");
+
+      var jsonStr = string.Format(format: @"[ {{ ""Text"": ""{0}"" }}]", arg0: input);
+
+      request.AddParameter(
+        name: "application/json",
+        value: jsonStr,
+        type: ParameterType.RequestBody
+      );
+
+      var response = await client.ExecuteAsync(request: request, httpMethod: Method.Post);
+
+      if (response.IsSuccessful)
+      {
+        dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+        var responses = jsonResponse[0];
+        var translations = responses.translations;
+        var translated = translations[0].text;
+
+        this.TextBoxTranslated.Text = translated;
+      }
+      else
+      {
+        this.ShowToast("API call unsuccessful: " + response.ErrorMessage);
+      }
+    }
+    catch (Exception exception)
+    {
+      this.ShowToast(exception.Message);
+    }
+  }
 
 }
