@@ -1,24 +1,12 @@
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-
 using LsLocalizeHelperLib.Enums;
+
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace LsLocalizeHelperLib.Models;
 
-public class DataRowModel : INotifyPropertyChanged
+public class DataRowModel : ReactiveObject
 {
-
-  #region Fields
-
-  private DatSetFlag flag;
-
-  private TranslationStatus originStatus;
-
-  private TranslationStatus status;
-
-  private string text;
-
-  #endregion
 
   #region Constructors
 
@@ -31,7 +19,7 @@ public class DataRowModel : INotifyPropertyChanged
                       string version
   )
   {
-    this.text = text;
+    this.Text = text;
     this.Flag = flag;
     this.Mod = mod;
     this.SourceFile = sourceFile;
@@ -44,83 +32,34 @@ public class DataRowModel : INotifyPropertyChanged
 
   #region Properties
 
-  public DatSetFlag Flag
-  {
-    get => this.flag;
+  [Reactive]
+  public DatSetFlag Flag  { get; set; }
 
-    set
-    {
-      if (value == this.flag) { return; }
-
-      this.flag = value;
-      this.OnPropertyChanged();
-    }
-  }
-
+  [Reactive]
   public ModModel Mod { get; set; }
 
+  [Reactive]
   public string? Origin { get; set; }
 
-  public TranslationStatus OriginStatus
-  {
-    get => this.originStatus;
+  [Reactive]
+  public TranslationStatus OriginStatus { get; set; }
 
-    set
-    {
-      if (value == this.originStatus) { return; }
-
-      this.originStatus = value;
-      this.OnPropertyChanged();
-    }
-  }
-
+  [Reactive]
   public string? Previous { get; set; }
 
   public XmlFileModel SourceFile { get; set; }
 
-  public TranslationStatus Status { get => this.status; set => this.SetField(field: ref this.status, value: value); }
+  [Reactive]
+  public TranslationStatus Status { get; set; }
 
-  public string Text
-  {
-    get => this.text;
+  [Reactive]
+  public string Text { get; set; }
 
-    set
-    {
-      if (value == this.text) { return; }
-
-      this.text = value;
-      this.OnPropertyChanged();
-    }
-  }
-
+  [Reactive]
   public string Uuid { get; set; }
 
+  [Reactive]
   public string Version { get; set; }
-
-  #endregion
-
-  #region Methods
-
-  protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-  {
-    this.PropertyChanged?.Invoke(sender: this, e: new PropertyChangedEventArgs(propertyName));
-  }
-
-  protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-  {
-    if (EqualityComparer<T>.Default.Equals(x: field, y: value)) return false;
-
-    field = value;
-    this.OnPropertyChanged(propertyName);
-
-    return true;
-  }
-
-  #endregion
-
-  #region All Other Members
-
-  public event PropertyChangedEventHandler? PropertyChanged;
 
   #endregion
 

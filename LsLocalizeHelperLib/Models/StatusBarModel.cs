@@ -1,23 +1,14 @@
 ﻿using LsLocalizeHelperLib.Helper;
 
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+
 namespace LsLocalizeHelperLib.Models;
 
-public class StatusBarModel : ViewModelBase
+public class StatusBarModel : ReactiveObject
 {
 
   #region Fields
-
-  private int count = 0;
-
-  private int countDeleted = 0;
-
-  private int countNew;
-
-  private int countOrigins;
-
-  private int countTranslated;
-
-  private bool loaded;
 
   private bool modified;
 
@@ -31,34 +22,38 @@ public class StatusBarModel : ViewModelBase
 
   public bool NotModified => this.notModified;
 
-  public int Count { get => this.count; set => this.SetProperty(member: ref this.count, value: value); }
+  [Reactive]
+  public int Count { get; set; }
 
-  public int CountDeleted { get => this.countDeleted; set => this.SetProperty(member: ref this.countDeleted, value: value); }
+  [Reactive]
+  public int CountDeleted { get; set; }
 
-  public int CountNew { get => this.countNew; set => this.SetProperty(member: ref this.countNew, value: value); }
+  [Reactive]
+  public int CountNew { get; set; }
 
-  public int CountOrigins { get => this.countOrigins; set => this.SetProperty(member: ref this.countOrigins, value: value); }
+  [Reactive]
+  public int CountOrigins { get; set; }
 
-  public int CountTranslated { get => this.countTranslated; set => this.SetProperty(member: ref this.countTranslated, value: value); }
+  [Reactive]
+  public int CountTranslated { get; set; }
 
-  public bool Loaded { get => this.loaded; set => this.SetProperty(member: ref this.loaded, value: value); }
+  [Reactive]
+  public bool Loaded { get; set; }
 
+  [Reactive]
   public bool Modified
   {
     get => this.modified;
 
     set
     {
-      this.SetProperty(member: ref this.modified, value: value);
-      this.SetProperty(member: ref this.notModified, value: !value);
-
-      this.ModifiedText = this.modified
-                            ? "Changed".FromResource()
-                            : "Unchanged".FromResource();
+      this.modified = value;
+      this.ModifiedText = this.modified ? "Changed".FromResource() : "Unchanged".FromResource();
     }
   }
 
-  public string ModifiedText { get => this.modifiedText; set => this.SetProperty(member: ref this.modifiedText, value: value); }
+  [Reactive]
+  public string ModifiedText { get; set; } = "Unchanged".FromResource();
 
   #endregion
 

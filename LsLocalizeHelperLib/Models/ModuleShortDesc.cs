@@ -1,6 +1,9 @@
-﻿namespace LsLocalizeHelperLib.Models;
+﻿using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
-public class ModuleShortDesc
+namespace LsLocalizeHelperLib.Models;
+
+public class ModuleShortDesc : ReactiveObject
 {
 
   #region Constructors
@@ -21,14 +24,19 @@ public class ModuleShortDesc
 
   #region Properties
 
+  [Reactive]
   public string Folder { get; set; }
 
+  [Reactive]
   public string? MD5 { get; set; }
 
+  [Reactive]
   public string Name { get; set; }
 
+  [Reactive]
   public string UUID { get; set; }
 
+  [Reactive]
   public string Version { get; set; }
 
   #endregion

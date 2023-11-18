@@ -1,8 +1,11 @@
-﻿using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
+﻿using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+
+using DirectoryInfo = Alphaleonis.Win32.Filesystem.DirectoryInfo;
 
 namespace LsLocalizeHelperLib.Models;
 
-public class ModModel
+public class ModModel : ReactiveObject
 {
 
   #region Constructors
@@ -17,8 +20,10 @@ public class ModModel
 
   #region Properties
 
+  [Reactive]
   public DirectoryInfo Folder { get; set; }
 
+  [Reactive]
   public string Name { get; set; }
 
   #endregion

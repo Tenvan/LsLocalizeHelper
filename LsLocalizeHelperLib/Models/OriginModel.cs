@@ -1,6 +1,9 @@
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+
 namespace LsLocalizeHelperLib.Models;
 
-public class OriginModel
+public class OriginModel : ReactiveObject
 {
 
   #region Constructors
@@ -23,14 +26,19 @@ public class OriginModel
 
   #region Properties
 
+  [Reactive]
   public ModModel Mod { get; set; }
 
+  [Reactive]
   public XmlFileModel SourceFile { get; set; }
 
+  [Reactive]
   public string Text { get; set; }
 
+  [Reactive]
   public string Uuid { get; set; }
 
+  [Reactive]
   public string Version { get; set; }
 
   #endregion

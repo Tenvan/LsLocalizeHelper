@@ -1,13 +1,15 @@
+using ReactiveUI;
+
 namespace LsLocalizeHelperLib.Models;
 
-public class SelectionModel
+public class SelectionModel : ReactiveObject
 {
 
   #region Fields
 
-  public string ModName;
+  public string ModName { get; }
 
-  public string Name;
+  public string Name { get; }
 
   #endregion
 

@@ -1,6 +1,9 @@
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+
 namespace LsLocalizeHelperLib.Models;
 
-public class ModModelListBoxItem
+public class ModModelListBoxItem : ReactiveObject
 {
 
   #region Constructors
@@ -11,8 +14,10 @@ public class ModModelListBoxItem
 
   #region Properties
 
+  [Reactive]
   public bool IsChecked { get; set; }
 
+  [Reactive]
   public ModModel Mod { get; set; }
 
   #endregion
