@@ -4,12 +4,13 @@
 
   <System:String x:Key="ButtonYes">是</System:String>
   <System:String x:Key="ButtonNo">否</System:String>
-
   <System:String x:Key="ButtonAbort">取消</System:String>
   <System:String x:Key="ButtonApply">確認</System:String>
 
   <System:String x:Key="ButtonCopy">複製</System:String>
   <System:String x:Key="ButtonPaste">粘貼</System:String>
+  <System:String x:Key="ButtonTranslateMicrosoft">Translate Microsoft</System:String>
+  <System:String x:Key="ButtonTranslateMyMemory">Translate MyMemory</System:String>
 
   <System:String x:Key="TranslatedText">翻譯文本框</System:String>
   <System:String x:Key="OriginText">新版本的文本框（原版）</System:String>
@@ -34,13 +35,13 @@
   <System:String x:Key="DuplicateSet">重複</System:String>
   <System:String x:Key="LsTagError">LSTag 語法錯誤</System:String>
 
-  <System:String x:Key="Exit">Exit</System:String>
-  <System:String x:Key="Settings">Settings</System:String>
-  <System:String x:Key="Load">Load</System:String>
-  <System:String x:Key="Save">Save</System:String>
-  <System:String x:Key="Import">Import</System:String>
-  <System:String x:Key="Packing">Packing</System:String>
-  <System:String x:Key="Refresh">Refresh</System:String>
+  <System:String x:Key="Exit">出口</System:String>
+  <System:String x:Key="Settings">設定</System:String>
+  <System:String x:Key="Load">載入</System:String>
+  <System:String x:Key="Save">節省</System:String>
+  <System:String x:Key="Import">進口</System:String>
+  <System:String x:Key="Packing">包裝</System:String>
+  <System:String x:Key="Refresh">重新整理</System:String>
 
   <System:String x:Key="R-D767Fc81-2277-429D-9856-35Aaed972C9D">設置工作檔夾路徑</System:String>
   <System:String x:Key="R-C5267Ada-6391-4F1C-9B76-18E088802059">工作檔夾</System:String>
@@ -87,5 +88,11 @@
   <System:String x:Key="R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D">已翻譯:</System:String>
   <System:String x:Key="R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8">已刪除:</System:String>
   <System:String x:Key="R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa">新增:</System:String>
+
+  <System:String x:Key="R-6D51Eefc-7825-40A6-A4C1-69D7D9F4261F">未找到英文本地化檔！</System:String>
+  
+  <System:String x:Key="R-Cc1001Ac-4Dc2-4Bca-A659-3491B793E9Ff">RapidAPI 金鑰</System:String>
+  <System:String x:Key="R-Ca2550A2-6D49-403C-B177-B239220B4B29">原始語言</System:String>
+  <System:String x:Key="R-9Cc9Bd2E-7554-40Fb-A3E8-33F9671499D7">目標語言</System:String>
 
 </ResourceDictionary>

@@ -27,7 +27,6 @@
   <System:String x:Key="Changed">Geändert</System:String>
   <System:String x:Key="Unchanged">Unverändert</System:String>
   <System:String x:Key="Status">Status</System:String>
-  
   <System:String x:Key="Flag">Flag</System:String>
   
   <System:String x:Key="ExistingSet">Vorhanden</System:String>
@@ -95,7 +94,5 @@
   <System:String x:Key="R-Cc1001Ac-4Dc2-4Bca-A659-3491B793E9Ff">RapidAPI Key</System:String>
   <System:String x:Key="R-Ca2550A2-6D49-403C-B177-B239220B4B29">Quell Sprache</System:String>
   <System:String x:Key="R-9Cc9Bd2E-7554-40Fb-A3E8-33F9671499D7">Ziel Sprache</System:String>
-  
-  
 
 </ResourceDictionary>

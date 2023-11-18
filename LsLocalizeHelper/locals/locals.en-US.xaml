@@ -4,12 +4,13 @@
 
   <System:String x:Key="ButtonYes">Yes</System:String>
   <System:String x:Key="ButtonNo">No</System:String>
-
   <System:String x:Key="ButtonAbort">Abort</System:String>
   <System:String x:Key="ButtonApply">Apply</System:String>
 
   <System:String x:Key="ButtonCopy">Copy</System:String>
   <System:String x:Key="ButtonPaste">Insert</System:String>
+  <System:String x:Key="ButtonTranslateMicrosoft">Translate Microsoft</System:String>
+  <System:String x:Key="ButtonTranslateMyMemory">Translate MyMemory</System:String>
 
   <System:String x:Key="TranslatedText">Translated text</System:String>
   <System:String x:Key="OriginText">Current original text</System:String>
@@ -87,5 +88,11 @@
   <System:String x:Key="R-6Aeb8D17-98C4-4C8B-A194-76547Da9799D">Translated:</System:String>
   <System:String x:Key="R-Dc679553-C126-4C54-A7Ea-F3Bb74546Be8">Deleted:</System:String>
   <System:String x:Key="R-D7E93C39-28F7-4A64-Bf0A-A56B52A711Aa">New:</System:String>
+
+  <System:String x:Key="R-6D51Eefc-7825-40A6-A4C1-69D7D9F4261F">No English localization files found!</System:String>
+  
+  <System:String x:Key="R-Cc1001Ac-4Dc2-4Bca-A659-3491B793E9Ff">RapidAPI Key</System:String>
+  <System:String x:Key="R-Ca2550A2-6D49-403C-B177-B239220B4B29">Source language</System:String>
+  <System:String x:Key="R-9Cc9Bd2E-7554-40Fb-A3E8-33F9671499D7">Target language</System:String>
 
 </ResourceDictionary>
