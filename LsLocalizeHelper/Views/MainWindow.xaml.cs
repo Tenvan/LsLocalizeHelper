@@ -196,4 +196,14 @@ public partial class MainWindow : Window,
 
   #endregion
 
+  private void CheckBoxTranslateAll_OnChecked(object sender, RoutedEventArgs e)
+  {
+    this.TranslateAll = true;
+  }
+
+  private void CheckBoxTranslateAll_OnUnChecked(object sender, RoutedEventArgs e)
+  {
+    this.TranslateAll = false;
+  }
+
 }

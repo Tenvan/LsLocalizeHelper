@@ -16,7 +16,7 @@ public partial class MainWindow
 
   #region Properties
 
-  public ObservableCollection<DataRowModel?> DataGridItems { get; } = LsWorkingDataService.TranslatedItems;
+  public ObservableCollection<DataRowModel?> DataGridItems { get; } = LsWorkingDataService.TranslateItems;
 
   #endregion
 

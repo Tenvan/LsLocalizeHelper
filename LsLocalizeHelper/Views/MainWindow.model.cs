@@ -83,6 +83,8 @@ public partial class MainWindow
 
   public ObservableCollection<ModModelListBoxItem> ProjectItems { get; set; } = new();
 
+  public bool TranslateAll { get; set; } = false;
+
   public ObservableCollection<XmlFileListBoxItem> TranslatedFileItems { get; set; } = new();
 
   private bool IsUpdating { get; set; } = false;
