@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media;
 using System.Xml.Linq;
-
-using DynamicData;
-
-using HtmlAgilityPack;
 
 using LSLib.LS;
 
@@ -17,6 +13,10 @@ using LsLocalizeHelperLib.Enums;
 using LsLocalizeHelperLib.Helper;
 using LsLocalizeHelperLib.Models;
 using LsLocalizeHelperLib.Services;
+
+using Newtonsoft.Json;
+
+using RestSharp;
 
 namespace LsLocalizeHelper.Views;
 
@@ -30,14 +30,22 @@ public partial class MainWindow
 
   private void CopyToClipboardOnRowChanged(DataRowModel? row)
   {
-    if (row == null) { return; }
+    if (row == null)
+    {
+      return;
+    }
 
     try
     {
-      if (this.CheckBoxAutoClipboard.IsChecked == true
-          && !string.IsNullOrEmpty(row?.Text)) { App.SetClipboardText(row.Text); }
+      if (this.CheckBoxAutoClipboard.IsChecked == true && !string.IsNullOrEmpty(row.Text))
+      {
+        App.SetClipboardText(row.Text);
+      }
     }
-    catch (Exception ex) { Console.WriteLine(ex.Message); }
+    catch (Exception ex)
+    {
+      Console.WriteLine(ex.Message);
+    }
   }
 
   private XDocument CreateDocFromItems(IEnumerable<DataRowModel?> dataRowModels)
@@ -49,8 +57,7 @@ public partial class MainWindow
 
     if (contentList == null) throw new Exception("Error on building new xdocument. No contentList found.");
 
-    foreach (var dataRowModel in dataRowModels.OrderBy(r => r.Origin)
-                                              .Where(d => d.Status != TranslationStatus.Deleted))
+    foreach (var dataRowModel in dataRowModels.OrderBy(r => r.Origin).Where(d => d.Status != TranslationStatus.Deleted))
     {
       // contentList.Add(new XComment($"RowStatus on save: {dataRowModel.Status}"));
 
@@ -71,7 +78,10 @@ public partial class MainWindow
   {
     var newText = this.TextBoxTranslated.Text;
 
-    if (!LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow?.Uuid, newText: newText)) { return; }
+    if (!LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow?.Uuid, newText: newText))
+    {
+      return;
+    }
 
     this.BarModel.Modified = true;
     this.RefreshStatusBar();
@@ -79,7 +89,10 @@ public partial class MainWindow
 
   private void DoGroupBoxProjectsOnSizeChanged(SizeChangedEventArgs e)
   {
-    if (!e.HeightChanged) { return; }
+    if (!e.HeightChanged)
+    {
+      return;
+    }
 
     SettingsManager.Settings.ProjectHeight = this.RowDefinitionProjects.Height.Value;
     SettingsManager.Save();
@@ -87,7 +100,10 @@ public partial class MainWindow
 
   private void DoGroupBoxTranslatioOnSizeChanged(SizeChangedEventArgs e)
   {
-    if (!e.HeightChanged) { return; }
+    if (!e.HeightChanged)
+    {
+      return;
+    }
 
     SettingsManager.Settings.TranslationHeight = this.RowDefinitionTranslation.Height.Value;
     SettingsManager.Save();
@@ -121,28 +137,30 @@ public partial class MainWindow
 
   private void DoLoadData()
   {
-    LsWorkingDataService.Clear();
+    try
+    {
+      LsWorkingDataService.Clear();
 
-    var translatedFiles = this.GetSelectedTranslated();
-    var currentFiles = this.GetSelectedOriginCurrents();
-    var previousFiles = this.GetSelectedOriginPrevious();
+      var translatedFiles = this.GetSelectedTranslated();
+      var currentFiles = this.GetSelectedOriginCurrents();
+      var previousFiles = this.GetSelectedOriginPrevious();
 
-    LsWorkingDataService.Load(
-      translatedFiles: translatedFiles,
-      currentFiles: currentFiles,
-      previousFiles: previousFiles
-    );
+      LsWorkingDataService.Load(
+        translatedFiles: translatedFiles,
+        currentFiles: currentFiles,
+        previousFiles: previousFiles
+      );
 
-    this.TranslationGrid.ItemsSource = LsWorkingDataService.TranslatedItems;
-    this.HasDataLoaded = true;
-    this.BarModel.Loaded = true;
-    this.RefreshStatusBar();
-    this.RestoreOrder();
-  }
-
-  private void RestoreOrder()
-  {
-    this.sortingHelper.SyncToGrid();
+      this.TranslationGrid.ItemsSource = LsWorkingDataService.TranslateItems;
+      this.HasDataLoaded = true;
+      this.BarModel.Loaded = true;
+      this.RefreshStatusBar();
+      this.RestoreOrder();
+    }
+    catch (Exception ex)
+    {
+      this.ShowToast(ex.Message);
+    }
   }
 
   private void DoPackMods()
@@ -220,13 +238,12 @@ public partial class MainWindow
     {
       foreach (var mod in mods)
       {
-        var modFiles = this.GetSelectedTranslated()
-                           .Where(t => t.Mod.Name == mod.Name);
+        var modFiles = this.GetSelectedTranslated().Where(t => t.Mod.Name == mod.Name);
 
         foreach (var xmlFileModel in modFiles)
         {
-          var translatedItems = LsWorkingDataService.TranslatedItems.Where(t => t?.SourceFile == xmlFileModel)
-                                                    .ToArray();
+          var translatedItems
+            = LsWorkingDataService.TranslateItems.Where(t => t?.SourceFile == xmlFileModel).ToArray();
 
           var fileName = xmlFileModel.FullPath.FullName;
           var tempFileName = $"{fileName}.temp.xml";
@@ -251,12 +268,11 @@ public partial class MainWindow
   private void RefreshStatusBar()
   {
     var statusRows = this.TranslationGrid.Items.Cast<DataRowModel>().ToList();
-    
+
     this.BarModel.Count = statusRows.Count;
     this.BarModel.CountDeleted = statusRows.Count(t => t.Status == TranslationStatus.Deleted);
 
-    this.BarModel.CountTranslated
-      = statusRows.Count(t => t.Status == TranslationStatus.Translated);
+    this.BarModel.CountTranslated = statusRows.Count(t => t.Status == TranslationStatus.Translated);
 
     this.BarModel.CountOrigins = statusRows.Count(t => t.Status == TranslationStatus.Origin);
 
@@ -265,11 +281,11 @@ public partial class MainWindow
     );
   }
 
+  private void RestoreOrder() { this.sortingHelper.SyncToGrid(); }
+
   private void SaveListBoxMods()
   {
-    var selectedValue = this.GetSelectedMods()
-                            .Select(model => model.Name)
-                            .ToArray();
+    var selectedValue = this.GetSelectedMods().Select(model => model.Name).ToArray();
 
     SettingsManager.Settings!.LastMods = selectedValue;
     SettingsManager.Save();
@@ -342,6 +358,75 @@ public partial class MainWindow
       text: row?.Previous,
       searchReg: this.TextBoxQuickSearch.Text
     );
+  }
+
+  private async Task<string?> TranslatedWithMicrosoft(string input)
+  {
+    var sl = SettingsManager.Settings?.SourceLanguage;
+    var tl = SettingsManager.Settings?.TargetLanguage;
+
+    var requestUrl
+      = $"https://microsoft-translator-text.p.rapidapi.com/translate?from={sl}&to%5B0%5D={tl}&api-version=3.0&profanityAction=NoAction&textType=plain";
+
+    var client = new RestClient(requestUrl);
+    var request = new RestRequest();
+
+    request.AddHeader(name: "content-type", value: "application/json");
+    request.AddHeader(name: "X-RapidAPI-Key", value: SettingsManager.Settings.RapidApiKey);
+    request.AddHeader(name: "X-RapidAPI-Host", value: "microsoft-translator-text.p.rapidapi.com");
+
+    var jsonStr = string.Format(format: @"[ {{ ""Text"": ""{0}"" }}]", arg0: input);
+
+    request.AddParameter(name: "application/json", value: jsonStr, type: ParameterType.RequestBody);
+
+    var response = await client.ExecuteAsync(request: request, httpMethod: Method.Post);
+
+    var translated = input;
+
+    if (response.IsSuccessful)
+    {
+      dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+      var responses = jsonResponse[0];
+      var translations = responses.translations;
+      translated = (string)translations[0].text;
+    }
+    else
+    {
+      this.ShowToast("API call unsuccessful: " + response.ErrorMessage);
+    }
+
+    return translated;
+  }
+
+  private async Task<string?> TranslatedWithMyMemory(string? input)
+  {
+    var sl = SettingsManager.Settings?.SourceLanguage;
+    var tl = SettingsManager.Settings?.TargetLanguage;
+
+    var requestUrl
+      = $"https://translated-mymemory---translation-memory.p.rapidapi.com/get?langpair={sl}%7C{tl}&q={Uri.EscapeDataString(input)}&mt=1&onlyprivate=0&de=a%40b.c";
+
+    var client = new RestClient(requestUrl);
+    var request = new RestRequest();
+
+    request.AddHeader(name: "X-RapidAPI-Key", value: SettingsManager.Settings.RapidApiKey);
+    request.AddHeader(name: "X-RapidAPI-Host", value: "translated-mymemory---translation-memory.p.rapidapi.com");
+
+    var response = await client.ExecuteAsync(request);
+
+    var translated = input;
+
+    if (response.IsSuccessful)
+    {
+      dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+      translated = jsonResponse?.responseData.translatedText;
+    }
+    else
+    {
+      this.ShowToast("API call unsuccessful: " + response.ErrorMessage);
+    }
+
+    return translated;
   }
 
   #endregion

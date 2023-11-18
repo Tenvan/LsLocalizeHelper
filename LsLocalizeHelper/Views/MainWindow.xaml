@@ -402,6 +402,42 @@
                 Sorting="TranslationGrid_OnSorting">
         <DataGrid.Columns>
 
+
+          <!--  Column Modified  -->
+          <DataGridTemplateColumn SortMemberPath="Status">
+            <DataGridTemplateColumn.Header>
+              <md:PackIcon Width="20"
+                           Height="20"
+                           VerticalAlignment="Center"
+                           Kind="ModeEdit" />
+            </DataGridTemplateColumn.Header>
+
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <StackPanel VerticalAlignment="Top"
+                            Orientation="Vertical">
+                  <md:PackIcon x:Name="StatusIcon"
+                               Width="20"
+                               Height="20"
+                               VerticalAlignment="Center"
+                               Foreground="YellowGreen"
+                               Kind="Octagram" />
+                </StackPanel>
+
+                <DataTemplate.Triggers>
+                  <DataTrigger Binding="{Binding Path=Modified}" Value="True">
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="OctagramEditOutline" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="IndianRed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding Path=Modified}" Value="False">
+                    <Setter TargetName="StatusIcon" Property="Kind" Value="Octagram" />
+                    <Setter TargetName="StatusIcon" Property="Foreground" Value="PaleGreen" />
+                  </DataTrigger>
+                </DataTemplate.Triggers>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
           <!--  Column TranslationStatus  -->
           <DataGridTemplateColumn SortMemberPath="Status">
             <DataGridTemplateColumn.Header>
@@ -665,7 +701,7 @@
         <DataGrid.RowStyle>
           <Style TargetType="DataGridRow">
             <Style.Triggers>
-              
+
               <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Translated}">
                 <Setter Property="Foreground" Value="LightGreen" />
                 <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
@@ -682,7 +718,7 @@
                 </MultiDataTrigger.Conditions>
                 <Setter Property="Foreground" Value="PowderBlue" />
               </MultiDataTrigger>
-              
+
               <DataTrigger Binding="{Binding Status}" Value="{x:Static enums:TranslationStatus.Deleted}">
                 <Setter Property="Background" Value="Brown" />
                 <Setter Property="Foreground" Value="White" />
@@ -700,22 +736,23 @@
                 <Setter Property="Background" Value="{DynamicResource MaterialDesignPaper}" />
               </DataTrigger>
               <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="DarkGreen"/>
+                <Setter Property="Background" Value="DarkGreen" />
               </Trigger>
               <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="MidnightBlue"/>
+                <Setter Property="Background" Value="MidnightBlue" />
               </Trigger>
             </Style.Triggers>
           </Style>
         </DataGrid.RowStyle>
       </DataGrid>
+
       <md:Snackbar x:Name="MainSnackbar"
                    Grid.Row="0"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    HorizontalContentAlignment="Left"
-                   Background="{StaticResource MaterialDesignCardBackground}" 
-                   Foreground="{StaticResource MaterialDesignBody}" 
+                   Background="{StaticResource MaterialDesignCardBackground}"
+                   Foreground="{StaticResource MaterialDesignBody}"
                    ActionButtonPlacement="SeparateLine"
                    ActionButtonStyle="{StaticResource MaterialDesignFlatSecondaryButton}"
                    MessageQueue="{md:MessageQueue}">
@@ -835,40 +872,46 @@
                            Margin="5,0,0,0"
                            VerticalAlignment="Center"
                            Kind="ReceiptTextEditOutline" />
+
               <TextBlock Margin="8,0,20,0"
                          VerticalAlignment="Center"
                          Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                          Text="{Binding}" />
 
-              <Button x:Name="ButtonTranslateMicrosoft"
-                      Height="Auto"
+              <Button Height="Auto"
                       Margin="0,0, 5, 0"
                       Click="ButtonTranslateCurrent_Microsoft_OnClick"
                       Content="{DynamicResource ButtonTranslateMicrosoft}"
                       Style="{StaticResource MaterialDesignPaperButton}" />
 
-              <Button x:Name="ButtonTranslateMyMemory"
+              <Button x:Name="ButtonTest"
                       Height="Auto"
-                      Margin="0,0, 20, 0"
+                      Margin="0,0, 5, 0"
                       Click="ButtonTranslateCurrent_MyMemory_OnClick"
                       Content="{DynamicResource ButtonTranslateMyMemory}"
                       Style="{StaticResource MaterialDesignPaperButton}" />
 
-              <Button x:Name="ButtonCopyTranslated"
-                      Height="Auto"
+              <CheckBox
+                Checked="CheckBoxTranslateAll_OnChecked"
+                Unchecked="CheckBoxTranslateAll_OnUnChecked"
+                Margin="0,0, 25, 0"
+                Content="Alles"
+                IsChecked="False"
+                Style="{StaticResource MaterialDesignLightCheckBox}" />
+
+              <Button Height="Auto"
                       Margin="5,0"
                       Click="ButtonCopyTranslated_OnExecuted"
                       Content="{DynamicResource ButtonCopy}"
                       Style="{StaticResource MaterialDesignPaperSecondaryLightButton}" />
 
-              <Button x:Name="ButtonPasteTranslated"
-                      Height="Auto"
+              <Button Height="Auto"
                       Margin="5,0"
                       Click="ButtonPasteTranslated_OnClick"
                       Content="{DynamicResource ButtonPaste}"
                       Style="{StaticResource MaterialDesignPaperSecondaryLightButton}" />
-              <Button x:Name="ButtonApplyTranslated"
-                      Height="Auto"
+
+              <Button Height="Auto"
                       Margin="5,0"
                       Click="ButtonApplyTranslated_OnClick"
                       Content="{DynamicResource ButtonApply}"

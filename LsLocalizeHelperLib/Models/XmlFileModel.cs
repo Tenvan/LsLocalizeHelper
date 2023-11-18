@@ -1,11 +1,8 @@
-﻿using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
-using FileInfo = Alphaleonis.Win32.Filesystem.FileInfo;
+﻿using FileInfo = Alphaleonis.Win32.Filesystem.FileInfo;
 
 namespace LsLocalizeHelperLib.Models;
 
-public class XmlFileModel : ReactiveObject
+public class XmlFileModel
 {
 
   #region Constructors
@@ -24,19 +21,16 @@ public class XmlFileModel : ReactiveObject
   /// <summary>
   /// Full path info for Xml-File
   /// </summary>
-  [Reactive]
   public FileInfo FullPath { get; set; }
 
   /// <summary>
   /// The Mod which contains this file
   /// </summary>
-  [Reactive]
   public ModModel Mod { get; set; }
 
   /// <summary>
   /// Short Name/Path of Xml-File
   /// </summary>
-  [Reactive]
   public string Name { get; set; }
 
   #endregion

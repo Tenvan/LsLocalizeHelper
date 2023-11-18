@@ -33,10 +33,13 @@ public class DataRowModel : ReactiveObject
   #region Properties
 
   [Reactive]
-  public DatSetFlag Flag  { get; set; }
+  public DatSetFlag Flag { get; set; }
 
   [Reactive]
   public ModModel Mod { get; set; }
+
+  [Reactive]
+  public bool Modified { get; set; }
 
   [Reactive]
   public string? Origin { get; set; }

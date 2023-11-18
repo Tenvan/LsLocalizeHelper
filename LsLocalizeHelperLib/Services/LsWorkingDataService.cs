@@ -25,7 +25,7 @@ public static class LsWorkingDataService
 
   public static ObservableCollection<XmlFileModel> TranslatedFiles { get; set; } = new();
 
-  public static ObservableCollection<DataRowModel?> TranslatedItems { get; set; } = new();
+  public static ObservableCollection<DataRowModel?> TranslateItems { get; set; } = new();
 
   #endregion
 
@@ -38,7 +38,7 @@ public static class LsWorkingDataService
     LsWorkingDataService.OriginPreviousItems.Clear();
     LsWorkingDataService.PreviousFiles.Clear();
     LsWorkingDataService.TranslatedFiles.Clear();
-    LsWorkingDataService.TranslatedItems.Clear();
+    LsWorkingDataService.TranslateItems.Clear();
   }
 
   public static ObservableCollection<DataRowModel> FilterData(string filterText)
@@ -48,7 +48,7 @@ public static class LsWorkingDataService
       options: RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOptions.Compiled
     );
 
-    var dataRowModels = LsWorkingDataService.TranslatedItems.Where(
+    var dataRowModels = LsWorkingDataService.TranslateItems.Where(
       t =>
       {
         var matchTranslated = regex.Matches(t.Text ?? "");
@@ -74,7 +74,7 @@ public static class LsWorkingDataService
 
   public static DataRowModel? GetTranslatedForUid(string? uuid)
   {
-    return LsWorkingDataService.TranslatedItems.FirstOrDefault(o => o.Uuid == uuid);
+    return LsWorkingDataService.TranslateItems.FirstOrDefault(o => o.Uuid == uuid);
   }
 
   public static void Load(IEnumerable<XmlFileModel> translatedFiles,
@@ -147,6 +147,7 @@ public static class LsWorkingDataService
     if (dataRow == null) { return false; }
 
     dataRow.Text = newText;
+    dataRow.Modified = true;
 
     LsWorkingDataService.RecalculateStatus(dataRow);
     LsWorkingDataService.ValidateLsTagForRow(dataRow);
@@ -158,7 +159,7 @@ public static class LsWorkingDataService
   {
     foreach (var originModel in LsWorkingDataService.OriginCurrentItems)
     {
-      if (LsWorkingDataService.TranslatedItems.FirstOrDefault(t => t.Uuid == originModel.Uuid) != null) { continue; }
+      if (LsWorkingDataService.TranslateItems.FirstOrDefault(t => t.Uuid == originModel.Uuid) != null) { continue; }
 
       var rowModel = new DataRowModel(
         uuid: originModel.Uuid,
@@ -175,13 +176,13 @@ public static class LsWorkingDataService
 
       var matchToTranslatedFile = LsWorkingDataService.MatchToTranslatedFile(rowModel);
 
-      if (matchToTranslatedFile != null) { LsWorkingDataService.TranslatedItems.Add(matchToTranslatedFile); }
+      if (matchToTranslatedFile != null) { LsWorkingDataService.TranslateItems.Add(matchToTranslatedFile); }
     }
   }
 
   private static void AddOriginTexts()
   {
-    foreach (var dataRowModel in LsWorkingDataService.TranslatedItems)
+    foreach (var dataRowModel in LsWorkingDataService.TranslateItems)
     {
       LsWorkingDataService.RecalculateStatus(dataRowModel);
     }
@@ -235,7 +236,7 @@ public static class LsWorkingDataService
 
             case FileTypes.Translated:
 
-              LsWorkingDataService.TranslatedItems.Add(
+              LsWorkingDataService.TranslateItems.Add(
                 new DataRowModel(
                   text: newRow.Text,
                   flag: DatSetFlag.ExistingSet,
@@ -263,9 +264,6 @@ public static class LsWorkingDataService
     {
       var message
         = $"Error during loading of {type}-XML:\n\nFile: {xmlFileModel.FullPath.FullName}\n\nError:{ex.Message}";
-
-      Console.WriteLine(message);
-
       throw new Exception(message);
     }
   }
@@ -282,14 +280,14 @@ public static class LsWorkingDataService
 
   private static void SearchDuplicates()
   {
-    var duplicates = LsWorkingDataService.TranslatedItems.GroupBy(x => (string)x.Uuid)
+    var duplicates = LsWorkingDataService.TranslateItems.GroupBy(x => (string)x.Uuid)
                                          .Where(g => g.Count() > 1)
                                          .Select(g => g.Key)
                                          .ToList();
 
     foreach (var duplicate in duplicates)
     {
-      var items = LsWorkingDataService.TranslatedItems.Where(o => o.Uuid == duplicate);
+      var items = LsWorkingDataService.TranslateItems.Where(o => o.Uuid == duplicate);
 
       foreach (var dataRowModel in items) { dataRowModel!.Flag = DatSetFlag.DuplicateSet; }
     }
@@ -297,7 +295,7 @@ public static class LsWorkingDataService
 
   private static void ValidateLsTags()
   {
-    foreach (var dataRowModel in LsWorkingDataService.TranslatedItems) { LsWorkingDataService.ValidateLsTagForRow(dataRowModel); }
+    foreach (var dataRowModel in LsWorkingDataService.TranslateItems) { LsWorkingDataService.ValidateLsTagForRow(dataRowModel); }
   }
 
   private static void ValidateLsTagForRow(DataRowModel? dataRowModel)

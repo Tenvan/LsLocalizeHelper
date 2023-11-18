@@ -34,7 +34,7 @@ public class DataTests : LsHelperTestsBase
   {
     this.LoadTestData();
 
-    LsWorkingDataService.TranslatedItems.Count()
+    LsWorkingDataService.TranslateItems.Count()
                         .Should()
                         .Be(15);
 
@@ -53,7 +53,7 @@ public class DataTests : LsHelperTestsBase
   {
     this.LoadTestData();
 
-    var any = LsWorkingDataService.TranslatedItems.Any(t => t.Flag == DatSetFlag.LsTagError);
+    var any = LsWorkingDataService.TranslateItems.Any(t => t.Flag == DatSetFlag.LsTagError);
 
     any.Should()
        .BeTrue();

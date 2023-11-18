@@ -1,9 +1,6 @@
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace LsLocalizeHelperLib.Models;
 
-public class XmlFileListBoxItem : ReactiveObject
+public class XmlFileListBoxItem
 {
 
   #region Constructors
@@ -14,10 +11,8 @@ public class XmlFileListBoxItem : ReactiveObject
 
   #region Properties
 
-  [Reactive]
   public XmlFileModel FileModel { get; set; }
 
-  [Reactive]
   public bool IsChecked { get; set; }
 
   #endregion

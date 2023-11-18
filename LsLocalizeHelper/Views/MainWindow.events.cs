@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -68,6 +69,62 @@ public partial class MainWindow
     this.DoApplyTranslatedText();
   }
 
+  private async void ButtonTranslateCurrent_Microsoft_OnClick(object sender, RoutedEventArgs e)
+  {
+    try
+    {
+      if (this.TranslateAll)
+      {
+        var untranslated = LsWorkingDataService.TranslateItems.Where(i => i.Status == TranslationStatus.Origin);
+
+        foreach (var dataRowModel in untranslated)
+        {
+          var input = dataRowModel?.Origin;
+          var translated = await this.TranslatedWithMicrosoft(input);
+          LsWorkingDataService.SetTranslatedForUid(uid: dataRowModel!.Uuid, newText: translated);
+        }
+      }
+      else
+      {
+        var input = this.CurrentDataRow?.Origin;
+        var translated = await this.TranslatedWithMicrosoft(input);
+        LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow!.Uuid, newText: translated);
+      }
+    }
+    catch (Exception exception)
+    {
+      this.ShowToast(exception.Message);
+    }
+  }
+
+  private async void ButtonTranslateCurrent_MyMemory_OnClick(object sender, RoutedEventArgs e)
+  {
+    try
+    {
+      if (this.TranslateAll)
+      {
+        var untranslated = LsWorkingDataService.TranslateItems.Where(i => i.Status == TranslationStatus.Origin);
+
+        foreach (var dataRowModel in untranslated)
+        {
+          var input = dataRowModel?.Origin;
+          var translated = await this.TranslatedWithMyMemory(input);
+          LsWorkingDataService.SetTranslatedForUid(uid: dataRowModel!.Uuid, newText: translated);
+        }
+      }
+      else
+      {
+        var input = this.CurrentDataRow?.Origin;
+        var translated = await this.TranslatedWithMyMemory(input);
+        LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow!.Uuid, newText: translated);
+      }
+    }
+    catch (Exception exception)
+    {
+      this.ShowToast(exception.Message);
+    }
+  }
+
   private void ComboBoxLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
   {
     var selectedItem = this.ComboBoxLanguage.SelectedItem as CultureInfo;
@@ -82,6 +139,8 @@ public partial class MainWindow
 
   private void ListBoxOriginCurrent_OnChecked(object sender, RoutedEventArgs e)
   {
+    e.Handled = true;
+
     var listBox = sender as CheckBox;
     var data = listBox?.DataContext;
 
@@ -94,7 +153,7 @@ public partial class MainWindow
     var listBoxItemsOfMod = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
                                 .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
 
-    foreach (var xmlFileListBoxItem in listBoxItemsOfMod)
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod.ToArray())
     {
       xmlFileListBoxItem.IsChecked = false;
     }
@@ -117,7 +176,7 @@ public partial class MainWindow
     var listBoxItemsOfMod = this.ListBoxOriginPreviousFile.Items.Cast<XmlFileListBoxItem>()
                                 .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
 
-    foreach (var xmlFileListBoxItem in listBoxItemsOfMod)
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod.ToArray())
     {
       xmlFileListBoxItem.IsChecked = false;
     }
@@ -140,13 +199,12 @@ public partial class MainWindow
     var listBoxItemsOfMod = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
                                 .Where(n => n.FileModel.Mod.Name == listBoxItem.FileModel.Mod.Name && n != listBoxItem);
 
-    foreach (var xmlFileListBoxItem in listBoxItemsOfMod)
+    foreach (var xmlFileListBoxItem in listBoxItemsOfMod.ToArray())
     {
       xmlFileListBoxItem.IsChecked = false;
     }
 
     this.SaveListBoxTranslatedFile();
-
     this.ReLoadXmlFiles();
   }
 
@@ -285,90 +343,5 @@ public partial class MainWindow
   }
 
   #endregion
-
-  private async void ButtonTranslateCurrent_MyMemory_OnClick(object sender, RoutedEventArgs e)
-  {
-    try
-    {
-      var input = this.CurrentDataRow?.Origin;
-      var sl = SettingsManager.Settings?.SourceLanguage;
-      var tl = SettingsManager.Settings?.TargetLanguage;
-
-      var requestUrl
-        = $"https://translated-mymemory---translation-memory.p.rapidapi.com/get?langpair={sl}%7C{tl}&q={Uri.EscapeDataString(input)}&mt=1&onlyprivate=0&de=a%40b.c";
-
-      var client = new RestClient(requestUrl);
-      var request = new RestRequest();
-
-      request.AddHeader(name: "X-RapidAPI-Key", value: SettingsManager.Settings.RapidApiKey);
-      request.AddHeader(name: "X-RapidAPI-Host", value: "translated-mymemory---translation-memory.p.rapidapi.com");
-
-      var response = await client.ExecuteAsync(request);
-
-      if (response.IsSuccessful)
-      {
-        dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
-        string translated = jsonResponse.responseData.translatedText;
-
-        this.TextBoxTranslated.Text = translated;
-      }
-      else
-      {
-        this.ShowToast("API call unsuccessful: " + response.ErrorMessage);
-      }
-    }
-    catch (Exception exception)
-    {
-      this.ShowToast(exception.Message);
-    }
-  }
-
-  private async void ButtonTranslateCurrent_Microsoft_OnClick(object sender, RoutedEventArgs e)
-  {
-    try
-    {
-      var input = this.CurrentDataRow?.Origin;
-      var sl = SettingsManager.Settings?.SourceLanguage;
-      var tl = SettingsManager.Settings?.TargetLanguage;
-
-      var requestUrl
-        = $"https://microsoft-translator-text.p.rapidapi.com/translate?from={sl}&to%5B0%5D={tl}&api-version=3.0&profanityAction=NoAction&textType=plain";
-
-      var client = new RestClient(requestUrl);
-      var request = new RestRequest();
-
-      request.AddHeader(name: "content-type", value: "application/json");
-      request.AddHeader(name: "X-RapidAPI-Key", value: SettingsManager.Settings.RapidApiKey);
-      request.AddHeader(name: "X-RapidAPI-Host", value: "microsoft-translator-text.p.rapidapi.com");
-
-      var jsonStr = string.Format(format: @"[ {{ ""Text"": ""{0}"" }}]", arg0: input);
-
-      request.AddParameter(
-        name: "application/json",
-        value: jsonStr,
-        type: ParameterType.RequestBody
-      );
-
-      var response = await client.ExecuteAsync(request: request, httpMethod: Method.Post);
-
-      if (response.IsSuccessful)
-      {
-        dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
-        var responses = jsonResponse[0];
-        var translations = responses.translations;
-        var translated = translations[0].text;
-
-        this.TextBoxTranslated.Text = translated;
-      }
-      else
-      {
-        this.ShowToast("API call unsuccessful: " + response.ErrorMessage);
-      }
-    }
-    catch (Exception exception)
-    {
-      this.ShowToast(exception.Message);
-    }
-  }
 
 }
