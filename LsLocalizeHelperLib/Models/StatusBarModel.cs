@@ -14,13 +14,12 @@ public class StatusBarModel : ReactiveObject
 
   private string modifiedText = "Unchanged".FromResource();
 
-  private bool notModified = true;
-
   #endregion
 
   #region Properties
 
-  public bool NotModified => this.notModified;
+  [Reactive]
+  public bool NotModified { get; set; } = true;
 
   [Reactive]
   public int Count { get; set; }

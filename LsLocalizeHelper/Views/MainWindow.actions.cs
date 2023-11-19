@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using System.Xml.Linq;
 
 using LSLib.LS;
@@ -84,6 +85,7 @@ public partial class MainWindow
     }
 
     this.BarModel.Modified = true;
+    this.BarModel.NotModified = false;
     this.RefreshStatusBar();
   }
 
@@ -227,6 +229,7 @@ public partial class MainWindow
     {
       this.EndUpdating();
       this.BarModel.Modified = false;
+      this.BarModel.NotModified = true;
     }
   }
 
@@ -242,8 +245,7 @@ public partial class MainWindow
 
         foreach (var xmlFileModel in modFiles)
         {
-          var translatedItems
-            = LsWorkingDataService.TranslateItems.Where(t => t?.SourceFile == xmlFileModel).ToArray();
+          var translatedItems = LsWorkingDataService.TranslateItems.Where(t => t?.SourceFile == xmlFileModel).ToArray();
 
           var fileName = xmlFileModel.FullPath.FullName;
           var tempFileName = $"{fileName}.temp.xml";
@@ -258,10 +260,63 @@ public partial class MainWindow
 
       this.ShowToast("R-A97Cc11F-608E-46C9-9903-Eb5562C5Ba85".FromResource());
       this.BarModel.Modified = false;
+      this.BarModel.NotModified = true;
     }
     catch (Exception ex)
     {
       this.ShowToast("R-Ca10E94D-B276-49Ff-Bc4A-4A4D87082Ade".FromResource() + ":\n" + ex.Message);
+    }
+  }
+
+  private async void DoTranslate(TranslateType type)
+  {
+    try
+    {
+      if (this.TranslateAll)
+      {
+        var untranslated = LsWorkingDataService.TranslateItems.Where(i => i.Status == TranslationStatus.Origin)
+                                               .ToArray();
+
+        this.ProgressBarGrid.Value = 0;
+        var counter = 0;
+
+        for (var index = 1;
+             index <= untranslated.Length;
+             index++)
+        {
+          var dataRowModel = untranslated[index - 1];
+          var input = dataRowModel?.Origin;
+
+          var translated = type switch
+          {
+            TranslateType.microsoft => await this.TranslatedWithMicrosoft(input),
+            TranslateType.mymemory => await this.TranslatedWithMyMemory(input),
+            _ => input,
+          };
+
+          LsWorkingDataService.SetTranslatedForUid(uid: dataRowModel!.Uuid, newText: translated);
+
+          this.ProgressBarGrid.Value = 100 / untranslated.Length * index;
+          this.ProgressBarGrid.Dispatcher.Invoke((Action)(() => { }), DispatcherPriority.Render);
+          counter++;
+        }
+
+        this.ShowToast(string.Format("{0} Texte übersetzt.".FromResource(), counter));
+      }
+      else
+      {
+        var input = this.CurrentDataRow?.Origin;
+        var translated = await this.TranslatedWithMicrosoft(input);
+        LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow!.Uuid, newText: translated);
+      }
+    }
+    catch (Exception exception)
+    {
+      this.ShowToast(exception.Message);
+    }
+    finally
+    {
+      this.ProgressBarGrid.Value = 100;
     }
   }
 

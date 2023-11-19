@@ -1,33 +1,20 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
-
-using Google.Api.Gax.Grpc.Rest;
-using Google.Api.Gax.ResourceNames;
-using Google.Cloud.Translate.V3;
+using System.Windows.Threading;
 
 using LsLocalizeHelperLib.Enums;
 using LsLocalizeHelperLib.Helper;
 using LsLocalizeHelperLib.Models;
 using LsLocalizeHelperLib.Services;
 
-using Newtonsoft.Json;
-
 using ReactiveUI;
-
-using RestSharp;
-
-using Clipboard = System.Windows.Forms.Clipboard;
 
 namespace LsLocalizeHelper.Views;
 
@@ -71,58 +58,12 @@ public partial class MainWindow
 
   private async void ButtonTranslateCurrent_Microsoft_OnClick(object sender, RoutedEventArgs e)
   {
-    try
-    {
-      if (this.TranslateAll)
-      {
-        var untranslated = LsWorkingDataService.TranslateItems.Where(i => i.Status == TranslationStatus.Origin);
-
-        foreach (var dataRowModel in untranslated)
-        {
-          var input = dataRowModel?.Origin;
-          var translated = await this.TranslatedWithMicrosoft(input);
-          LsWorkingDataService.SetTranslatedForUid(uid: dataRowModel!.Uuid, newText: translated);
-        }
-      }
-      else
-      {
-        var input = this.CurrentDataRow?.Origin;
-        var translated = await this.TranslatedWithMicrosoft(input);
-        LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow!.Uuid, newText: translated);
-      }
-    }
-    catch (Exception exception)
-    {
-      this.ShowToast(exception.Message);
-    }
+    this.DoTranslate(TranslateType.microsoft);
   }
 
   private async void ButtonTranslateCurrent_MyMemory_OnClick(object sender, RoutedEventArgs e)
   {
-    try
-    {
-      if (this.TranslateAll)
-      {
-        var untranslated = LsWorkingDataService.TranslateItems.Where(i => i.Status == TranslationStatus.Origin);
-
-        foreach (var dataRowModel in untranslated)
-        {
-          var input = dataRowModel?.Origin;
-          var translated = await this.TranslatedWithMyMemory(input);
-          LsWorkingDataService.SetTranslatedForUid(uid: dataRowModel!.Uuid, newText: translated);
-        }
-      }
-      else
-      {
-        var input = this.CurrentDataRow?.Origin;
-        var translated = await this.TranslatedWithMyMemory(input);
-        LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow!.Uuid, newText: translated);
-      }
-    }
-    catch (Exception exception)
-    {
-      this.ShowToast(exception.Message);
-    }
+    this.DoTranslate(TranslateType.mymemory);
   }
 
   private void ComboBoxLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -343,5 +284,14 @@ public partial class MainWindow
   }
 
   #endregion
+
+}
+
+internal enum TranslateType
+{
+
+  microsoft,
+
+  mymemory
 
 }

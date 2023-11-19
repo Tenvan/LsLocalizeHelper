@@ -109,7 +109,6 @@
 
         <RepeatButton Margin="0,0,4,0"
                       Command="{Binding LoadXmlDataCommand}"
-                      IsEnabled="{Binding BarModel.NotModified}"
                       Style="{StaticResource MaterialDesignPaperSecondaryDarkButton}"
                       ToolTip="{DynamicResource R-8F7B98F4-38Bc-49Da-A686-60D28B7572E5}">
           <RepeatButton.ContentTemplate>
@@ -388,6 +387,7 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="*" />
         <RowDefinition Height="40" />
+        <RowDefinition Height="10" />
       </Grid.RowDefinitions>
 
       <DataGrid x:Name="TranslationGrid"
@@ -404,7 +404,7 @@
 
 
           <!--  Column Modified  -->
-          <DataGridTemplateColumn SortMemberPath="Status">
+          <DataGridTemplateColumn SortMemberPath="Modified">
             <DataGridTemplateColumn.Header>
               <md:PackIcon Width="20"
                            Height="20"
@@ -759,7 +759,6 @@
 
       </md:Snackbar>
 
-
       <StackPanel Grid.Row="1"
                   VerticalAlignment="Bottom"
                   Background="{DynamicResource Black300}"
@@ -835,6 +834,11 @@
                    Text="{Binding BarModel.CountNew, FallbackValue=0}" />
 
       </StackPanel>
+
+      <ProgressBar Grid.Row="2"
+                   x:Name="ProgressBarGrid"
+                   Height="Auto"
+                   Value="0" />
     </Grid>
 
     <GridSplitter Grid.Row="4"
@@ -863,12 +867,12 @@
                 Padding="2"
                 Background="{StaticResource MaterialDesignDarkBackground}"
                 Header="{DynamicResource TranslatedText}"
-                Style="{StaticResource MaterialDesignCardGroupBox}">
+                Style="{StaticResource MaterialDesignGroupBox}">
         <GroupBox.HeaderTemplate>
           <DataTemplate>
-            <StackPanel Height="26" Orientation="Horizontal">
-              <md:PackIcon Width="20"
-                           Height="20"
+            <StackPanel Orientation="Horizontal">
+              <md:PackIcon Width="26"
+                           Height="26"
                            Margin="5,0,0,0"
                            VerticalAlignment="Center"
                            Kind="ReceiptTextEditOutline" />
@@ -930,7 +934,7 @@
                 Padding="0,2"
                 Background="{StaticResource MaterialDesignDarkBackground}"
                 Header="{DynamicResource OriginText}"
-                Style="{StaticResource MaterialDesignCardGroupBox}">
+                Style="{StaticResource MaterialDesignGroupBox}">
         <GroupBox.HeaderTemplate>
           <DataTemplate>
             <StackPanel Height="26" Orientation="Horizontal">
@@ -973,7 +977,7 @@
                 Padding="5,2"
                 Background="{StaticResource MaterialDesignDarkBackground}"
                 Header="{DynamicResource PreviousText}"
-                Style="{StaticResource MaterialDesignCardGroupBox}">
+                Style="{StaticResource MaterialDesignGroupBox}">
         <GroupBox.HeaderTemplate>
           <DataTemplate>
             <StackPanel Height="26" Orientation="Horizontal">
