@@ -19,13 +19,19 @@ public static class LsWorkingDataService
 
   public static ObservableCollection<OriginModel> OriginCurrentItems { get; set; } = new();
 
+  public static Dictionary<string, OriginModel> OriginCurrentItemsDict { get; set; }
+
   public static ObservableCollection<OriginModel> OriginPreviousItems { get; set; } = new();
+
+  public static Dictionary<string, OriginModel> OriginPreviousItemsDict { get; set; }
 
   public static ObservableCollection<XmlFileModel> PreviousFiles { get; set; } = new();
 
   public static ObservableCollection<XmlFileModel> TranslatedFiles { get; set; } = new();
 
   public static ObservableCollection<DataRowModel?> TranslateItems { get; set; } = new();
+
+  public static Dictionary<string, DataRowModel?> TranslateItemsDict { get; set; }
 
   #endregion
 
@@ -62,19 +68,22 @@ public static class LsWorkingDataService
     return new ObservableCollection<DataRowModel>(dataRowModels);
   }
 
-  public static OriginModel? GetCurrentForUid(string? uuid)
+  public static OriginModel? GetCurrentForUid(string uuid)
   {
-    return LsWorkingDataService.OriginCurrentItems.FirstOrDefault(o => o.Uuid == uuid);
+    // return LsWorkingDataService.OriginCurrentItems.FirstOrDefault(o => o.Uuid == uuid);
+    return LsWorkingDataService.OriginCurrentItemsDict.TryGetValue(uuid, out var value) ? value : null;
   }
 
-  public static OriginModel? GetPreviousForUid(string? uuid)
+  public static OriginModel? GetPreviousForUid(string uuid)
   {
-    return LsWorkingDataService.OriginPreviousItems.FirstOrDefault(o => o.Uuid == uuid);
+    // return LsWorkingDataService.OriginPreviousItems.FirstOrDefault(o => o.Uuid == uuid);
+    return LsWorkingDataService.OriginPreviousItemsDict.TryGetValue(uuid, out var value) ? value : null;
   }
 
-  public static DataRowModel? GetTranslatedForUid(string? uuid)
+  public static DataRowModel? GetTranslatedForUid(string uuid)
   {
-    return LsWorkingDataService.TranslateItems.FirstOrDefault(o => o.Uuid == uuid);
+    // return LsWorkingDataService.TranslateItems.FirstOrDefault(o => o.Uuid == uuid);
+    return LsWorkingDataService.TranslateItemsDict.TryGetValue(uuid, out var value) ? value : null;
   }
 
   public static void Load(IEnumerable<XmlFileModel> translatedFiles,
@@ -85,11 +94,11 @@ public static class LsWorkingDataService
     LsWorkingDataService.TranslatedFiles.Clear();
     var xmlFileModels = translatedFiles.ToList();
     LsWorkingDataService.TranslatedFiles.AddRange(xmlFileModels);
-    
+
     LsWorkingDataService.CurrentFiles.Clear();
     var fileModels = currentFiles.ToList();
     LsWorkingDataService.CurrentFiles.AddRange(fileModels);
-    
+
     LsWorkingDataService.PreviousFiles.Clear();
     var enumerable = previousFiles.ToList();
     LsWorkingDataService.PreviousFiles.AddRange(enumerable);
@@ -109,10 +118,18 @@ public static class LsWorkingDataService
       LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Translated);
     }
 
+    LsWorkingDataService.ConvertDictionaries();
     LsWorkingDataService.AddOriginTexts();
     LsWorkingDataService.AddNewOriginTexts();
     LsWorkingDataService.SearchDuplicates();
     LsWorkingDataService.ValidateLsTags();
+  }
+
+  private static void ConvertDictionaries()
+  {
+    LsWorkingDataService.TranslateItemsDict = LsWorkingDataService.TranslateItems.ToDictionary(model => model.Uuid);
+    LsWorkingDataService.OriginPreviousItemsDict = LsWorkingDataService.OriginPreviousItems.ToDictionary(model => model.Uuid);
+    LsWorkingDataService.OriginCurrentItemsDict = LsWorkingDataService.OriginCurrentItems.ToDictionary(model => model.Uuid);
   }
 
   public static void RecalculateStatus(DataRowModel? dataRowModel)
@@ -130,9 +147,10 @@ public static class LsWorkingDataService
     dataRowModel.Origin = currentUid?.Text;
     dataRowModel.Previous = previousUid?.Text;
 
-    dataRowModel.Status = dataRowModel.Text.Equals(dataRowModel.Origin) || dataRowModel.Text.Equals(dataRowModel.Previous)
-                            ? TranslationStatus.Origin
-                            : TranslationStatus.Translated;
+    dataRowModel.Status
+      = dataRowModel.Text.Equals(dataRowModel.Origin) || dataRowModel.Text.Equals(dataRowModel.Previous)
+          ? TranslationStatus.Origin
+          : TranslationStatus.Translated;
 
     dataRowModel.OriginStatus
       = dataRowModel.Origin.Equals(dataRowModel.Previous) || string.IsNullOrEmpty(dataRowModel.Previous)
@@ -144,7 +162,10 @@ public static class LsWorkingDataService
   {
     var dataRow = LsWorkingDataService.GetTranslatedForUid(uid);
 
-    if (dataRow == null) { return false; }
+    if (dataRow == null)
+    {
+      return false;
+    }
 
     dataRow.Text = newText;
     dataRow.Modified = true;
@@ -159,7 +180,12 @@ public static class LsWorkingDataService
   {
     foreach (var originModel in LsWorkingDataService.OriginCurrentItems)
     {
-      if (LsWorkingDataService.TranslateItems.FirstOrDefault(t => t.Uuid == originModel.Uuid) != null) { continue; }
+      var firstOrDefault = LsWorkingDataService.GetTranslatedForUid(originModel.Uuid);
+
+      if (firstOrDefault != null)
+      {
+        continue;
+      }
 
       var rowModel = new DataRowModel(
         uuid: originModel.Uuid,
@@ -176,7 +202,10 @@ public static class LsWorkingDataService
 
       var matchToTranslatedFile = LsWorkingDataService.MatchToTranslatedFile(rowModel);
 
-      if (matchToTranslatedFile != null) { LsWorkingDataService.TranslateItems.Add(matchToTranslatedFile); }
+      if (matchToTranslatedFile != null)
+      {
+        LsWorkingDataService.TranslateItems.Add(matchToTranslatedFile);
+      }
     }
   }
 
@@ -199,7 +228,10 @@ public static class LsWorkingDataService
 
   private static void LoadFiles(XmlFileModel xmlFileModel, FileTypes type)
   {
-    if (!xmlFileModel.FullPath!.Exists) { return; }
+    if (!xmlFileModel.FullPath!.Exists)
+    {
+      return;
+    }
 
     try
     {
@@ -207,7 +239,10 @@ public static class LsWorkingDataService
       doc.Load(xmlFileModel.FullPath.FullName);
       var nodes = doc.SelectNodes("//content");
 
-      if (nodes == null) { return; }
+      if (nodes == null)
+      {
+        return;
+      }
 
       foreach (XmlElement node in nodes)
       {
@@ -215,7 +250,10 @@ public static class LsWorkingDataService
         {
           var newRow = LsWorkingDataService.BuildOriginModel(node: node, source: xmlFileModel);
 
-          if (string.IsNullOrEmpty(newRow.Uuid)) { continue; }
+          if (string.IsNullOrEmpty(newRow.Uuid))
+          {
+            continue;
+          }
 
           newRow.Mod = xmlFileModel.Mod;
           newRow.SourceFile = xmlFileModel;
@@ -264,6 +302,7 @@ public static class LsWorkingDataService
     {
       var message
         = $"Error during loading of {type}-XML:\n\nFile: {xmlFileModel.FullPath.FullName}\n\nError:{ex.Message}";
+
       throw new Exception(message);
     }
   }
@@ -272,8 +311,14 @@ public static class LsWorkingDataService
   {
     var translateFile = LsWorkingDataService.TranslatedFiles.FirstOrDefault(t => t.Mod == rowModel.Mod);
 
-    if (translateFile != null) { rowModel.SourceFile = translateFile; }
-    else { rowModel = null; }
+    if (translateFile != null)
+    {
+      rowModel.SourceFile = translateFile;
+    }
+    else
+    {
+      rowModel = null;
+    }
 
     return rowModel;
   }
@@ -289,13 +334,11 @@ public static class LsWorkingDataService
     {
       var items = LsWorkingDataService.TranslateItems.Where(o => o.Uuid == duplicate);
 
-      foreach (var dataRowModel in items) { dataRowModel!.Flag = DatSetFlag.DuplicateSet; }
+      foreach (var dataRowModel in items)
+      {
+        dataRowModel!.Flag = DatSetFlag.DuplicateSet;
+      }
     }
-  }
-
-  private static void ValidateLsTags()
-  {
-    foreach (var dataRowModel in LsWorkingDataService.TranslateItems) { LsWorkingDataService.ValidateLsTagForRow(dataRowModel); }
   }
 
   private static void ValidateLsTagForRow(DataRowModel? dataRowModel)
@@ -308,6 +351,15 @@ public static class LsWorkingDataService
       dataRowModel!.Flag = isHtmlValid ? DatSetFlag.ExistingSet : DatSetFlag.LsTagError;
     }
   }
+
+  private static void ValidateLsTags()
+  {
+    foreach (var dataRowModel in LsWorkingDataService.TranslateItems)
+    {
+      LsWorkingDataService.ValidateLsTagForRow(dataRowModel);
+    }
+  }
+
   #endregion
 
 }
