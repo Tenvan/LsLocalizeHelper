@@ -19,19 +19,13 @@ public static class LsWorkingDataService
 
   public static ObservableCollection<OriginModel> OriginCurrentItems { get; set; } = new();
 
-  public static Dictionary<string, OriginModel> OriginCurrentItemsDict { get; set; }
-
   public static ObservableCollection<OriginModel> OriginPreviousItems { get; set; } = new();
-
-  public static Dictionary<string, OriginModel> OriginPreviousItemsDict { get; set; }
 
   public static ObservableCollection<XmlFileModel> PreviousFiles { get; set; } = new();
 
   public static ObservableCollection<XmlFileModel> TranslatedFiles { get; set; } = new();
 
-  public static ObservableCollection<DataRowModel?> TranslateItems { get; set; } = new();
-
-  public static Dictionary<string, DataRowModel?> TranslateItemsDict { get; set; }
+  public static ObservableCollection<DataRowModel> TranslateItems { get; set; } = new();
 
   #endregion
 
@@ -70,20 +64,17 @@ public static class LsWorkingDataService
 
   public static OriginModel? GetCurrentForUid(string uuid)
   {
-    // return LsWorkingDataService.OriginCurrentItems.FirstOrDefault(o => o.Uuid == uuid);
-    return LsWorkingDataService.OriginCurrentItemsDict.TryGetValue(uuid, out var value) ? value : null;
+    return LsWorkingDataService.OriginCurrentItems.FirstOrDefault(o => o.Uuid == uuid);
   }
 
   public static OriginModel? GetPreviousForUid(string uuid)
   {
-    // return LsWorkingDataService.OriginPreviousItems.FirstOrDefault(o => o.Uuid == uuid);
-    return LsWorkingDataService.OriginPreviousItemsDict.TryGetValue(uuid, out var value) ? value : null;
+    return LsWorkingDataService.OriginPreviousItems.FirstOrDefault(o => o.Uuid == uuid);
   }
 
   public static DataRowModel? GetTranslatedForUid(string uuid)
   {
-    // return LsWorkingDataService.TranslateItems.FirstOrDefault(o => o.Uuid == uuid);
-    return LsWorkingDataService.TranslateItemsDict.TryGetValue(uuid, out var value) ? value : null;
+    return LsWorkingDataService.TranslateItems.FirstOrDefault(o => o.Uuid == uuid);
   }
 
   public static void Load(IEnumerable<XmlFileModel> translatedFiles,
@@ -118,18 +109,10 @@ public static class LsWorkingDataService
       LsWorkingDataService.LoadFiles(xmlFileModel: xmlFileModel, type: FileTypes.Translated);
     }
 
-    LsWorkingDataService.ConvertDictionaries();
     LsWorkingDataService.AddOriginTexts();
     LsWorkingDataService.AddNewOriginTexts();
     LsWorkingDataService.SearchDuplicates();
     LsWorkingDataService.ValidateLsTags();
-  }
-
-  private static void ConvertDictionaries()
-  {
-    LsWorkingDataService.TranslateItemsDict = LsWorkingDataService.TranslateItems.ToDictionary(model => model.Uuid);
-    LsWorkingDataService.OriginPreviousItemsDict = LsWorkingDataService.OriginPreviousItems.ToDictionary(model => model.Uuid);
-    LsWorkingDataService.OriginCurrentItemsDict = LsWorkingDataService.OriginCurrentItems.ToDictionary(model => model.Uuid);
   }
 
   public static void RecalculateStatus(DataRowModel? dataRowModel)

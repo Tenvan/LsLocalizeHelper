@@ -7,7 +7,7 @@
     <LangVersion>latest</LangVersion>
     <UseWindowsForms>True</UseWindowsForms>
     <NeutralLanguage>de-DE</NeutralLanguage>
-    <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481;net8.0-windows</TargetFrameworks>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
     <RootNamespace>LsLocalizeHelper</RootNamespace>
@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="Google.Cloud.Translate.V3" Version="3.3.0" />
     <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="Rx.Net.Plus" Version="1.1.15" />
   </ItemGroup>

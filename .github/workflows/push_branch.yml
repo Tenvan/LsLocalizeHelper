@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         dotnet-version: [ '7.0.x' ]
-        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net472', 'net481' ]
+        dotnet-framework: [ 'net6.0-windows', 'net7.0-windows', 'net8.0-windows', 'net472', 'net481' ]
 
     steps:
       - name: Checkout code

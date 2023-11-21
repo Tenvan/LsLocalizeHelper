@@ -6,7 +6,7 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481;net8.0-windows</TargetFrameworks>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

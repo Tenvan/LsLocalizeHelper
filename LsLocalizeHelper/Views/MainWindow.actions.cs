@@ -139,30 +139,22 @@ public partial class MainWindow
 
   private void DoLoadData()
   {
-    try
-    {
-      LsWorkingDataService.Clear();
+    LsWorkingDataService.Clear();
 
-      var translatedFiles = this.GetSelectedTranslated();
-      var currentFiles = this.GetSelectedOriginCurrents();
-      var previousFiles = this.GetSelectedOriginPrevious();
+    var translatedFiles = this.GetSelectedTranslated();
+    var currentFiles = this.GetSelectedOriginCurrents();
+    var previousFiles = this.GetSelectedOriginPrevious();
 
-      LsWorkingDataService.Load(
-        translatedFiles: translatedFiles,
-        currentFiles: currentFiles,
-        previousFiles: previousFiles
-      );
+    LsWorkingDataService.Load(
+      translatedFiles: translatedFiles,
+      currentFiles: currentFiles,
+      previousFiles: previousFiles
+    );
 
-      this.TranslationGrid.ItemsSource = LsWorkingDataService.TranslateItems;
-      this.HasDataLoaded = true;
-      this.BarModel.Loaded = true;
-      this.RefreshStatusBar();
-      this.RestoreOrder();
-    }
-    catch (Exception ex)
-    {
-      this.ShowToast(ex.Message);
-    }
+    this.TranslationGrid.ItemsSource = LsWorkingDataService.TranslateItems;
+    this.HasDataLoaded = true;
+    this.BarModel.Loaded = true;
+    this.RefreshStatusBar();
   }
 
   private void DoPackMods()
@@ -287,32 +279,40 @@ public partial class MainWindow
           var dataRowModel = untranslated[index - 1];
           var input = dataRowModel?.Origin;
 
-          var translated = type switch
+          try
           {
-            TranslateType.microsoft => await this.TranslatedWithMicrosoft(input),
-            TranslateType.mymemory => await this.TranslatedWithMyMemory(input),
-            _ => input,
-          };
+            var translated = type switch
+            {
+              TranslateType.microsoft => await this.TranslatedWithMicrosoft(input),
+              TranslateType.mymemory => await this.TranslatedWithMyMemory(input),
+              _ => input,
+            };
 
-          LsWorkingDataService.SetTranslatedForUid(uid: dataRowModel!.Uuid, newText: translated);
-
-          this.ProgressBarGrid.Value = 100 / untranslated.Length * index;
-          this.ProgressBarGrid.Dispatcher.Invoke((Action)(() => { }), DispatcherPriority.Render);
-          counter++;
+            LsWorkingDataService.SetTranslatedForUid(uid: dataRowModel!.Uuid, newText: translated);
+          }
+          finally
+          {
+            this.ProgressBarGrid.Value = 100 / untranslated.Length * index;
+            this.ProgressBarGrid.Dispatcher.Invoke((Action)(() => { }), DispatcherPriority.Render);
+            counter++;
+          }
         }
 
         this.ShowToast(string.Format("{0} Texte übersetzt.".FromResource(), counter));
       }
       else
       {
-        var input = this.CurrentDataRow?.Origin;
-        var translated = await this.TranslatedWithMicrosoft(input);
-        LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow!.Uuid, newText: translated);
+        try
+        {
+          var input = this.CurrentDataRow?.Origin;
+          var translated = await this.TranslatedWithMicrosoft(input);
+          LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow!.Uuid, newText: translated);
+        }
+        catch (Exception e)
+        {
+          this.ShowToast(e.Message);
+        }
       }
-    }
-    catch (Exception exception)
-    {
-      this.ShowToast(exception.Message);
     }
     finally
     {
@@ -436,19 +436,10 @@ public partial class MainWindow
 
     var response = await client.ExecuteAsync(request: request, httpMethod: Method.Post);
 
-    var translated = input;
-
-    if (response.IsSuccessful)
-    {
-      dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
-      var responses = jsonResponse[0];
-      var translations = responses.translations;
-      translated = (string)translations[0].text;
-    }
-    else
-    {
-      this.ShowToast("API call unsuccessful: " + response.ErrorMessage);
-    }
+    dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+    var responses = jsonResponse[0];
+    var translations = responses.translations;
+    var translated = (string)translations[0].text;
 
     return translated;
   }
@@ -469,17 +460,8 @@ public partial class MainWindow
 
     var response = await client.ExecuteAsync(request);
 
-    var translated = input;
-
-    if (response.IsSuccessful)
-    {
-      dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
-      translated = jsonResponse?.responseData.translatedText;
-    }
-    else
-    {
-      this.ShowToast("API call unsuccessful: " + response.ErrorMessage);
-    }
+    dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+    var translated = jsonResponse?.responseData.translatedText;
 
     return translated;
   }

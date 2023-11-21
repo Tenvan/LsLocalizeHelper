@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net7.0-windows;net472;net481;net8.0-windows</TargetFrameworks>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -21,6 +21,7 @@
     <PackageReference Include="FileAssociation" Version="1.0.0"/>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.54"/>
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     <PackageReference Include="ReactiveHistory" Version="0.10.7" />
     <PackageReference Include="ReactiveProperty" Version="9.3.4" />

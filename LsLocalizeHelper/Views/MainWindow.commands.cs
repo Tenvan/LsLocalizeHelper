@@ -1,10 +1,10 @@
-using System.Collections.ObjectModel;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.Input;
 
 using LsLocalizeHelperLib.Models;
-using LsLocalizeHelperLib.Services;
 
 namespace LsLocalizeHelper.Views;
 
@@ -13,12 +13,6 @@ namespace LsLocalizeHelper.Views;
 /// </summary>
 public partial class MainWindow
 {
-
-  #region Properties
-
-  public ObservableCollection<DataRowModel?> DataGridItems { get; } = LsWorkingDataService.TranslateItems;
-
-  #endregion
 
   #region Methods
 
@@ -33,11 +27,31 @@ public partial class MainWindow
     this.lsModsService.LoadMods();
     this.ProjectItems.Clear();
 
-    foreach (var modModel in this.lsModsService.Items) { this.ProjectItems.Add(new ModModelListBoxItem(modModel)); }
+    foreach (var modModel in this.lsModsService.Items)
+    {
+      this.ProjectItems.Add(new ModModelListBoxItem(modModel));
+    }
   }
 
   [RelayCommand]
-  private void LoadXmlData() { this.DoLoadData(); }
+  private async void LoadXmlData()
+  {
+    try
+    {
+      this.ProgressBarGrid.IsIndeterminate = true;
+      this.DoLoadData();
+      this.RefreshStatusBar();
+      this.RestoreOrder();
+    }
+    catch (Exception ex)
+    {
+      this.ShowToast(ex.Message);
+    }
+    finally
+    {
+      this.ProgressBarGrid.IsIndeterminate = false;
+    }
+  }
 
   [RelayCommand]
   private void LoadXmlFiles()
@@ -46,27 +60,26 @@ public partial class MainWindow
     this.OriginCurrentFileItems.Clear();
     this.TranslatedFileItems.Clear();
 
-    var selectedMods = this.GetSelectedMods()
-                           .ToArray();
+    var selectedMods = this.GetSelectedMods().ToArray();
 
     this.xmlFilesService.Load(selectedMods);
 
     foreach (var xmlFileModel in this.xmlFilesService.Items)
     {
-      if (xmlFileModel.Name.ToLower()
-                      .StartsWith(@"english\"))
+      if (xmlFileModel.Name.ToLower().StartsWith(@"english\"))
       {
         this.OriginPreviousFileItems.Add(new XmlFileListBoxItem(xmlFileModel));
       }
 
-      if (xmlFileModel.Name.ToLower()
-                      .StartsWith(@"english\"))
+      if (xmlFileModel.Name.ToLower().StartsWith(@"english\"))
       {
         this.OriginCurrentFileItems.Add(new XmlFileListBoxItem(xmlFileModel));
       }
 
-      if (!xmlFileModel.Name.ToLower()
-                       .StartsWith(@"english\")) { this.TranslatedFileItems.Add(new XmlFileListBoxItem(xmlFileModel)); }
+      if (!xmlFileModel.Name.ToLower().StartsWith(@"english\"))
+      {
+        this.TranslatedFileItems.Add(new XmlFileListBoxItem(xmlFileModel));
+      }
     }
   }
 

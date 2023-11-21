@@ -399,6 +399,7 @@
                 ItemsSource="{Binding DataGridItems}"
                 KeyUp="TranslationGrid_OnKeyUp"
                 SelectionMode="Single"
+                EnableRowVirtualization="True"
                 Sorting="TranslationGrid_OnSorting">
         <DataGrid.Columns>
 
