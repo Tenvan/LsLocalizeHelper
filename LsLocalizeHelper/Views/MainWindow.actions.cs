@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -279,40 +281,51 @@ public partial class MainWindow
           var dataRowModel = untranslated[index - 1];
           var input = dataRowModel?.Origin;
 
-          try
-          {
-            var translated = type switch
-            {
-              TranslateType.microsoft => await this.TranslatedWithMicrosoft(input),
-              TranslateType.mymemory => await this.TranslatedWithMyMemory(input),
-              _ => input,
-            };
+          float value = 0;
 
-            LsWorkingDataService.SetTranslatedForUid(uid: dataRowModel!.Uuid, newText: translated);
-          }
-          finally
-          {
-            this.ProgressBarGrid.Value = 100 / untranslated.Length * index;
-            this.ProgressBarGrid.Dispatcher.Invoke((Action)(() => { }), DispatcherPriority.Render);
-            counter++;
-          }
+          await Task.Run(
+            async () =>
+            {
+              try
+              {
+                var translated = type switch
+                {
+                  TranslateType.microsoft => await this.TranslatedWithMicrosoft(input),
+                  TranslateType.mymemory => await this.TranslatedWithMyMemory(input),
+                  _ => input,
+                };
+
+                LsWorkingDataService.SetTranslatedForUid(uid: dataRowModel!.Uuid, newText: translated);
+              }
+              catch (Exception ex)
+              {
+                Console.WriteLine(ex.Message);
+              }
+              finally
+              {
+                value = 100f / untranslated.Length * index;
+                Console.WriteLine($"Index: {index} Prozent: {value} Counter: {counter}");
+                counter++;
+              }
+            }
+          );
+
+          this.ProgressBarGrid.Value = value;
         }
 
         this.ShowToast(string.Format("{0} Texte übersetzt.".FromResource(), counter));
       }
       else
       {
-        try
-        {
-          var input = this.CurrentDataRow?.Origin;
-          var translated = await this.TranslatedWithMicrosoft(input);
-          LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow!.Uuid, newText: translated);
-        }
-        catch (Exception e)
-        {
-          this.ShowToast(e.Message);
-        }
+        var input = this.CurrentDataRow?.Origin;
+        var translated = await this.TranslatedWithMicrosoft(input);
+        LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow!.Uuid, newText: translated);
       }
+    }
+    catch (Exception ex)
+    {
+      this.ShowToast(ex.Message);
+      Console.WriteLine(ex.Message);
     }
     finally
     {
@@ -430,7 +443,8 @@ public partial class MainWindow
     request.AddHeader(name: "X-RapidAPI-Key", value: SettingsManager.Settings.RapidApiKey);
     request.AddHeader(name: "X-RapidAPI-Host", value: "microsoft-translator-text.p.rapidapi.com");
 
-    var jsonStr = string.Format(format: @"[ {{ ""Text"": ""{0}"" }}]", arg0: input);
+    var wellFormed = input.Replace(@"""",@"\""" );
+    var jsonStr = string.Format(format: @"[ {{ ""Text"": ""{0}"" }}]", arg0: wellFormed);
 
     request.AddParameter(name: "application/json", value: jsonStr, type: ParameterType.RequestBody);
 
