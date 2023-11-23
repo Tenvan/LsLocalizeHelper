@@ -94,5 +94,7 @@
   <System:String x:Key="R-Cc1001Ac-4Dc2-4Bca-A659-3491B793E9Ff">RapidAPI Key</System:String>
   <System:String x:Key="R-Ca2550A2-6D49-403C-B177-B239220B4B29">Quell Sprache</System:String>
   <System:String x:Key="R-9Cc9Bd2E-7554-40Fb-A3E8-33F9671499D7">Ziel Sprache</System:String>
-
+  <System:String x:Key="R-Ebc825F5-846E-4A82-9D94-5F544133B1Ce">Alle Texte</System:String>
+  <System:String x:Key="R-809B928E-F520-4F51-A476-99Ff205C799F">{0} Texte übersetzt.</System:String>
+  
 </ResourceDictionary>

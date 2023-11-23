@@ -56,6 +56,11 @@ public partial class MainWindow
     this.DoApplyTranslatedText();
   }
 
+  private void ButtonTranalateAbort_OnClick(object sender, RoutedEventArgs e)
+  {
+    this.AbortPending = true;
+  }
+
   private async void ButtonTranslateCurrent_Microsoft_OnClick(object sender, RoutedEventArgs e)
   {
     this.DoTranslate(TranslateType.microsoft);

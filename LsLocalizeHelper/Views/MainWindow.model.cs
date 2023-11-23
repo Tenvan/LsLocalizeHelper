@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Windows.Controls;
 using System.Windows.Documents;
 
 using LsLocalizeHelperLib.Helper;
 using LsLocalizeHelperLib.Models;
 using LsLocalizeHelperLib.Services;
+
+using ReactiveUI.Fody.Helpers;
 
 namespace LsLocalizeHelper.Views;
 
@@ -36,30 +36,23 @@ public partial class MainWindow
 
   #region Properties
 
+  [Reactive]
+  public bool AbortPending { get; set; }
+
   public StatusBarModel BarModel { get; set; } = new();
 
   public bool HasCurrentRow
   {
     get => this.hasCurrentRow;
 
-    set
-    {
-      this.SetProperty(field: ref this.hasCurrentRow, value: value);
-      this.OnPropertyChanged();
-    }
+    set => this.SetProperty(field: ref this.hasCurrentRow, value: value);
   }
 
   public bool HasDataLoaded
   {
     get => this.hasDataLoaded;
 
-    set
-    {
-      if (value == this.hasDataLoaded) { return; }
-
-      this.hasDataLoaded = value;
-      this.OnPropertyChanged();
-    }
+    set => this.SetProperty(ref this.hasDataLoaded, value);
   }
 
   public ObservableCollection<CultureInfo> LanguageItems { get; set; } = new();
@@ -74,7 +67,10 @@ public partial class MainWindow
 
     set
     {
-      if (Equals(objA: value, objB: this.originPreviousFlowDoc)) { return; }
+      if (Equals(objA: value, objB: this.originPreviousFlowDoc))
+      {
+        return;
+      }
 
       this.originPreviousFlowDoc = value;
       this.OnPropertyChanged();
@@ -95,9 +91,7 @@ public partial class MainWindow
 
   private IEnumerable<ModModel> GetSelectedMods()
   {
-    return this.ListBoxMods.Items.Cast<ModModelListBoxItem>()
-               .Where(n => n.IsChecked)
-               .Select(item => item.Mod);
+    return this.ListBoxMods.Items.Cast<ModModelListBoxItem>().Where(n => n.IsChecked).Select(item => item.Mod);
   }
 
   private IEnumerable<XmlFileModel> GetSelectedOriginCurrents()
@@ -123,44 +117,58 @@ public partial class MainWindow
 
   private void SetModSelectionByName(string? modName, bool selected)
   {
-    var mod = this.ListBoxMods.Items.Cast<ModModelListBoxItem>()
-                  .FirstOrDefault(m => m.Mod.Name == modName);
+    var mod = this.ListBoxMods.Items.Cast<ModModelListBoxItem>().FirstOrDefault(m => m.Mod.Name == modName);
 
-    if (mod == null) { return; }
+    if (mod == null)
+    {
+      return;
+    }
 
     mod.IsChecked = selected;
   }
 
   private void SetOriginCurrentSelection(XmlFileListBoxItem? fileModel, bool selected)
   {
-    var item = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>()
-                   .FirstOrDefault(m => m == fileModel);
+    var item = this.ListBoxOriginCurrentFile.Items.Cast<XmlFileListBoxItem>().FirstOrDefault(m => m == fileModel);
 
-    if (item == null) { return; }
+    if (item == null)
+    {
+      return;
+    }
 
     item.IsChecked = selected;
   }
 
   private void SetOriginPreviousSelection(XmlFileListBoxItem? fileModel, bool selected)
   {
-    if (fileModel == null) { return; }
+    if (fileModel == null)
+    {
+      return;
+    }
 
-    var item = this.ListBoxOriginPreviousFile.Items.Cast<XmlFileListBoxItem>()
-                   .FirstOrDefault(m => m == fileModel);
+    var item = this.ListBoxOriginPreviousFile.Items.Cast<XmlFileListBoxItem>().FirstOrDefault(m => m == fileModel);
 
-    if (item == null) { return; }
+    if (item == null)
+    {
+      return;
+    }
 
     item.IsChecked = selected;
   }
 
   private void SetTranslatedSelection(XmlFileListBoxItem? fileModel, bool selected)
   {
-    if (fileModel == null) { return; }
+    if (fileModel == null)
+    {
+      return;
+    }
 
-    var item = this.ListBoxTranslatedFile.Items.Cast<XmlFileListBoxItem>()
-                   .FirstOrDefault(m => m == fileModel);
+    var item = this.ListBoxTranslatedFile.Items.Cast<XmlFileListBoxItem>().FirstOrDefault(m => m == fileModel);
 
-    if (item == null) { return; }
+    if (item == null)
+    {
+      return;
+    }
 
     item.IsChecked = selected;
   }

@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Nodes;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
 using System.Xml.Linq;
 
 using LSLib.LS;
@@ -271,6 +268,9 @@ public partial class MainWindow
         var untranslated = LsWorkingDataService.TranslateItems.Where(i => i.Status == TranslationStatus.Origin)
                                                .ToArray();
 
+        this.AbortPending = false;
+        this.BarModel.TranslationButtonActive = false;
+        this.BarModel.TranslationAbortButtonActive = true;
         this.ProgressBarGrid.Value = 0;
         var counter = 0;
 
@@ -278,6 +278,11 @@ public partial class MainWindow
              index <= untranslated.Length;
              index++)
         {
+          if (this.AbortPending)
+          {
+            continue;
+          }
+
           var dataRowModel = untranslated[index - 1];
           var input = dataRowModel?.Origin;
 
@@ -306,6 +311,7 @@ public partial class MainWindow
                 value = 100f / untranslated.Length * index;
                 Console.WriteLine($"Index: {index} Prozent: {value} Counter: {counter}");
                 counter++;
+                this.BarModel.Modified = true;
               }
             }
           );
@@ -313,7 +319,7 @@ public partial class MainWindow
           this.ProgressBarGrid.Value = value;
         }
 
-        this.ShowToast(string.Format("{0} Texte übersetzt.".FromResource(), counter));
+        this.ShowToast(string.Format("R-809B928E-F520-4F51-A476-99Ff205C799F".FromResource(), counter));
       }
       else
       {
@@ -329,6 +335,9 @@ public partial class MainWindow
     }
     finally
     {
+      this.AbortPending = false;
+      this.BarModel.TranslationButtonActive = true;
+      this.BarModel.TranslationAbortButtonActive = false;
       this.ProgressBarGrid.Value = 100;
     }
   }
@@ -443,7 +452,7 @@ public partial class MainWindow
     request.AddHeader(name: "X-RapidAPI-Key", value: SettingsManager.Settings.RapidApiKey);
     request.AddHeader(name: "X-RapidAPI-Host", value: "microsoft-translator-text.p.rapidapi.com");
 
-    var wellFormed = input.Replace(@"""",@"\""" );
+    var wellFormed = input.Replace(@"""", @"\""");
     var jsonStr = string.Format(format: @"[ {{ ""Text"": ""{0}"" }}]", arg0: wellFormed);
 
     request.AddParameter(name: "application/json", value: jsonStr, type: ParameterType.RequestBody);

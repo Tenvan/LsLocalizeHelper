@@ -19,9 +19,6 @@ public class StatusBarModel : ReactiveObject
   #region Properties
 
   [Reactive]
-  public bool NotModified { get; set; } = true;
-
-  [Reactive]
   public int Count { get; set; }
 
   [Reactive]
@@ -53,6 +50,15 @@ public class StatusBarModel : ReactiveObject
 
   [Reactive]
   public string ModifiedText { get; set; } = "Unchanged".FromResource();
+
+  [Reactive]
+  public bool NotModified { get; set; } = true;
+
+  [Reactive]
+  public bool TranslationAbortButtonActive { get; set; } = false;
+
+  [Reactive]
+  public bool TranslationButtonActive { get; set; } = true;
 
   #endregion
 
