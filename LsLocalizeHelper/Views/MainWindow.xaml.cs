@@ -56,7 +56,10 @@ public partial class MainWindow : Window,
 
     set
     {
-      if (Equals(objA: value, objB: this.originCurrentFlowDoc)) { return; }
+      if (Equals(objA: value, objB: this.originCurrentFlowDoc))
+      {
+        return;
+      }
 
       this.originCurrentFlowDoc = value;
       this.OnPropertyChanged();
@@ -158,28 +161,42 @@ public partial class MainWindow : Window,
 
   private void SetLocals(CultureInfo culture)
   {
+    var languages = new[]
+    {
+      "de-DE",
+      "en-US",
+      "zh-CN",
+      "zh-TW", };
+
     if (this.LanguageItems.Count == 0)
     {
-      this.LanguageItems.Add(new CultureInfo("de-DE"));
-      this.LanguageItems.Add(new CultureInfo("en-US"));
-      this.LanguageItems.Add(new CultureInfo("zh-CN"));
-      this.LanguageItems.Add(new CultureInfo("zh-TW"));
+      foreach (var language in languages)
+      {
+        this.LanguageItems.Add(new CultureInfo(language));
+      }
     }
 
     // this.Language = culture;
     var lower = culture.IetfLanguageTag;
 
     var oldDict = Application.Current.Resources.MergedDictionaries.FirstOrDefault(
-      d => d.Source != null
-           && d.Source.OriginalString.ToLower()
-               .Contains($"locals.{lower.ToLower()}")
+      d => d.Source != null && d.Source.OriginalString.ToLower().Contains($"locals.{lower.ToLower()}")
     );
 
-    if (oldDict != null) { Application.Current.Resources.MergedDictionaries.Remove(oldDict); }
+    if (oldDict != null)
+    {
+      Application.Current.Resources.MergedDictionaries.Remove(oldDict);
+    }
+
+    var isKnownLanguage = languages.Where(l => l == culture.IetfLanguageTag).ToArray().Any();
+
+    var source = isKnownLanguage
+                   ? new Uri(uriString: $"locals/locals.{culture}.xaml", uriKind: UriKind.Relative)
+                   : new Uri(uriString: $"locals/locals.en-US.xaml", uriKind: UriKind.Relative);
 
     var newDict = new ResourceDictionary
     {
-      Source = new Uri(uriString: $"locals/locals.{culture}.xaml", uriKind: UriKind.Relative),
+      Source = source,
     };
 
     Application.Current.Resources.MergedDictionaries.Add(newDict);
@@ -196,14 +213,8 @@ public partial class MainWindow : Window,
 
   #endregion
 
-  private void CheckBoxTranslateAll_OnChecked(object sender, RoutedEventArgs e)
-  {
-    this.TranslateAll = true;
-  }
+  private void CheckBoxTranslateAll_OnChecked(object sender, RoutedEventArgs e) { this.TranslateAll = true; }
 
-  private void CheckBoxTranslateAll_OnUnChecked(object sender, RoutedEventArgs e)
-  {
-    this.TranslateAll = false;
-  }
+  private void CheckBoxTranslateAll_OnUnChecked(object sender, RoutedEventArgs e) { this.TranslateAll = false; }
 
 }
