@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -461,6 +462,11 @@ public partial class MainWindow
     var response = await client.ExecuteAsync(request: request, httpMethod: Method.Post);
 
     dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+    
+    if (jsonResponse is not Array) {
+      this.ShowToast($"{"Übersetzunge fehlgeschlagen!".FromResource()}\n{jsonResponse.messages}");
+      return input;
+    }
     var responses = jsonResponse[0];
     var translations = responses.translations;
     var translated = (string)translations[0].text;
