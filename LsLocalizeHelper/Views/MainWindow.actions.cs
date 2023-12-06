@@ -17,6 +17,7 @@ using LsLocalizeHelperLib.Models;
 using LsLocalizeHelperLib.Services;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 using RestSharp;
 
@@ -326,7 +327,12 @@ public partial class MainWindow
       else
       {
         var input = this.CurrentDataRow?.Origin;
-        var translated = await this.TranslatedWithMicrosoft(input);
+        var translated = type switch
+        {
+          TranslateType.microsoft => await this.TranslatedWithMicrosoft(input),
+          TranslateType.mymemory => await this.TranslatedWithMyMemory(input),
+          _ => input,
+        };
         LsWorkingDataService.SetTranslatedForUid(uid: this.CurrentDataRow!.Uuid, newText: translated);
       }
     }
@@ -463,7 +469,7 @@ public partial class MainWindow
 
     dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
     
-    if (jsonResponse is not Array) {
+    if (jsonResponse is not JArray) {
       this.ShowToast($"{"Übersetzunge fehlgeschlagen!".FromResource()}\n{jsonResponse.messages}");
       return input;
     }
@@ -490,12 +496,15 @@ public partial class MainWindow
 
     var response = await client.ExecuteAsync(request);
 
+    dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+
     if (response.StatusCode != HttpStatusCode.OK)
     {
+      var text = (string)jsonResponse.message;
+      this.ShowToast($"{"Übersetzunge fehlgeschlagen!".FromResource()}\n{text}");
       return input;
     }
 
-    dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
     var translated = jsonResponse?.responseData.translatedText;
 
     return translated;
